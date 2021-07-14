@@ -2,7 +2,7 @@
 
 <h1>Stack</h1>
 
-- Java 14
+- Java 11
 - Maven
 - Spring boot
 - Oracle driver
