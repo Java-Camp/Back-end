@@ -1,19 +1,22 @@
 package com.jcf.persistence.repository;
 
 import com.jcf.persistence.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Objects;
 import java.util.Optional;
 
 @Repository
 public class UserRepository implements CrudRepository<User, Long> {
 
-    @PersistenceContext
-    EntityManager entityManager;
+    private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    public UserRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public User save(User entity) {
@@ -23,6 +26,7 @@ public class UserRepository implements CrudRepository<User, Long> {
     @Override
     public Optional<User> findById(Long id) {
         if (Objects.isNull(id)) return Optional.empty();
-        return Optional.ofNullable(entityManager.find(User.class, id));
+        // todo: logic
+        return Optional.empty();
     }
 }
