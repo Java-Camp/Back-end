@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-
 public class SecurityUser implements UserDetails {
     private final String username;
     private final String password;
@@ -62,5 +61,6 @@ public class SecurityUser implements UserDetails {
                 user.getEmail(), user.getPassword(), user.getRole().getAuthority()
         );
     }
+
 
 }
