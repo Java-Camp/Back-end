@@ -4,9 +4,15 @@ import com.jcf.orm.annotation.Column;
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
+import lombok.*;
 
 @Entity
 @Table(name = "user")
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = "password")
 public class User {
 
     @Id
