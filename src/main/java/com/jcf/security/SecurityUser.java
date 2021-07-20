@@ -1,4 +1,6 @@
 package com.jcf.security;
+
+import com.jcf.persistence.model.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,7 +11,7 @@ import java.util.List;
 
 @Data
 
-public class SecurityUser  implements UserDetails {
+public class SecurityUser implements UserDetails {
     private final String username;
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
@@ -18,6 +20,7 @@ public class SecurityUser  implements UserDetails {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+
     }
 
     @Override
@@ -54,6 +57,10 @@ public class SecurityUser  implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+    public static UserDetails fromUser(User user) {
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(), user.getPassword(), user.getRole().getAuthority()
+        );
+    }
 
-  
 }

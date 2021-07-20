@@ -8,9 +8,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "user")
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "password")
 public class User {
@@ -27,6 +25,11 @@ public class User {
     @Column(name = "email", nullable= false, unique = true)
     private String email;
 
-    @Column
+    @Column(name ="password")
     private String password;
+
+    @Column(name ="role")
+    private Role role;
+
+
 }

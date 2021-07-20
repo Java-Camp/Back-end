@@ -1,5 +1,6 @@
-package com.jcf.model;
+package com.jcf.persistence.model;
 
+import com.jcf.persistence.model.Permission;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
