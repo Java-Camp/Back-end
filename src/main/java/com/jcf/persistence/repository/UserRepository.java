@@ -2,6 +2,7 @@ package com.jcf.persistence.repository;
 
 import com.jcf.persistence.model.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,10 +15,15 @@ public class UserRepository implements CrudRepository<User, Long> {
     @PersistenceContext
     EntityManager entityManager;
 
-
     @Override
     public User save(User entity) {
-        return null; // Oleh implement me
+        Assert.notNull(entity, "Entity must be a set");
+        if (Objects.isNull(entity.getId())) {
+            entityManager.persist(entity);
+        } else {
+            return entityManager.merge(entity);
+        }
+        return entity;
     }
 
     @Override
