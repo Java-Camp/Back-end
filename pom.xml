@@ -53,9 +53,9 @@
         </dependency>
         <!--    Oracle driver    -->
         <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc14</artifactId>
-            <version>10.2.0.4.0</version>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>21.1.0.0</version>
         </dependency>
     </dependencies>
 
