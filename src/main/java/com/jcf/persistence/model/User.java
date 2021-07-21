@@ -4,9 +4,15 @@ import com.jcf.orm.annotation.Column;
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
+import lombok.*;
 
 @Entity
 @Table(name = "user")
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = "password")
 public class User {
 
     @Id
@@ -18,29 +24,9 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 150)
     private String lastName;
 
-    @Column(name = "email", nullable= false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column
     private String password;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 }
