@@ -1,4 +1,4 @@
-package com.jcf.persistence.model;
+package com.jcf.persistence.model.entity;
 
 import com.jcf.orm.annotation.Column;
 import com.jcf.orm.annotation.Entity;

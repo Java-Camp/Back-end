@@ -1,6 +1,6 @@
 package com.jcf.persistence.repository;
 
-import com.jcf.persistence.model.User;
+import com.jcf.persistence.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
