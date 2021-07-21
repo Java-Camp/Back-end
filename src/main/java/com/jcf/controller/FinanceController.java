@@ -1,6 +1,7 @@
 package com.jcf.controller;
 
-import org.springframework.ui.Model;
+import com.jcf.persistence.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,12 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class FinanceController {
-    @GetMapping
-    public String main(
-            @RequestParam(name = "name", required = false, defaultValue = "user") String name,
-            Model model
-    ){
-        model.addAttribute("name", name);
-        return "Hello, " + name;
+
+
+    private final UserRepository userRepository;
+
+    @Autowired
+    public FinanceController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @GetMapping("/test")
+    public String main(@RequestParam("id") Long id) {
+        return userRepository.findById(id).get().toString();
     }
 }
