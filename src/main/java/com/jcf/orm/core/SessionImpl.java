@@ -25,28 +25,32 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
     }
 
     @Override
-    public E save(E entity, EntityMapper<E> entityMapper) {
+    public E saveOrUpdate(E entity, EntityMapper<E> entityMapper) {
+        // checking
         Assert.notNull(entity, "Entity must be a set");
         if (!entityMapper.getEntityClass().isAnnotationPresent(Entity.class))
             throw new IllegalArgumentException(entityMapper.getEntityClass().getSimpleName() + " is not specified as @Entity");
+
         Long id = entityMapper.getId(entity);
-        List <Object> arrayList = entityMapper.getFields(entity);
+        List <Object> fields = entityMapper.getFields(entity);
         List <String> columnNames = entityMapper.getAllColumnNames();
 
-        if(arrayList.size() != columnNames.size())
-            throw new RuntimeException( "Number of fields (" + arrayList.size() + ") and number of all column Names (" + columnNames.size() +") is no equal");
+        if(fields.size() != columnNames.size()) // fields and columnNames have to have the same size
+            throw new RuntimeException( "Number of fields (" + fields.size() + ") and number of all column Names (" + columnNames.size() +") is no equal");
 
         StringBuilder Query = new StringBuilder("MERGE INTO \"" + getTableName(entityMapper) + "\" I "
                 + "USING (SELECT " + id + " as id FROM DUAL) S "
                 + "ON (S.id = I.id) "
                 + "WHEN MATCHED THEN "
                 + "UPDATE SET ");
+
         // write every element's name and it's value
-        for(int i = 0; i < arrayList.size(); i++)
-            Query.append(columnNames.get(i)).append(" = \'").append(arrayList.get(i)).append("\', ");
+        for(int i = 0; i < fields.size(); i++)
+            Query.append(columnNames.get(i)).append(" = '").append(fields.get(i)).append("', ");
 
         Query.setLength(Query.length()-2); // cut the ", "
         Query.append(" WHEN NOT MATCHED THEN INSERT (");
+
         // write every element's name and it's value
         for(String name: columnNames)
             Query.append(name).append(", ");
@@ -54,8 +58,8 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Query.setLength(Query.length()-2);
         Query.append(") VALUES (");
 
-        for (Object o : arrayList)
-            Query.append("\'").append(o).append("\', ");
+        for (Object o : fields)
+            Query.append("'").append(o).append("', ");
 
         Query.setLength(Query.length()-2);
         Query.append(")");
@@ -73,8 +77,6 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
 
     @Override
     public ResponseEntity delete(ID id, EntityMapper<E> entityMapper) {
-        if(findById(id, entityMapper).isEmpty())
-            ResponseEntity.status(404).body("No such id");
         String Query = "DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?";
         jdbcTemplate.update(Query, id);
         return ResponseEntity.status(200).body("Entity was deleted");

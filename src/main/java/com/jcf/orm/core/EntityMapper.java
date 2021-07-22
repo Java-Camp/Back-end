@@ -12,13 +12,11 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 public class EntityMapper<E> implements RowMapper<E> {
 
     @Getter
     private final Class<E> entityClass;
     private final List<Field> entityFields;
-
 
     public EntityMapper(Class<E> entityClass) {
         this.entityClass = entityClass;
@@ -50,9 +48,10 @@ public class EntityMapper<E> implements RowMapper<E> {
 
     private Optional<Field> getIdField() {
         for (Field field : entityFields) {
-            if (Id.class.getTypeName().equals(entityFields.get(0).getAnnotation(Id.class).annotationType().getTypeName())) {
+
+            if (Id.class.getTypeName().equals(entityFields.get(0).getAnnotation(Id.class).annotationType().getTypeName()))
                 return Optional.of(field);
-            }
+
         }
         return Optional.empty();
     }
@@ -65,8 +64,10 @@ public class EntityMapper<E> implements RowMapper<E> {
 
     private String getColumnName(Field field) { // Output the name
         String name = field.getAnnotation(Column.class).name();
+
         if (!name.isEmpty())
             return name;
+
         return field.getName();
     }
 
@@ -94,6 +95,7 @@ public class EntityMapper<E> implements RowMapper<E> {
    public List<String> getAllColumnNames(){ // Output array with names
         List<String> List = new ArrayList<>();
         List<Field> fields = getColumnFields();
+
         for(Field field: fields)
             List.add(getColumnName(field));
 

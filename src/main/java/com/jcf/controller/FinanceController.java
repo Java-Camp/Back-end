@@ -29,6 +29,6 @@ public class FinanceController {
 
     @PostMapping("/saveUser")
     public void save(@RequestBody User user){
-        userRepository.save(user);
+        userRepository.saveOrUpdate(user);
     }
 }
