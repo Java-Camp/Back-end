@@ -36,39 +36,33 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         if(arrayList.size() != columnNames.size())
             throw new RuntimeException( "Number of fields (" + arrayList.size() + ") and number of all column Names (" + columnNames.size() +") is no equal");
 
-        String Query = "MERGE INTO \""+ getTableName(entityMapper) +"\" I "
+        StringBuilder Query = new StringBuilder("MERGE INTO \"" + getTableName(entityMapper) + "\" I "
                 + "USING (SELECT " + id + " as id FROM DUAL) S "
                 + "ON (S.id = I.id) "
                 + "WHEN MATCHED THEN "
-                + "UPDATE SET ";
-        for(int i = 0; i < arrayList.size(); i++){
-            Query += columnNames.get(i) + " = \'" + arrayList.get(i) + "\'";
-            if(i + 1 < arrayList.size())
-                Query += ", ";
-        }
+                + "UPDATE SET ");
+        // write every element's name and it's value
+        for(int i = 0; i < arrayList.size(); i++)
+            Query.append(columnNames.get(i)).append(" = \'").append(arrayList.get(i)).append("\', ");
 
-        Query += " WHEN NOT MATCHED THEN "
-                + "INSERT (";
+        Query.setLength(Query.length()-2); // cut the ", "
+        Query.append(" WHEN NOT MATCHED THEN INSERT (");
+        // write every element's name and it's value
+        for(String name: columnNames)
+            Query.append(name).append(", ");
 
-        for(int i = 0; i < arrayList.size(); i++){
-            Query += columnNames.get(i);
-            if(i+1 < arrayList.size())
-                Query += ", ";
-        }
+        Query.setLength(Query.length()-2);
+        Query.append(") VALUES (");
 
-        Query += ") VALUES (";
+        for (Object o : arrayList)
+            Query.append("\'").append(o).append("\', ");
 
-        for(int i = 0; i < arrayList.size(); i++){
-            Query = Query + "\'" + arrayList.get(i) + "\'";
-            if(i+1 < arrayList.size())
-                Query += ", ";
-        }
-        Query += ")";
+        Query.setLength(Query.length()-2);
+        Query.append(")");
+        jdbcTemplate.update(Query.toString());
 
-        jdbcTemplate.update(Query);
         return entity;
     }
-
 
     @Override
     public Optional<E> findById(ID id, EntityMapper<E> entityMapper) {
