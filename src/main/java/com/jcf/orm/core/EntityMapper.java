@@ -11,9 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -64,7 +62,7 @@ public class EntityMapper<E> implements RowMapper<E> {
         return Optional.empty();
     }
 
-    private List<Field> getColumnFields() {
+    public List<Field> getColumnFields() {
         return entityFields.stream()
                 .filter(field -> field.isAnnotationPresent(Column.class))
                 .collect(Collectors.toList());
@@ -76,4 +74,37 @@ public class EntityMapper<E> implements RowMapper<E> {
             return name;
         return field.getName();
     }
+
+    @SneakyThrows
+    public Long getId(){
+        E entity = entityClass.getConstructor().newInstance();
+        return getIdField().get().getLong(entity);
+    }
+
+    @SneakyThrows
+   public ArrayList<Object> getFields(){
+        ArrayList<Object> arrayList = new ArrayList<>();
+        for (Field field : entityFields) {
+
+           if(!field.getAnnotation(Column.class).name().equals("id"))
+               arrayList.add(field.get(entityClass));
+
+        }
+       return arrayList;
+   }
+
+   public ArrayList<String> getAllColumNames(){
+        ArrayList<String> arrayList = new ArrayList<>();
+        String name;
+
+        for(Field field: entityFields){
+            name = field.getAnnotation(Column.class).name();
+
+            if(!name.equals("id"))
+                arrayList.add(name);
+
+        }
+        return arrayList;
+   }
+
 }

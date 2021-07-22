@@ -3,6 +3,7 @@ package com.jcf.persistence.repository;
 import com.jcf.orm.core.EntityMapper;
 import com.jcf.orm.core.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
@@ -26,5 +27,10 @@ public abstract class GenericRepository<E, ID> implements CrudRepository<E, ID> 
     @Override
     public Optional<E> findById(ID id) {
         return session.findById(id, new EntityMapper<>(entityClass));
+    }
+
+    @Override
+    public ResponseEntity delete(ID id){
+         return session.delete(id, new EntityMapper<>(entityClass));
     }
 }
