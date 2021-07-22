@@ -23,6 +23,7 @@ public class EntityMapper<E> implements RowMapper<E> {
     private List<Method> entityMethods;
     private List<Annotation> annotations;
 
+
     public EntityMapper(Class<E> entityClass) {
         this.entityClass = entityClass;
         this.entityFields = Arrays.asList(entityClass.getDeclaredFields());
@@ -62,13 +63,13 @@ public class EntityMapper<E> implements RowMapper<E> {
         return Optional.empty();
     }
 
-    public List<Field> getColumnFields() {
+    public List<Field> getColumnFields() { // Выводит список Field с аннотацией Column
         return entityFields.stream()
                 .filter(field -> field.isAnnotationPresent(Column.class))
                 .collect(Collectors.toList());
     }
 
-    private String getColumnName(Field field) {
+    private String getColumnName(Field field) { // выводит название
         String name = field.getAnnotation(Column.class).name();
         if (!name.isEmpty())
             return name;
@@ -76,35 +77,33 @@ public class EntityMapper<E> implements RowMapper<E> {
     }
 
     @SneakyThrows
-    public Long getId(){
-        E entity = entityClass.getConstructor().newInstance();
-        return getIdField().get().getLong(entity);
+    public Long getId(E entity){ // выводит id
+        Field privateField = entityClass.getDeclaredField("id");
+        privateField.setAccessible(true);
+        Long fieldValue = (Long) privateField.get(entity);
+        privateField.setAccessible(false);
+        return fieldValue;
     }
 
     @SneakyThrows
-   public ArrayList<Object> getFields(){
-        ArrayList<Object> arrayList = new ArrayList<>();
-        for (Field field : entityFields) {
-
-           if(!field.getAnnotation(Column.class).name().equals("id"))
-               arrayList.add(field.get(entityClass));
-
+   public List<Object> getFields(E entity){ // выводит массив со значениями
+        List<Object> answer = new ArrayList<>();
+        List<Field> fields = getColumnFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            answer.add(field.get(entity));
+            field.setAccessible(false);
         }
-       return arrayList;
+       return answer;
    }
 
-   public ArrayList<String> getAllColumNames(){
-        ArrayList<String> arrayList = new ArrayList<>();
-        String name;
+   public List<String> getAllColumnNames(){ // выводит массив названий
+        List<String> List = new ArrayList<>();
+        List<Field> fields = getColumnFields();
+        for(Field field: fields)
+            List.add(getColumnName(field));
 
-        for(Field field: entityFields){
-            name = field.getAnnotation(Column.class).name();
-
-            if(!name.equals("id"))
-                arrayList.add(name);
-
-        }
-        return arrayList;
+        return List;
    }
 
 }
