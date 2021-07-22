@@ -1,7 +1,6 @@
 package com.jcf.orm.core;
 
 import org.springframework.http.ResponseEntity;
-
 import java.util.Optional;
 
 public interface Session<E, ID> {

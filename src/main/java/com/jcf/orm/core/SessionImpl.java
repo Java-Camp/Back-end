@@ -1,6 +1,5 @@
 package com.jcf.orm.core;
 
-
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Table;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -30,18 +26,15 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
 
     @Override
     public E save(E entity, EntityMapper<E> entityMapper) {
-
         Assert.notNull(entity, "Entity must be a set");
         if (!entityMapper.getEntityClass().isAnnotationPresent(Entity.class))
             throw new IllegalArgumentException(entityMapper.getEntityClass().getSimpleName() + " is not specified as @Entity");
-
         Long id = entityMapper.getId(entity);
-        List<Object> arrayList = entityMapper.getFields(entity);
-        List<String> columnNames = entityMapper.getAllColumnNames();
+        List <Object> arrayList = entityMapper.getFields(entity);
+        List <String> columnNames = entityMapper.getAllColumnNames();
 
-        if(arrayList.size() != columnNames.size()){
+        if(arrayList.size() != columnNames.size())
             throw new RuntimeException( "Number of fields (" + arrayList.size() + ") and number of all column Names (" + columnNames.size() +") is no equal");
-        }
 
         String Query = "MERGE INTO \""+ getTableName(entityMapper) +"\" I "
                 + "USING (SELECT " + id + " as id FROM DUAL) S "
@@ -58,7 +51,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
                 + "INSERT (";
 
         for(int i = 0; i < arrayList.size(); i++){
-            Query = Query + columnNames.get(i);
+            Query += columnNames.get(i);
             if(i+1 < arrayList.size())
                 Query += ", ";
         }
@@ -86,10 +79,10 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
 
     @Override
     public ResponseEntity delete(ID id, EntityMapper<E> entityMapper) {
-        if(Objects.isNull(findById(id, entityMapper))){
-            ResponseEntity.status(405).body("No such id");
-        }
-        jdbcTemplate.query("DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?", entityMapper, id);
+        if(findById(id, entityMapper).isEmpty())
+            ResponseEntity.status(404).body("No such id");
+        String Query = "DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?";
+        jdbcTemplate.update(Query, id);
         return ResponseEntity.status(200).body("Entity was deleted");
     }
 }

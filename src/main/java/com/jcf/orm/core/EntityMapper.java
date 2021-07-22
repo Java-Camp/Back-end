@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -18,17 +16,13 @@ import java.util.stream.Collectors;
 public class EntityMapper<E> implements RowMapper<E> {
 
     @Getter
-    private Class<E> entityClass;
-    private List<Field> entityFields;
-    private List<Method> entityMethods;
-    private List<Annotation> annotations;
+    private final Class<E> entityClass;
+    private final List<Field> entityFields;
 
 
     public EntityMapper(Class<E> entityClass) {
         this.entityClass = entityClass;
         this.entityFields = Arrays.asList(entityClass.getDeclaredFields());
-        this.entityMethods = Arrays.asList(entityClass.getDeclaredMethods());
-        this.annotations = Arrays.asList(entityClass.getDeclaredAnnotations());
     }
 
     @SneakyThrows
@@ -63,13 +57,13 @@ public class EntityMapper<E> implements RowMapper<E> {
         return Optional.empty();
     }
 
-    public List<Field> getColumnFields() { // Выводит список Field с аннотацией Column
+    public List<Field> getColumnFields() { // Output the List of Fields with annotations with "Column" annotation
         return entityFields.stream()
                 .filter(field -> field.isAnnotationPresent(Column.class))
                 .collect(Collectors.toList());
     }
 
-    private String getColumnName(Field field) { // выводит название
+    private String getColumnName(Field field) { // Output the name
         String name = field.getAnnotation(Column.class).name();
         if (!name.isEmpty())
             return name;
@@ -77,7 +71,7 @@ public class EntityMapper<E> implements RowMapper<E> {
     }
 
     @SneakyThrows
-    public Long getId(E entity){ // выводит id
+    public Long getId(E entity){ // Output id
         Field privateField = entityClass.getDeclaredField("id");
         privateField.setAccessible(true);
         Long fieldValue = (Long) privateField.get(entity);
@@ -86,7 +80,7 @@ public class EntityMapper<E> implements RowMapper<E> {
     }
 
     @SneakyThrows
-   public List<Object> getFields(E entity){ // выводит массив со значениями
+   public List<Object> getFields(E entity){ // Output array with fields
         List<Object> answer = new ArrayList<>();
         List<Field> fields = getColumnFields();
         for (Field field : fields) {
@@ -97,7 +91,7 @@ public class EntityMapper<E> implements RowMapper<E> {
        return answer;
    }
 
-   public List<String> getAllColumnNames(){ // выводит массив названий
+   public List<String> getAllColumnNames(){ // Output array with names
         List<String> List = new ArrayList<>();
         List<Field> fields = getColumnFields();
         for(Field field: fields)
