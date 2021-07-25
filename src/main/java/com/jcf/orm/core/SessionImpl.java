@@ -76,7 +76,10 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
     }
 
     @Override
-    public ResponseEntity delete(ID id, EntityMapper<E> entityMapper) {
+    public ResponseEntity delete(ID id, EntityMapper<E> entityMapper) { // todo change to void after Service
+        if(findById(id, entityMapper).isEmpty())
+            return ResponseEntity.status(404).body("No entity with such id");
+
         String Query = "DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?";
         jdbcTemplate.update(Query, id);
         return ResponseEntity.status(200).body("Entity was deleted");
