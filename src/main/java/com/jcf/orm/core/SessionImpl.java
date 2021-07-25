@@ -1,6 +1,7 @@
 package com.jcf.orm.core;
 
 import com.jcf.orm.annotation.Entity;
+import com.jcf.orm.annotation.Reference;
 import com.jcf.orm.annotation.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -75,10 +76,21 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
                 .findAny();
     }
 
+
     @Override
     public ResponseEntity delete(ID id, EntityMapper<E> entityMapper) {
         String Query = "DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?";
         jdbcTemplate.update(Query, id);
         return ResponseEntity.status(200).body("Entity was deleted");
+    }
+
+    @Override
+    public ResponseEntity reference(ID fk, EntityMapper<E> entityMapper) {
+        String query = ( "JOIN \"" + getTableName(entityMapper) + "\" e ON "
+                +entityMapper.getEntityClass().getAnnotation(Reference.class).nameTable()+"."+
+                entityMapper.getEntityClass().getAnnotation(Reference.class).foreignKey()
+                +"="+getTableName(entityMapper)+"."+entityMapper.getEntityClass().getAnnotation(Reference.class).foreignKey());
+        jdbcTemplate.queryForList(query);
+        return ResponseEntity.status(200).body("Reference was completed");
     }
 }

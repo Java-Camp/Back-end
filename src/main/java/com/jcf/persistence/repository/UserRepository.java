@@ -10,4 +10,6 @@ public class UserRepository extends GenericRepository<User, Long> {
     public UserRepository(Session<User, Long> session) {
         super(session, User.class);
     }
+
+
 }

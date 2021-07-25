@@ -10,4 +10,6 @@ public interface Session<E, ID> {
     Optional<E> findById(ID id, EntityMapper<E> rowMapper);
 
     ResponseEntity delete(ID id, EntityMapper<E> rowMapper);
+
+    ResponseEntity reference(ID id, EntityMapper<E> rowMapper);
 }

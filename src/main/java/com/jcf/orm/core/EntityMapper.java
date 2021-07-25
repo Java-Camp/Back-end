@@ -71,6 +71,8 @@ public class EntityMapper<E> implements RowMapper<E> {
         return field.getName();
     }
 
+
+
     @SneakyThrows
     public Long getId(E entity){ // Output id
         Field privateField = entityClass.getDeclaredField("id");

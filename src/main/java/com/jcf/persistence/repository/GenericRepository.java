@@ -29,8 +29,17 @@ public abstract class GenericRepository<E, ID> implements CrudRepository<E, ID> 
         return session.findById(id, new EntityMapper<>(entityClass));
     }
 
+
+
     @Override
     public ResponseEntity delete(ID id){
          return session.delete(id, new EntityMapper<>(entityClass));
     }
+
+    @Override
+    public ResponseEntity reference(ID fk){
+        return session.reference(fk, new EntityMapper<>(entityClass));
+    }
+
+
 }

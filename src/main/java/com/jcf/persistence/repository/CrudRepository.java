@@ -1,5 +1,6 @@
 package com.jcf.persistence.repository;
 
+import com.jcf.orm.annotation.Id;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
@@ -10,4 +11,6 @@ public interface CrudRepository<E, ID> {
     Optional<E> findById(ID id);
 
     ResponseEntity delete(ID id);
+
+    ResponseEntity reference(ID fk);
 }
