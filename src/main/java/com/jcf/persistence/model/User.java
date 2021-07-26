@@ -6,6 +6,8 @@ import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "user")
 @NoArgsConstructor
@@ -29,5 +31,11 @@ public class User {
 
     @Column
     private String password;
+
+    //@Reference(ID, ...)
+    private List<Role> roles;
+
+    //@Reference(ID, ...)
+    private List<Account> accounts;
 
 }
