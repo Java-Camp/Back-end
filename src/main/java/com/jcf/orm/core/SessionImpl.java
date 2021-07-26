@@ -68,7 +68,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Query.setLength(Query.length()-2);
         Query.append(")");
 
-        try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl.docker.internal", "system", "JjTt0677122802")){
+        try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@91.219.60.189:1521/XEPDB1", "team2", "Oracle11XE#")){
             PreparedStatement preparedStatement = conn.prepareStatement(Query.toString());
             for(int i = 0; i < fields.size()*2; i++)
                 preparedStatement.setObject(i+1, fields.get(i%fields.size()));
