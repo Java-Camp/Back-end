@@ -3,7 +3,6 @@ package com.jcf.orm.core;
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Table;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -76,12 +75,8 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
     }
 
     @Override
-    public ResponseEntity delete(ID id, EntityMapper<E> entityMapper) { // todo change to void after Service
-        if(findById(id, entityMapper).isEmpty())
-            return ResponseEntity.status(404).body("No entity with such id");
-
+    public void delete(ID id, EntityMapper<E> entityMapper) {
         String Query = "DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?";
         jdbcTemplate.update(Query, id);
-        return ResponseEntity.status(200).body("Entity was deleted");
     }
 }
