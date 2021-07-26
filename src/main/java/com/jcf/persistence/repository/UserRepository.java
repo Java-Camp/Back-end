@@ -1,5 +1,6 @@
 package com.jcf.persistence.repository;
 
+import com.jcf.orm.core.EntityMapper;
 import com.jcf.orm.core.Session;
 import com.jcf.persistence.model.User;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,6 @@ public class UserRepository extends GenericRepository<User, Long> {
     }
 
     public Optional<User> findByEmail(String email) {
-        return session.;
+        return session.findByEmail(email, new EntityMapper(User.class));
     }
 }

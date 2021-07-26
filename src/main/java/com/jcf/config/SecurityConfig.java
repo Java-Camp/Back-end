@@ -33,11 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // after create controllers USING preAuthorize
-                .antMatchers("/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/login/**").hasAuthority(Permission.USERS_READ.getPermission())
-                .antMatchers(HttpMethod.DELETE, "/login/**").hasAuthority(Permission.USERS_WRITE.getPermission())
-                // delete this ^-^
+                .antMatchers("/api/v1/auth/login").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
