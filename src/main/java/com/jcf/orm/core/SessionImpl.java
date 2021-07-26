@@ -79,4 +79,11 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         String Query = "DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?";
         jdbcTemplate.update(Query, id);
     }
+
+    @Override
+    public Optional<E> findByEmail(String email, EntityMapper<E> entityMapper) {
+        return jdbcTemplate.query("SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e.email = ?", entityMapper, email)
+                .stream()
+                .findAny();
+    }
 }
