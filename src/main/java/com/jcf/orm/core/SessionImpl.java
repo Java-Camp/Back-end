@@ -7,10 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +46,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
 
         // write every element's name and it's value
         for(int i = 0; i < fields.size(); i++)
-            Query.append(columnNames.get(i)).append(" = ?, ");
+            Query.append(columnNames.get(i)).append(" = '").append(fields.get(i)).append("', ");
 
         Query.setLength(Query.length()-2); // cut the ", "
         Query.append(" WHEN NOT MATCHED THEN INSERT (");
@@ -62,25 +58,13 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Query.setLength(Query.length()-2);
         Query.append(") VALUES (");
 
-        for (int i = 0; i < fields.size(); i++)
-            Query.append("?, ");
+        for (Object o : fields)
+            Query.append("'").append(o).append("', ");
 
         Query.setLength(Query.length()-2);
         Query.append(")");
+        jdbcTemplate.update(Query.toString());
 
-        try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@91.219.60.189:1521/XEPDB1", "team2", "Oracle11XE#")){
-            PreparedStatement preparedStatement = conn.prepareStatement(Query.toString());
-            for(int i = 0; i < fields.size()*2; i++)
-                preparedStatement.setObject(i+1, fields.get(i%fields.size()));
-
-            System.out.println(preparedStatement.toString());
-
-            jdbcTemplate.update(preparedStatement.toString());
-        }
-        catch(Exception ex){
-            System.out.println("Connection failed...");
-            System.out.println(ex);
-        }
         return entity;
     }
 
