@@ -3,6 +3,7 @@ package com.jcf.controller;
 
 
 
+import com.jcf.exceptions.IncorrectAcountTypeException;
 import com.jcf.exceptions.LockedAccessException;
 import com.jcf.persistence.model.entity.User;
 import com.jcf.service.UserService;
@@ -26,6 +27,6 @@ public class UserController {
     @PostMapping("/add")
     public ResponseEntity<User> createUser(@RequestBody User user) {
      //   return ResponseEntity.ok(userService.createUser(user));
-    throw new LockedAccessException("User UnAccess");
+    throw new IncorrectAcountTypeException("Incorrect AcountType");
     }
 }
