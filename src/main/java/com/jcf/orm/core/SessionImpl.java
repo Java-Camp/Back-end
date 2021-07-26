@@ -7,6 +7,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +50,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
 
         // write every element's name and it's value
         for(int i = 0; i < fields.size(); i++)
-            Query.append(columnNames.get(i)).append(" = {").append(i).append("}, ");
+            Query.append(columnNames.get(i)).append(" = ?, ");
 
         Query.setLength(Query.length()-2); // cut the ", "
         Query.append(" WHEN NOT MATCHED THEN INSERT (");
@@ -60,17 +63,24 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Query.append(") VALUES (");
 
         for (int i = 0; i < fields.size(); i++)
-            Query.append("{").append(i).append("}, ");
+            Query.append("?, ");
 
         Query.setLength(Query.length()-2);
         Query.append(")");
 
-        String result = MessageFormat.format(
-                Query.toString(),
-                fields);
+        try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/orcl.docker.internal", "system", "JjTt0677122802")){
+            PreparedStatement preparedStatement = conn.prepareStatement(Query.toString());
+            for(int i = 0; i < fields.size()*2; i++)
+                preparedStatement.setObject(i+1, fields.get(i%fields.size()));
 
-        jdbcTemplate.update(result);
+            System.out.println(preparedStatement.toString());
 
+            jdbcTemplate.update(preparedStatement.toString());
+        }
+        catch(Exception ex){
+            System.out.println("Connection failed...");
+            System.out.println(ex);
+        }
         return entity;
     }
 
