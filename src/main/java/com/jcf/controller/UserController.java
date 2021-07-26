@@ -20,11 +20,25 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @PostMapping("/")
     @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.createUser(user));
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> findById(@PathVariable Long id){
+        return ResponseEntity.ok(userService.findById(id));
+    }
+
+    @PostMapping("/deleteUser")
+    public ResponseEntity deleteTest(@RequestParam("id") Long id){
+        return userService.delete(id);
+    }
+
+    @PostMapping("/saveUser")
+    public void save(@RequestBody User user){
+        userService.saveOrUpdate(user);
     }
 }

@@ -19,12 +19,17 @@ public abstract class GenericRepository<E, ID> implements CrudRepository<E, ID> 
     }
 
     @Override
-    public E save(E entity) {
-        return session.save(entity, new EntityMapper<>(entityClass));
+    public E saveOrUpdate(E entity) {
+        return session.saveOrUpdate(entity, new EntityMapper<>(entityClass));
     }
 
     @Override
     public Optional<E> findById(ID id) {
         return session.findById(id, new EntityMapper<>(entityClass));
+    }
+
+    @Override
+    public void delete(ID id){
+         session.delete(id, new EntityMapper<>(entityClass));
     }
 }
