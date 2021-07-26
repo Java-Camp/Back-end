@@ -4,13 +4,13 @@ import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.text.MessageFormat;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,19 +68,17 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Query.setLength(Query.length()-2);
         Query.append(")");
 
-        try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@91.219.60.189:1521/XEPDB1", "team2", "Oracle11XE#")){
-            PreparedStatement preparedStatement = conn.prepareStatement(Query.toString());
-            for(int i = 0; i < fields.size()*2; i++)
-                preparedStatement.setObject(i+1, fields.get(i%fields.size()));
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(final Connection conn) throws SQLException {
+                final PreparedStatement preparedStatement = conn.prepareStatement(Query.toString());
+                for(int i = 0; i < fields.size()*2; i++)
+                    preparedStatement.setObject(i+1, fields.get(i%fields.size()));
 
-            System.out.println(preparedStatement.toString());
+                return preparedStatement;
+            }
+        });
 
-            jdbcTemplate.update(preparedStatement.toString());
-        }
-        catch(Exception ex){
-            System.out.println("Connection failed...");
-            System.out.println(ex);
-        }
         return entity;
     }
 
