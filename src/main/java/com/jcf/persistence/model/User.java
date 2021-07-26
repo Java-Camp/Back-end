@@ -4,6 +4,7 @@ import com.jcf.orm.annotation.Column;
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
+import com.jcf.security.Role;
 import lombok.*;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column
+    @Column(name ="password")
     private String password;
 
     //@Reference(ID, ...)
@@ -37,5 +38,10 @@ public class User {
 
     //@Reference(ID, ...)
     private List<Account> accounts;
+
+
+    @Column(name ="role")
+    private Role role;
+
 
 }
