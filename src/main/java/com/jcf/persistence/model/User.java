@@ -4,13 +4,18 @@ import com.jcf.orm.annotation.Column;
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
-import lombok.*;
+import com.jcf.security.Role;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "user")
 @Data
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "password")
+@Getter
 public class User {
 
     @Id

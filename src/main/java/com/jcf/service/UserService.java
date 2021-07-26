@@ -17,17 +17,10 @@ public class UserService {
     }
 
     public User createUser (User user){
-        System.out.println(user.getFirstName() + " " + user.getLastName()+ " "
-                + " " + user.getEmail() + " " + user.getPassword());
 
-        //userRepository.save(user);
-
-        User newUser = new User();
-        newUser.setId(1L);
-        newUser.setFirstName("Anton");
-        newUser.setLastName("Frolov");
-        newUser.setEmail("avcod@gmail.com");
-        newUser.setPassword("1234");
-        return newUser;
+        return user;
     }
+
+
+
 }

@@ -1,4 +1,4 @@
-package com.jcf.persistence.model;
+package com.jcf.security;
 
 public enum Permission {
     USERS_READ("user:read"),

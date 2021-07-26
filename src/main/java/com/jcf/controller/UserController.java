@@ -23,8 +23,8 @@ public class UserController {
 
     @PostMapping("/")
     @PreAuthorize("hasAuthority('user:write')")
-    public ResponseEntity<User> createUser (@RequestBody User user){
-       return ResponseEntity.ok(userService.createUser(user));
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.createUser(user));
 
     }
 }
