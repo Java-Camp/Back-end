@@ -23,7 +23,7 @@ public class JwtTokenFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String token = jwtTokenProvider.resourceToken((HttpServletRequest) servletRequest);
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
         try {
 
             if (token != null && jwtTokenProvider.validateToken(token)) {

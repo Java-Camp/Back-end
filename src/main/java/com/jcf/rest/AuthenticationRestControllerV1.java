@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +23,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/auth")
-public class AuthenticationRestControllerV1{
+@RequestMapping("/api/v1/auth")
+public class AuthenticationRestControllerV1 {
 
     private final AuthenticationManager authenticationManager;
     private UserRepository userRepository;
@@ -36,27 +37,23 @@ public class AuthenticationRestControllerV1{
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDTO request){
+    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDTO request) {
         try {
-            String email = request.getEmail();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-            Optional<User> user = userRepository.findById(request.getId());
-            String token = jwtTokenProvider.createToken(request.getEmail(), String.valueOf(user.get().getRole()));
-            Map<Object,Object> response = new HashMap<>();
-            response.put("email",request.getEmail());
-            response.put("token",token);
+            User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User doesn't exists"));
+            String token = jwtTokenProvider.createToken(request.getEmail(), user.getRole().name());
+            Map<Object, Object> response = new HashMap<>();
+            response.put("email", request.getEmail());
+            response.put("token", token);
             return ResponseEntity.ok(response);
-        }catch (AuthenticationException e){
-            return  new ResponseEntity<>("Invalid email or password", HttpStatus.FORBIDDEN);
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
         }
+    }
 
-
-
-}
-
-@PostMapping("/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response){
-    SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
-    securityContextLogoutHandler.logout(request,response,null);
-}
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+        securityContextLogoutHandler.logout(request, response, null);
+    }
 }

@@ -1,6 +1,8 @@
 package com.jcf.security;
 
-import com.jcf.persistence.repository.UserRepository;
+import com.jcf.persistence.model.User;
+import com.jcf.persistence.repository.GenericRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,17 +12,20 @@ import org.springframework.stereotype.Service;
 @Service("userDetailsServiceImp")
 public class UserDetailsServiceImp implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final GenericRepository genericRepository;
 
     @Autowired
-    public UserDetailsServiceImp(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserDetailsServiceImp(GenericRepository genericRepository) {
+        this.genericRepository = genericRepository;
     }
 
+    /// ВОПРОС
 
+    @SneakyThrows
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-
-        return null;
+        User user = genericRepository.findByEmail(s).orElseThrow(() ->
+                new UsernameNotFoundException("User doesn't exists"));
+        return SecurityUser.fromUser(user);
     }
 }

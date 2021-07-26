@@ -32,4 +32,5 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
                 .stream()
                 .findAny();
     }
+
 }
