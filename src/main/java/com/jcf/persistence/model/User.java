@@ -7,7 +7,7 @@ import com.jcf.orm.annotation.Table;
 import lombok.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "userUs")
 @NoArgsConstructor
 @Getter
 @Setter
