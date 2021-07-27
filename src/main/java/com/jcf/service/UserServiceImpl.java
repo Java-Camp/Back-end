@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,9 +45,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUserByEmail(String username) {
         log.info("Getting user from database");
         return userRepo.findByEmail(username);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        final Optional<User> byId = userRepo.findById(id);
+        if (!byId.isPresent())
+            throw new IllegalArgumentException("No such user!");
+        return byId.get();
     }
 
     @Override

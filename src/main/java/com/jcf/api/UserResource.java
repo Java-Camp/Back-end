@@ -1,4 +1,5 @@
 package com.jcf.api;
+
 import com.jcf.persistence.model.User;
 import com.jcf.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +22,16 @@ public class UserResource {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
 
     @PostMapping("/users/save")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
-
-
 
 
 }
