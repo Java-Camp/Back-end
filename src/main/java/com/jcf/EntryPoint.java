@@ -1,8 +1,5 @@
 package com.jcf;
 
-import com.jcf.persistence.model.User;
-import com.jcf.service.UserService;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
