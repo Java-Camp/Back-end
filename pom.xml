@@ -22,6 +22,12 @@
     </parent>
 
     <dependencies>
+
+        <!-- Liquibase -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
         <!--    Spring    -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

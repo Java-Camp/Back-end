@@ -1,0 +1,344 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-master.yaml
+  - changeSet:
+      id: 1
+      author: reyzis
+      changes:
+        - createTable:
+            tableName: ACCOUNT2
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKeyName: ACCOUNT_PK2
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ALIAS
+                  type: VARCHAR2(100)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: LANGUAGE
+                  type: VARCHAR2(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: MONEY
+                  type: NUMBER(18,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: BALANCE_TYPE
+                  type: varchar2(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CURRENCY_ID
+                  type: BIGINT
+              - column:
+                  name: ACCOUNT_TYPE_ID
+                  type: BIGINT
+  - changeSet:
+      id: 2
+      author: reyzis
+      changes:
+        - createTable:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKeyName: CURRENCY_PK2
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: NAME
+                  type: VARCHAR2(5)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: COUNTRY
+                  type: VARCHAR2(100)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 3
+      author: reyzis
+      changes:
+        - createTable:
+            tableName: ACCOUNT_TYPE2
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKeyName: ACCOUNT_TYPE_PK2
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: NAME
+                  type: VARCHAR2(100)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: reyzis
+      changes:
+        - createTable:
+            tableName: OPERATION2
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKeyName: OPERATION_PK2
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: DATE_TIME
+                  type: TIMESTAMP(6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: SUM
+                  type: NUMBER(18,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ACCOUNT_ID
+                  type: BIGINT
+              - column:
+                  name: OPERATION_TYPE_ID
+                  type: BIGINT
+              - column:
+                  name: OPERATION_ID
+                  type: BIGINT
+              - column:
+                  name: CATEGORY_ID
+                  type: BIGINT
+  - changeSet:
+      id: 5
+      author: reyzis
+      changes:
+        - createTable:
+            tableName: OPERATION_TYPE2
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKeyName: OPERATION_TYPE_PK2
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: NAME
+                  type: VARCHAR2(100)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 6
+      author: reyzis
+      changes:
+        - createTable:
+            tableName: CATEGORY2
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKeyName: CATEGORY_PK2
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: NAME
+                  type: VARCHAR2(150)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 7
+      author: reyzis
+      changes:
+        - createTable:
+            tableName: USER_ACCOUNT2
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKeyName: USER_ACCOUNT_PK2
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: USER_ID
+                  type: BIGINT
+              - column:
+                  name: ACCOUNT_ID
+                  type: BIGINT
+  - changeSet:
+      id: 8
+      author: reyzis
+      changes:
+        - createTable:
+            tableName: user2
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKeyName: USER_PK2
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: FIRST_NAME
+                  type: VARCHAR2(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: LAST_NAME
+                  type: VARCHAR2(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: EMAIL
+                  type: VARCHAR2(100)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: PASSWORD
+                  type: VARCHAR2(100)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: ROLE
+                  type: VARCHAR2(60)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 9
+      author: reyzis
+      changes:
+        - createTable:
+            tableName: ROLE2
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKeyName: ROLE_PK2
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: NAME
+                  type: VARCHAR2(100)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: USER_ID
+                  type: BIGINT
+  - changeSet:
+      id: 10
+      author: reyzis
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: ACCOUNT2
+            baseColumnNames: CURRENCY_ID
+            referencedTableName: CURRENCY2
+            referencedColumnNames: ID
+            constraintName: ACCOUNT_CURRENCY_ID_FK2
+  - changeSet:
+      id: 11
+      author: reyzis
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: ACCOUNT2
+            baseColumnNames: ACCOUNT_TYPE_ID
+            referencedTableName: ACCOUNT_TYPE2
+            referencedColumnNames: ID
+            constraintName: ACCOUNT_ACCOUNT_TYPE_ID_FK2
+  - changeSet:
+      id: 12
+      author: reyzis
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: OPERATION2
+            baseColumnNames: ACCOUNT_ID
+            referencedTableName: ACCOUNT2
+            referencedColumnNames: ID
+            constraintName: OPERATION_ACCOUNT_ID_FK2
+  - changeSet:
+      id: 13
+      author: reyzis
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: OPERATION2
+            baseColumnNames: OPERATION_TYPE_ID
+            referencedTableName: OPERATION_TYPE2
+            referencedColumnNames: ID
+            constraintName: OPERATION_OPERATION_TYPE_ID_FK2
+  - changeSet:
+      id: 14
+      author: reyzis
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: OPERATION2
+            baseColumnNames: OPERATION_ID
+            referencedTableName: OPERATION2
+            referencedColumnNames: ID
+            constraintName: OPERATION_OPERATION_ID_FK2
+  - changeSet:
+      id: 15
+      author: reyzis
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: OPERATION2
+            baseColumnNames: CATEGORY_ID
+            referencedTableName: CATEGORY2
+            referencedColumnNames: ID
+            constraintName: OPERATION_CATEGORY_ID_FK2
+  - changeSet:
+      id: 16
+      author: reyzis
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName:  USER_ACCOUNT2
+            baseColumnNames: USER_ID
+            referencedTableName: user2
+            referencedColumnNames: ID
+            constraintName: USER_ACCOUNT_USER_ID_FK2
+  - changeSet:
+      id: 17
+      author: reyzis
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: USER_ACCOUNT2
+            baseColumnNames: ACCOUNT_ID
+            referencedTableName: ACCOUNT2
+            referencedColumnNames: ID
+            constraintName: USER_ACCOUNT_ACCOUNT_ID_FK2
+  - changeSet:
+      id: 18
+      author: reyzis
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: ROLE2
+            baseColumnNames: USER_ID
+            referencedTableName: user2
+            referencedColumnNames: ID
+            constraintName: ROLE_USER_ID_FK2
