@@ -6,17 +6,20 @@ import com.jcf.persistence.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class UserRepository extends GenericRepository<User, Long> {
 
-    @Autowired
-    private Session session;
 
     public UserRepository(Session<User, Long> session) {
         super(session, User.class);
     }
 
     public User findByEmail(String email) {
-        return (User)session.findByEmail(email, new EntityMapper(User.class)).get();
+        Optional<User> byEmail = session.findByEmail(email, new EntityMapper(User.class));
+        if (!byEmail.isPresent())
+            throw new IllegalArgumentException("user not found");
+        return byEmail.get();
     }
 }

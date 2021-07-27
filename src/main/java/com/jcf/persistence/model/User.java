@@ -9,7 +9,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "userUs")
+@Table(name = "user")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -33,6 +33,7 @@ public class User {
     @Column(name ="password")
     private String password;
 
+    @Column
     private String role;
 
 //    //@Reference(ID, ...)
