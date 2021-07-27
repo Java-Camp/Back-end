@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public abstract class GenericRepository<E, ID> implements CrudRepository<E, ID> {
 
-    private final Session<E, ID> session;
+    protected final Session<E, ID> session;
 
     private final Class<E> entityClass;
 
