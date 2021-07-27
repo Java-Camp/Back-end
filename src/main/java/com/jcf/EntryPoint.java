@@ -15,12 +15,12 @@ public class EntryPoint{
     public static void main(String[] args) {
         SpringApplication.run(EntryPoint.class, args);
     }
-//    @Bean
-//    CommandLineRunner run(UserService userService){
-//        return args -> {
-//            userService.saveUser(new User(null,"Julia","julia30","user","user","ADMIN"));
-//        };
-//    }
+    @Bean
+    CommandLineRunner run(UserService userService){
+        return args -> {
+            userService.saveUser(new User(null,"Julia","julia30","user","user","ADMIN"));
+        };
+    }
 
     @Bean
     PasswordEncoder passwordEncoder (){
