@@ -4,7 +4,6 @@ import com.jcf.orm.annotation.Column;
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
-import com.jcf.security.Role;
 import lombok.*;
 
 import java.util.List;
@@ -16,6 +15,7 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "password")
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -33,15 +33,17 @@ public class User {
     @Column(name ="password")
     private String password;
 
-    //@Reference(ID, ...)
-    private List<Role> roles;
+    private String role;
 
-    //@Reference(ID, ...)
-    private List<Account> accounts;
+//    //@Reference(ID, ...)
+//    private List<Role> roles;
+//
+//    //@Reference(ID, ...)
+//    private List<Account> accounts;
 
 
-    @Column(name ="role")
-    private Role role;
+//    @Column(name ="role")
+//    private Role role;
 
 
 }
