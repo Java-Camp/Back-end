@@ -11,6 +11,8 @@ import org.springframework.util.Assert;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,8 +64,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Query.setLength(Query.length()-2);
         Query.append(") VALUES (");
 
-        for (int i = 0; i < fields.size(); i++)
-            Query.append("?, ");
+        Query.append("?, ".repeat(fields.size()));
 
         Query.setLength(Query.length()-2);
         Query.append(")");
@@ -71,9 +72,17 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(final Connection conn) throws SQLException {
-                final PreparedStatement preparedStatement = conn.prepareStatement(Query.toString());
-                for(int i = 0; i < fields.size()*2; i++)
-                    preparedStatement.setObject(i+1, fields.get(i%fields.size()));
+                final SimpleDateFormat sdfNew =
+                        new SimpleDateFormat("yyyy-MM-dd kk:mm:ss XXX");
+                final PreparedStatement preparedStatement =
+                        conn.prepareStatement(Query.toString());
+                Object o;
+                for(int i = 0; i < fields.size()*2; i++) {
+                    o = fields.get(i % fields.size());
+                    if(o instanceof Date)
+                        o = sdfNew.format(o);
+                    preparedStatement.setObject(i + 1, o);
+                }
 
                 return preparedStatement;
             }

@@ -6,7 +6,7 @@ import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "operation")
@@ -21,7 +21,7 @@ public class Operation {
     private Long id;
 
     @Column(name = "date_time")
-    private LocalDateTime dateTime;
+    private Date dateTime;
 
     @Column
     private double sum;
