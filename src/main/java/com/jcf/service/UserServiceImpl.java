@@ -22,11 +22,11 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private final UserRepository userRepo;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByEmail(username);
+        User user = userRepository.findByEmail(username);
         if (user == null) {
             log.error("User not found");
             throw new UsernameNotFoundException("User not found");
@@ -41,18 +41,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User saveUser(User user) {
         log.info("Saving new user to database");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepo.saveOrUpdate(user);
+        return userRepository.saveOrUpdate(user);
     }
 
     @Override
     public User getUserByEmail(String username) {
         log.info("Getting user from database");
-        return userRepo.findByEmail(username);
+        return userRepository.findByEmail(username);
     }
 
     @Override
     public User getUserById(Long id) {
-        final Optional<User> byId = userRepo.findById(id);
+        final Optional<User> byId = userRepository.findById(id);
         if (!byId.isPresent())
             throw new IllegalArgumentException("No such user!");
         return byId.get();

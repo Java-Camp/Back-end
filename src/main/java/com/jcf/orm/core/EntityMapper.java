@@ -1,9 +1,10 @@
 package com.jcf.orm.core;
 
-import com.jcf.orm.annotation.Column;
-import com.jcf.orm.annotation.Id;
+import com.jcf.orm.annotation.*;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.lang.reflect.Field;
@@ -17,6 +18,9 @@ public class EntityMapper<E> implements RowMapper<E> {
     @Getter
     private final Class<E> entityClass;
     private final List<Field> entityFields;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     public EntityMapper(Class<E> entityClass) {
         this.entityClass = entityClass;
@@ -56,10 +60,36 @@ public class EntityMapper<E> implements RowMapper<E> {
         return Optional.empty();
     }
 
-    public List<Field> getColumnFields() { // Output the List of Fields with annotations with "Column" annotation
+    public List<Field> getColumnFields() { // Output the List of Fields with "Column" annotation
         return entityFields.stream()
                 .filter(field -> field.isAnnotationPresent(Column.class))
                 .collect(Collectors.toList());
+    }
+
+//    private List<Field> getMappedFields(){
+//        return entityFields.stream()
+//                .filter(field -> field.isAnnotationPresent(MappedBy.class))
+//                .collect(Collectors.toList());
+//    }
+//
+//
+
+    private void setReference() {
+        final List<Field> fields = entityFields.stream()
+                .filter(field -> field.isAnnotationPresent(Reference.class))
+                .collect(Collectors.toList());
+        if (fields.isEmpty())
+            return;
+
+//        for (Field field : fields) {
+//            jdbcTemplate.query("SELECT * FROM " + getTableName((Class<E>) field.getType()) +
+//                    "WHERE " + field.getAnnotation(Reference.class).name() + " = ",{} );
+//
+//        }
+    }
+
+    private String getTableName(Class<E> entityClass) {
+        return entityClass.getAnnotation(Table.class).name();
     }
 
     private String getColumnName(Field field) { // Output the name
@@ -71,8 +101,9 @@ public class EntityMapper<E> implements RowMapper<E> {
         return field.getName();
     }
 
+
     @SneakyThrows
-    public Long getId(E entity){ // Output id
+    public Long getId(E entity) { // Output id
         Field privateField = entityClass.getDeclaredField("id");
         privateField.setAccessible(true);
         Long fieldValue = (Long) privateField.get(entity);
@@ -81,7 +112,7 @@ public class EntityMapper<E> implements RowMapper<E> {
     }
 
     @SneakyThrows
-   public List<Object> getFields(E entity){ // Output array with fields
+    public List<Object> getFields(E entity) { // Output array with fields
         List<Object> answer = new ArrayList<>();
         List<Field> fields = getColumnFields();
         for (Field field : fields) {
@@ -89,17 +120,17 @@ public class EntityMapper<E> implements RowMapper<E> {
             answer.add(field.get(entity));
             field.setAccessible(false);
         }
-       return answer;
-   }
+        return answer;
+    }
 
-   public List<String> getAllColumnNames(){ // Output array with names
+    public List<String> getAllColumnNames() { // Output array with names
         List<String> List = new ArrayList<>();
         List<Field> fields = getColumnFields();
 
-        for(Field field: fields)
+        for (Field field : fields)
             List.add(getColumnName(field));
 
         return List;
-   }
+    }
 
 }

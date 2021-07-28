@@ -1,9 +1,6 @@
 package com.jcf.persistence.model;
 
-import com.jcf.orm.annotation.Column;
-import com.jcf.orm.annotation.Entity;
-import com.jcf.orm.annotation.Id;
-import com.jcf.orm.annotation.Table;
+import com.jcf.orm.annotation.*;
 import lombok.*;
 
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "password")
+@ToString(exclude = "roles")
 @AllArgsConstructor
 public class User {
 
@@ -33,11 +30,18 @@ public class User {
     @Column(name ="password")
     private String password;
 
-    @Column
-    private String role;
+//    @Column
+//    private String role;
 
-//    //@Reference(ID, ...)
-//    private List<Role> roles;
+    @MappedBy(mappedBy = "user")
+    private List<Role> roles;
+
+    /**
+     * 1. Если в ентити стоит аннотация @MappedBy значит:
+     *      - поле содержит список значений (кастомный OneToMany)
+     *      - нужно смотреть на поле ентити указанное в mappedBy
+     *      -
+     */
 //
 //    //@Reference(ID, ...)
 //    private List<Account> accounts;
