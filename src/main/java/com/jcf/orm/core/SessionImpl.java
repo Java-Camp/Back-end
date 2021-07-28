@@ -25,9 +25,6 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private PlatformTransactionManager platformTransactionManager;
-
-    @Autowired
     public SessionImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -106,21 +103,8 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
 
     @Override
     public void delete(ID id, EntityMapper<E> entityMapper) {
-        DefaultTransactionDefinition paramTransactionDefinition = new    DefaultTransactionDefinition();
-        TransactionStatus status = platformTransactionManager.getTransaction(paramTransactionDefinition );
-
-        try {
-            String Query = "DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?";
-            jdbcTemplate.update(Query, id);
-            if(true){
-                throw new RuntimeException("TEST");
-            }
-            platformTransactionManager.commit(status);
-        }
-        catch (Exception exception){
-            platformTransactionManager.rollback(status);
-            throw exception;
-        }
+        String Query = "DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?";
+        jdbcTemplate.update(Query, id);
     }
 
     @Override

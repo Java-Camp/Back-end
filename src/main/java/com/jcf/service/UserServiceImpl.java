@@ -3,6 +3,7 @@ import com.jcf.persistence.model.User;
 import com.jcf.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +11,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +29,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PlatformTransactionManager platformTransactionManager;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByEmail(username);
@@ -67,15 +75,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public ResponseEntity delete(Long id) {
-        if (userRepo.findById(id).isEmpty())
-            return ResponseEntity.status(404).body("No entity with such id");
+        DefaultTransactionDefinition paramTransactionDefinition = new DefaultTransactionDefinition();
+        TransactionStatus status = platformTransactionManager.getTransaction(paramTransactionDefinition );
+        try{
+            if (userRepo.findById(id).isEmpty())
+                return ResponseEntity.status(404).body("No entity with such id");
 
-        userRepo.delete(id);
+            userRepo.delete(id);
 
-        if (userRepo.findById(id).isPresent())
-            return ResponseEntity.status(405).body("Delete is not working");
+            if (userRepo.findById(id).isPresent())
+                return ResponseEntity.status(405).body("Delete is not working");
 
-        return ResponseEntity.status(200).body("Entity was deleted");
+            platformTransactionManager.commit(status);
+            return ResponseEntity.status(200).body("Entity was deleted");
+        }
+        catch (Exception ex){
+            platformTransactionManager.rollback(status);
+            return ResponseEntity.status(409).body(ex);
+        }
     }
 
 }
