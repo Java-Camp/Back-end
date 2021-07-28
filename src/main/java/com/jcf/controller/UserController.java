@@ -4,8 +4,8 @@ package com.jcf.controller;
 
 
 import com.jcf.exceptions.IncorrectAcountTypeException;
-import com.jcf.exceptions.LockedAccessException;
-import com.jcf.persistence.model.entity.User;
+
+import com.jcf.persistence.model.User;
 import com.jcf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

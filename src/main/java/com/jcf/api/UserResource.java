@@ -3,6 +3,7 @@ package com.jcf.api;
 import com.jcf.persistence.model.User;
 import com.jcf.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -12,10 +13,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@RequiredArgsConstructor
 @CrossOrigin
 public class UserResource {
     private final UserService userService;
+
+    public UserResource(UserService userService) {
+        this.userService = userService;
+    }
 
 
     @GetMapping("/users")

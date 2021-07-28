@@ -61,7 +61,6 @@ databaseChangeLog:
                   name: NAME
                   type: VARCHAR2(5)
                   constraints:
-                    unique: true
                     nullable: false
               - column:
                   name: COUNTRY
@@ -342,3 +341,1448 @@ databaseChangeLog:
             referencedTableName: user2
             referencedColumnNames: ID
             constraintName: ROLE_USER_ID_FK2
+  - changeSet:
+      id: 19
+      author: reyzis
+      changes:
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: USD
+              - column:
+                  name: COUNTRY
+                  value: AMERICA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: GBP
+              - column:
+                  name: COUNTRY
+                  value: UNITED KINGDOM
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: GERMANY
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: FRANCE
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CAD
+              - column:
+                  name: COUNTRY
+                  value: CANADA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: SPAIN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: ITALY
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: THE NETHERLANDS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SEK
+              - column:
+                  name: COUNTRY
+                  value: SWEDEN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: NOK
+              - column:
+                  name: COUNTRY
+                  value: NORWAY
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: DKK
+              - column:
+                  name: COUNTRY
+                  value: DENMARK
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: FINLAND
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: ISK
+              - column:
+                  name: COUNTRY
+                  value: ICELAND
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: GREECE
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: PORTUGAL
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: TRY
+              - column:
+                  name: COUNTRY
+                  value: TURKEY
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BRL
+              - column:
+                  name: COUNTRY
+                  value: BRAZIL
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MXN
+              - column:
+                  name: COUNTRY
+                  value: MEXICO
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SUR
+              - column:
+                  name: COUNTRY
+                  value: CIS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: HRK
+              - column:
+                  name: COUNTRY
+                  value: CROATIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: PLN
+              - column:
+                  name: COUNTRY
+                  value: POLAND
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: HUF
+              - column:
+                  name: COUNTRY
+                  value: HUNGARY
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CSK
+              - column:
+                  name: COUNTRY
+                  value: CZECHOSLOVAKIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: LITHUANIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: ILS
+              - column:
+                  name: COUNTRY
+                  value: ISRAEL
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BGN
+              - column:
+                  name: COUNTRY
+                  value: BULGARIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: DZD
+              - column:
+                  name: COUNTRY
+                  value: ALGERIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BHD
+              - column:
+                  name: COUNTRY
+                  value: BAHRAIN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: CATALONIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EGP
+              - column:
+                  name: COUNTRY
+                  value: EGYPT
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: IQD
+              - column:
+                  name: COUNTRY
+                  value: IRAQ
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: JOD
+              - column:
+                  name: COUNTRY
+                  value: JORDAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: KWD
+              - column:
+                  name: COUNTRY
+                  value: KUWAIT
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: LBP
+              - column:
+                  name: COUNTRY
+                  value: LEBANON
+
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: LYD
+              - column:
+                  name: COUNTRY
+                  value: LIBYA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MAD
+              - column:
+                  name: COUNTRY
+                  value: MOROCCO
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MRO
+              - column:
+                  name: COUNTRY
+                  value: MAURITANIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: OMR
+              - column:
+                  name: COUNTRY
+                  value: OMAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: QAR
+              - column:
+                  name: COUNTRY
+                  value: QATAR
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: ROL
+              - column:
+                  name: COUNTRY
+                  value: ROMANIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SAR
+              - column:
+                  name: COUNTRY
+                  value: SAUDI ARABIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SOS
+              - column:
+                  name: COUNTRY
+                  value: SOMALIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SYP
+              - column:
+                  name: COUNTRY
+                  value: SYRIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: DJF
+              - column:
+                  name: COUNTRY
+                  value: DJIBOUTI
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: SLOVENIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: TND
+              - column:
+                  name: COUNTRY
+                  value: TUNISIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: YER
+              - column:
+                  name: COUNTRY
+                  value: YEMEN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SDP
+              - column:
+                  name: COUNTRY
+                  value: SUDAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CHF
+              - column:
+                  name: COUNTRY
+                  value: SWITZERLAND
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: AUSTRIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: AED
+              - column:
+                  name: COUNTRY
+                  value: UNITED ARAB EMIRATES
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: THB
+              - column:
+                  name: COUNTRY
+                  value: THAILAND
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CNY
+              - column:
+                  name: COUNTRY
+                  value: CHINA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: HKD
+              - column:
+                  name: COUNTRY
+                  value: HONG KONG
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: JPY
+              - column:
+                  name: COUNTRY
+                  value: JAPAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: KRW
+              - column:
+                  name: COUNTRY
+                  value: KOREA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: TWD
+              - column:
+                  name: COUNTRY
+                  value: TAIWAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CZK
+              - column:
+                  name: COUNTRY
+                  value: CZECH REPUBLIC
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: SLOVAKIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: UAH
+              - column:
+                  name: COUNTRY
+                  value: UKRAINE
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: ESTONIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MYR
+              - column:
+                  name: COUNTRY
+                  value: MALAYSIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BDT
+              - column:
+                  name: COUNTRY
+                  value: BANGLADESH
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: LATVIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: VNd
+              - column:
+                  name: COUNTRY
+                  value: VIETNAM
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: IDR
+              - column:
+                  name: COUNTRY
+                  value: INDONESIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CYP
+              - column:
+                  name: COUNTRY
+                  value: CYPRUS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: AUD
+              - column:
+                  name: COUNTRY
+                  value: AUSTRALIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: KZT
+              - column:
+                  name: COUNTRY
+                  value: KAZAKHSTAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: UZS
+              - column:
+                  name: COUNTRY
+                  value: UZBEKISTAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SGD
+              - column:
+                  name: COUNTRY
+                  value: SINGAPORE
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: ZAR
+              - column:
+                  name: COUNTRY
+                  value: SOUTH AFRICA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: IRELAND
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: BELGIUM
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: LUXEMBOURG
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: NZD
+              - column:
+                  name: COUNTRY
+                  value: NEW ZEALAND
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: INR
+              - column:
+                  name: COUNTRY
+                  value: INDIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CLP
+              - column:
+                  name: COUNTRY
+                  value: CHILE
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: COP
+              - column:
+                  name: COUNTRY
+                  value: COLOMBIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CRC
+              - column:
+                  name: COUNTRY
+                  value: COSTA RICA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SVC
+              - column:
+                  name: COUNTRY
+                  value: EL SALVADOR
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: GTQ
+              - column:
+                  name: COUNTRY
+                  value: GUATEMALA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: NIO
+              - column:
+                  name: COUNTRY
+                  value: NICARAGUA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: PAB
+              - column:
+                  name: COUNTRY
+                  value: PANAMA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: PEN
+              - column:
+                  name: COUNTRY
+                  value: PERU
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: USD
+              - column:
+                  name: COUNTRY
+                  value: PUERTO RICO
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: VEB
+              - column:
+                  name: COUNTRY
+                  value: VENEZUELA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: YUN
+              - column:
+                  name: COUNTRY
+                  value: YUGOSLAVIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MKD
+              - column:
+                  name: COUNTRY
+                  value: MACEDONIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: RUB
+              - column:
+                  name: COUNTRY
+                  value: RUSSIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: AZM
+              - column:
+                  name: COUNTRY
+                  value: AZERBAIJAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MKD
+              - column:
+                  name: COUNTRY
+                  value: FYR MACEDONIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CSD
+              - column:
+                  name: COUNTRY
+                  value: SERBIA AND MONTENEGRO
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: ARS
+              - column:
+                  name: COUNTRY
+                  value: ARGENTINA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: USD
+              - column:
+                  name: COUNTRY
+                  value: ECUADOR
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: PHP
+              - column:
+                  name: COUNTRY
+                  value: PHILIPPINES
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: ALL
+              - column:
+                  name: COUNTRY
+                  value: ALBANIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BYR
+              - column:
+                  name: COUNTRY
+                  value: BELARUS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: RSD
+              - column:
+                  name: COUNTRY
+                  value: SERBIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: MONTENEGRO
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: HNL
+              - column:
+                  name: COUNTRY
+                  value: HONDURAS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: PKR
+              - column:
+                  name: COUNTRY
+                  value: PAKISTAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XOF
+              - column:
+                  name: COUNTRY
+                  value: SENEGAL
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XAF
+              - column:
+                  name: COUNTRY
+                  value: CAMEROON
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XAF
+              - column:
+                  name: COUNTRY
+                  value: CONGO BRAZZAVILLE
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CDF
+              - column:
+                  name: COUNTRY
+                  value: CONGO KINSHASA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XAF
+              - column:
+                  name: COUNTRY
+                  value: GABON
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XOF
+              - column:
+                  name: COUNTRY
+                  value: IVORY COAST
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BSD
+              - column:
+                  name: COUNTRY
+                  value: BAHAMAS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BMD
+              - column:
+                  name: COUNTRY
+                  value: BERMUDA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: NGN
+              - column:
+                  name: COUNTRY
+                  value: NIGERIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XAF
+              - column:
+                  name: COUNTRY
+                  value: UGANDA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: ZMK
+              - column:
+                  name: COUNTRY
+                  value: ZAMBIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: UYU
+              - column:
+                  name: COUNTRY
+                  value: URUGUAY
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: KES
+              - column:
+                  name: COUNTRY
+                  value: KENYA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: TZS
+              - column:
+                  name: COUNTRY
+                  value: TANZANIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BOB
+              - column:
+                  name: COUNTRY
+                  value: BOLIVIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BZD
+              - column:
+                  name: COUNTRY
+                  value: BELIZE
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: PYG
+              - column:
+                  name: COUNTRY
+                  value: PARAGUAY
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: AFN
+              - column:
+                  name: COUNTRY
+                  value: AFGHANISTAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BAM
+              - column:
+                  name: COUNTRY
+                  value: BOSNIA AND HERZEGOVINA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: ETB
+              - column:
+                  name: COUNTRY
+                  value: ETHIOPIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: LAK
+              - column:
+                  name: COUNTRY
+                  value: LAOS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: EUR
+              - column:
+                  name: COUNTRY
+                  value: MALTA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: NPR
+              - column:
+                  name: COUNTRY
+                  value: NEPAL
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: AMD
+              - column:
+                  name: COUNTRY
+                  value: ARMENIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MVR
+              - column:
+                  name: COUNTRY
+                  value: MALDIVES
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: KHR
+              - column:
+                  name: COUNTRY
+                  value: CAMBODIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: IRR
+              - column:
+                  name: COUNTRY
+                  value: IRAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: IRR
+              - column:
+                  name: COUNTRY
+                  value: SRI LANKA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MOP
+              - column:
+                  name: COUNTRY
+                  value: MACAO
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: AWG
+              - column:
+                  name: COUNTRY
+                  value: ARUBA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: ANG
+              - column:
+                  name: COUNTRY
+                  value: CURACAO
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SRD
+              - column:
+                  name: COUNTRY
+                  value: SURINAME
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XCD
+              - column:
+                  name: COUNTRY
+                  value: ANTIGUA AND BARBUDA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BBD
+              - column:
+                  name: COUNTRY
+                  value: BARBADOS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: BWP
+              - column:
+                  name: COUNTRY
+                  value: BOTSWANA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: KYD
+              - column:
+                  name: COUNTRY
+                  value: CAYMAN ISLANDS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XCD
+              - column:
+                  name: COUNTRY
+                  value: DOMINICA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: GHS
+              - column:
+                  name: COUNTRY
+                  value: GHANA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XCD
+              - column:
+                  name: COUNTRY
+                  value: GRENADA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: GYD
+              - column:
+                  name: COUNTRY
+                  value: GUYANA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: JMD
+              - column:
+                  name: COUNTRY
+                  value: JAMAICA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: NAD
+              - column:
+                  name: COUNTRY
+                  value: NAMIBIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XCD
+              - column:
+                  name: COUNTRY
+                  value: SAINT KITTS AND NEVIS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XCD
+              - column:
+                  name: COUNTRY
+                  value: SAINT LUCIA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SSP
+              - column:
+                  name: COUNTRY
+                  value: SOUTH SUDAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: XCD
+              - column:
+                  name: COUNTRY
+                  value: TRINIDAD AND TOBAGO
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: HTG
+              - column:
+                  name: COUNTRY
+                  value: HAITI
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: CHF
+              - column:
+                  name: COUNTRY
+                  value: LIECHTENSTEIN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: AOA
+              - column:
+                  name: COUNTRY
+                  value: ANGOLA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MZN
+              - column:
+                  name: COUNTRY
+                  value: MOZAMBIQUE
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: DOP
+              - column:
+                  name: COUNTRY
+                  value: DOMINICAN REPUBLIC
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: TMT
+              - column:
+                  name: COUNTRY
+                  value: TURKMENISTAN
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MDL
+              - column:
+                  name: COUNTRY
+                  value: MOLDOVA
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MUR
+              - column:
+                  name: COUNTRY
+                  value: MAURITIUS
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: MWK
+              - column:
+                  name: COUNTRY
+                  value: MALAWI
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SLL
+              - column:
+                  name: COUNTRY
+                  value: SIERRA LEONE
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: SZL
+              - column:
+                  name: COUNTRY
+                  value: SWAZILAND
+        - insert:
+            tableName: CURRENCY2
+            columns:
+              - column:
+                  name: NAME
+                  value: ZWL
+              - column:
+                  name: COUNTRY
+                  value: ZIMBABWE
