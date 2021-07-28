@@ -51,8 +51,13 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
                 + "UPDATE SET ");
 
         // write every element's name and it's value
-        for(int i = 0; i < fields.size(); i++)
-            Query.append(columnNames.get(i)).append(" = ?, ");
+        for(int i = 0; i < fields.size(); i++) {
+            if(fields.get(i) instanceof Date){
+                Query.append(columnNames.get(i)).append(" = timestamp ?, ");
+            } else{
+                Query.append(columnNames.get(i)).append(" = ?, ");
+            }
+        }
 
         Query.setLength(Query.length()-2); // cut the ", "
         Query.append(" WHEN NOT MATCHED THEN INSERT (");
@@ -64,16 +69,24 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Query.setLength(Query.length()-2);
         Query.append(") VALUES (");
 
-        Query.append("?, ".repeat(fields.size()));
+        for (Object field : fields) {
+            if (field instanceof Date) {
+                Query.append("timestamp ?, ");
+            } else {
+                Query.append("?, ");
+            }
+        }
 
         Query.setLength(Query.length()-2);
         Query.append(")");
+
+        System.out.println(Query.toString());
 
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(final Connection conn) throws SQLException {
                 final SimpleDateFormat sdfNew =
-                        new SimpleDateFormat("yyyy-MM-dd kk:mm:ss XXX");
+                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 final PreparedStatement preparedStatement =
                         conn.prepareStatement(Query.toString());
                 Object o;
@@ -81,7 +94,8 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
                     o = fields.get(i % fields.size());
                     if(o instanceof Date)
                         o = sdfNew.format(o);
-                    preparedStatement.setObject(i + 1, o);
+                    System.out.println(o);
+                    preparedStatement.setObject(i + 1, o.toString());
                 }
 
                 return preparedStatement;
