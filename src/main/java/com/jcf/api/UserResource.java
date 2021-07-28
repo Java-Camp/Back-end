@@ -34,8 +34,8 @@ public class UserResource {
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
-    @PostMapping("/users/delete")
-    public ResponseEntity deleteTest(@RequestParam("id") Long id){
+    @PostMapping("/users/delete/{id}")
+    public ResponseEntity deleteTest(@PathVariable Long id){
         return userService.delete(id);
     }
 

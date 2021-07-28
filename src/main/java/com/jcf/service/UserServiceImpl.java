@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User getUserById(Long id) {
         final Optional<User> byId = userRepo.findById(id);
-        if (!byId.isPresent())
+        if (byId.isEmpty())
             throw new IllegalArgumentException("No such user!");
         return byId.get();
     }
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public ResponseEntity delete(Long id) {
         DefaultTransactionDefinition paramTransactionDefinition = new DefaultTransactionDefinition();
-        TransactionStatus status = platformTransactionManager.getTransaction(paramTransactionDefinition );
+        TransactionStatus status = platformTransactionManager.getTransaction(paramTransactionDefinition);
         try{
             if (userRepo.findById(id).isEmpty())
                 return ResponseEntity.status(404).body("No entity with such id");
