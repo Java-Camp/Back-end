@@ -41,6 +41,7 @@ public class JwtFilter extends GenericFilterBean {
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(servletRequest, servletResponse);
+
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
