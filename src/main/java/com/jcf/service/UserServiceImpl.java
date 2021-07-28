@@ -3,6 +3,7 @@ import com.jcf.persistence.model.User;
 import com.jcf.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -64,5 +65,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return null;
     }
 
+    @Override
+    public ResponseEntity delete(Long id) {
+        if (userRepo.findById(id).isEmpty())
+            return ResponseEntity.status(404).body("No entity with such id");
+
+        userRepo.delete(id);
+
+        if (userRepo.findById(id).isPresent())
+            return ResponseEntity.status(405).body("Delete is not working");
+
+        return ResponseEntity.status(200).body("Entity was deleted");
+    }
 
 }
