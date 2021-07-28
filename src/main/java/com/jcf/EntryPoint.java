@@ -13,8 +13,5 @@ public class EntryPoint {
         SpringApplication.run(EntryPoint.class, args);
     }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 }
