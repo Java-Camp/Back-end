@@ -1,4 +1,4 @@
-package com.jcf.security;
+package com.jcf.configuration.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -65,6 +65,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
    /*     response.setHeader("accessToken",accessToken);
         response.setHeader("refreshToket",refreshToken);*/
 
+        response.setContentType("application/json");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         Map<String,String> tokens = new HashMap<>();
         tokens.put("accessToken",accessToken);
         tokens.put("refreshToken",refreshToken);

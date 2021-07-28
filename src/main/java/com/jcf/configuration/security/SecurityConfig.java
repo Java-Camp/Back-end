@@ -1,4 +1,4 @@
-package com.jcf.security;
+package com.jcf.configuration.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,14 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/login/**").permitAll();
-        http.authorizeRequests().antMatchers(GET,"/api/user/**").hasAuthority("USER");
-        http.authorizeRequests().antMatchers(POST,"/api/user/save/**").hasAuthority("ADMIN");
-        http.authorizeRequests().anyRequest().authenticated();
-        http.addFilter(customAuthenticationFilter);
-        http.addFilterBefore(new CustomAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.cors().and()
+            .csrf().disable()
+            .authorizeRequests().antMatchers("/api/login/**").permitAll()
+            .antMatchers(GET,"/api/user/**").hasAuthority("USER")
+            .antMatchers(POST,"/api/user/save/**").hasAuthority("ADMIN")
+            .anyRequest().authenticated()
+            .and()
+            .addFilter(customAuthenticationFilter)
+            .addFilterBefore(new CustomAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Bean
