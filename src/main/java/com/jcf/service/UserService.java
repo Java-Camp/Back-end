@@ -1,26 +1,14 @@
 package com.jcf.service;
 
 
-import com.jcf.persistence.model.entity.User;
-import com.jcf.persistence.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.jcf.persistence.model.User;
 
-@Service
-public class UserService {
+import java.util.List;
 
-    private final UserRepository userRepository;
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public User createUser (User user){
-
-        return user;
-    }
-
-
+public interface UserService {
+    User saveUser(User user);
+    User getUserByEmail(String  username);
+    User getUserById(Long  id);
+    List<User> getUsers();
 
 }
