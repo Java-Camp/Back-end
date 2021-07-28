@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
 
 import java.sql.Connection;
@@ -20,6 +23,9 @@ import java.util.Optional;
 public class SessionImpl<E, ID> implements Session<E, ID> {
 
     private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private PlatformTransactionManager platformTransactionManager;
 
     @Autowired
     public SessionImpl(JdbcTemplate jdbcTemplate) {
@@ -100,8 +106,21 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
 
     @Override
     public void delete(ID id, EntityMapper<E> entityMapper) {
-        String Query = "DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?";
-        jdbcTemplate.update(Query, id);
+        DefaultTransactionDefinition paramTransactionDefinition = new    DefaultTransactionDefinition();
+        TransactionStatus status = platformTransactionManager.getTransaction(paramTransactionDefinition );
+
+        try {
+            String Query = "DELETE FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?";
+            jdbcTemplate.update(Query, id);
+            if(true){
+                throw new RuntimeException("TEST");
+            }
+            platformTransactionManager.commit(status);
+        }
+        catch (Exception exception){
+            platformTransactionManager.rollback(status);
+            throw exception;
+        }
     }
 
     @Override
