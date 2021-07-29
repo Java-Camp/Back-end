@@ -6,8 +6,6 @@ import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "user")
 @NoArgsConstructor
