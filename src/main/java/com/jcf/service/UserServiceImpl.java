@@ -20,10 +20,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements GenericService<User, Long>, UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username);
@@ -38,20 +40,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) {
+    public User save(User user) {
         log.info("Saving new user to database");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.saveOrUpdate(user);
     }
 
-    @Override
     public User getUserByEmail(String username) {
         log.info("Getting user from database");
         return userRepository.findByEmail(username);
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getById(Long id) {
         final Optional<User> byId = userRepository.findById(id);
         if (!byId.isPresent())
             throw new IllegalArgumentException("No such user!");
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<User> getUsers() {
+    public List<User> getAll() {
         log.info("Getting all users from database");
         return null;
     }
