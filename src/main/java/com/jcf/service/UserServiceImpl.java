@@ -1,6 +1,7 @@
 package com.jcf.service;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.repository.UserRepository;
+import com.jcf.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.net.URI;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -47,10 +47,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) {
+    public ResponseEntity saveUser(UserVO vo) {
         log.info("Saving new user to database");
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepo.saveOrUpdate(user);
+        vo.setPassword(passwordEncoder.encode(vo.getPassword()));
+        DefaultTransactionDefinition paramTransactionDefinition = new DefaultTransactionDefinition();
+        TransactionStatus status = platformTransactionManager.getTransaction(paramTransactionDefinition);
+        try {
+            User user = new User();
+            if (Objects.isNull(vo.getFirstName()))
+                return ResponseEntity.status(422).body("First name is null");
+            if (Objects.isNull(vo.getLastName()))
+                return ResponseEntity.status(422).body("Last Name is null");
+            if (Objects.isNull(vo.getEmail()))
+                return ResponseEntity.status(422).body("Email is null");
+            if (Objects.isNull(vo.getPassword()))
+                return ResponseEntity.status(422).body("Password is null");
+
+            user.setFirstName(vo.getFirstName());
+            user.setLastName(vo.getLastName());
+            user.setEmail(vo.getEmail());
+            user.setPassword(vo.getPassword());
+            user.setRole(vo.getRole());
+
+            User user1 = userRepo.saveOrUpdate(user);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
+            return ResponseEntity.created(uri).body(user1);
+        }
+        catch (Exception ex){
+            platformTransactionManager.rollback(status);
+            return ResponseEntity.status(409).body(ex);
+        }
     }
 
     @Override

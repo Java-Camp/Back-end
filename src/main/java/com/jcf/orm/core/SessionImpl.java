@@ -2,6 +2,7 @@ package com.jcf.orm.core;
 
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Table;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class SessionImpl<E, ID> implements Session<E, ID> {
 
     private final JdbcTemplate jdbcTemplate;
@@ -80,7 +82,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Query.setLength(Query.length()-2);
         Query.append(")");
 
-        System.out.println(Query.toString());
+        log.info("Finished creating a Query:\n" + Query.toString());
 
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -94,7 +96,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
                     o = fields.get(i % fields.size());
                     if(o instanceof Date)
                         o = sdfNew.format(o);
-                    System.out.println(o);
+                    log.info((i+1) + ") Added new Object: " + o);
                     preparedStatement.setObject(i + 1, o.toString());
                 }
 

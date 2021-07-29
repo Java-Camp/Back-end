@@ -2,12 +2,10 @@ package com.jcf.api;
 
 import com.jcf.persistence.model.User;
 import com.jcf.service.UserService;
+import com.jcf.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,9 +27,8 @@ public class UserResource {
     }
 
     @PostMapping("/users/save")
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+    public ResponseEntity saveUser(@RequestBody UserVO vo) {
+        return userService.saveUser(vo);
     }
 
     @PostMapping("/users/delete/{id}")
