@@ -16,8 +16,6 @@ import javax.validation.constraints.NotEmpty;
 
 public class UserDTO {
 
-    @NotEmpty
-    private Long id;
 
     @NotEmpty
     private String firstName;

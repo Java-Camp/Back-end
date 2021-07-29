@@ -25,6 +25,6 @@ public class AccountDTO {
     @NotEmpty
     private String balanceType;
     @NotEmpty
-    private List<User> users;
+    private List<UserDTO> users;
 
 }

@@ -1,16 +1,29 @@
 package com.jcf.mapper;
 
 import com.jcf.persistence.model.User;
+import com.jcf.persistence.model.dto.AccountDTO;
 import com.jcf.persistence.model.dto.UserDTO;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+@Component
+public class UserMapper {
 
-@Mapper
-public interface UserMapper {
+    private final ModelMapper modelMapper;
 
-    User toDto (UserDTO userDTO);
 
-    @Mapping(target = "userDTO.password", ignore = true)
-    UserDTO toEntity (User user);
+    @Autowired
+    public UserMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
+    public UserDTO convertToDto(User entity){
+        return modelMapper.map(entity, UserDTO.class);
+    }
+
+    public User convertToEntity(UserDTO dto){
+        return modelMapper.map(dto, User.class);
+    }
+
 }

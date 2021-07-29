@@ -21,7 +21,6 @@ public class OperationDTO {
     private LocalDateTime dateTime;
 
     private double sum;
-
     @NotEmpty
-    private Account account;
+    private AccountDTO account;
 }

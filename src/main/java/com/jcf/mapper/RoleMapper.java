@@ -1,13 +1,26 @@
 package com.jcf.mapper;
 
 import com.jcf.persistence.model.Role;
+import com.jcf.persistence.model.User;
 import com.jcf.persistence.model.dto.RoleDTO;
-import org.mapstruct.Mapper;
+import com.jcf.persistence.model.dto.UserDTO;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface RoleMapper {
+@Component
+public class RoleMapper {
 
-    Role toDto (RoleDTO roleDTO);
+    private final ModelMapper modelMapper;
 
-    RoleDTO toEntity (Role role);
+    public RoleMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
+    public RoleDTO convertToDto(Role entity){
+        return modelMapper.map(entity, RoleDTO.class);
+    }
+
+    public Role convertToEntity(RoleDTO dto){
+        return modelMapper.map(dto, Role.class);
+    }
 }

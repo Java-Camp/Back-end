@@ -1,11 +1,11 @@
 package com.jcf.persistence.model.dto;
 
 
-import com.jcf.orm.annotation.Column;
-import com.jcf.orm.annotation.Id;
+
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+
 
 @NoArgsConstructor
 @Getter
