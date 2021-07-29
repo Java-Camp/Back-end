@@ -69,7 +69,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
 
     @Override
     public Optional<E> findById(ID id, EntityMapper<E> entityMapper) {
-        return jdbcTemplate.query("SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?", entityMapper, id)
+        return jdbcTemplate.query("SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e.id = ?", entityMapper.setJdbcTemplate(jdbcTemplate), id)
                 .stream()
                 .findAny();
     }
@@ -82,7 +82,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
 
     @Override
     public Optional<E> findByEmail(String email, EntityMapper<E> entityMapper) {
-        return jdbcTemplate.query("SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e.email = ?", entityMapper, email)
+        return jdbcTemplate.query("SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e.email = ?", entityMapper.setJdbcTemplate(jdbcTemplate), email)
                 .stream()
                 .findAny();
     }
