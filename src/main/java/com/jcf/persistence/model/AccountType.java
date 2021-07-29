@@ -1,24 +1,23 @@
 package com.jcf.persistence.model;
 
-import com.jcf.orm.annotation.*;
+import com.jcf.orm.annotation.Column;
+import com.jcf.orm.annotation.Entity;
+import com.jcf.orm.annotation.Id;
+import com.jcf.orm.annotation.Table;
 import lombok.*;
 
 @Entity
-@Table(name = "ROLE")
+@Table(name = "ACCOUNT_TYPE")
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
 @ToString
-public class Role {
+public class AccountType {
 
     @Id
     private Long id;
 
     @Column
     private String name;
-
-    @Reference(name = "user_id", fetchColumns = {"id", "first_name", "last_name", "email", "password"})
-    private User user;
-
 }

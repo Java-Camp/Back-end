@@ -1,9 +1,6 @@
 package com.jcf.persistence.model;
 
-import com.jcf.orm.annotation.Column;
-import com.jcf.orm.annotation.Entity;
-import com.jcf.orm.annotation.Id;
-import com.jcf.orm.annotation.Table;
+import com.jcf.orm.annotation.*;
 import lombok.*;
 
 import java.util.List;
@@ -32,8 +29,14 @@ public class Account {
     @Column(name = "balance_type")
     private String balanceType;
 
-    //@Reference(ID, ...)
-    private List<User> users;
+    @Reference(name = "currency_id", fetchColumns = {"id", "name"})
+    private Currency currency;
 
-    //
+    @Reference(name = "account_type_id", fetchColumns = {"id", "name"})
+    private AccountType accountType;
+
+//    @MappedBy
+//    private List<User> users;
+
+
 }

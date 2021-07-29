@@ -9,5 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MappedBy {
 
-    String mappedBy() default "";
+    String mappedBy() ;
+
+    Class entityClass() ;
 }

@@ -30,25 +30,14 @@ public class User {
     @Column(name ="password")
     private String password;
 
-//    @Column
-//    private String role;
+    @Column
+    private String role;
 
-    @MappedBy(mappedBy = "user")
+    @MappedBy(mappedBy = "user", entityClass = Role.class)
     private List<Role> roles;
 
-    /**
-     * 1. Если в ентити стоит аннотация @MappedBy значит:
-     *      - поле содержит список значений (кастомный OneToMany)
-     *      - нужно смотреть на поле ентити указанное в mappedBy
-     *      -
-     */
 //
-//    //@Reference(ID, ...)
+//    //@MappedBy
 //    private List<Account> accounts;
-
-
-//    @Column(name ="role")
-//    private Role role;
-
 
 }
