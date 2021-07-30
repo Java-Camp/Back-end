@@ -6,6 +6,8 @@ import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "USER_ACCOUNT")
 @Getter
@@ -19,8 +21,8 @@ public class UserAccount {
     private Long id;
 
     @Column(name = "USER_ID", nullable = false)
-    private Long userId;
+    private BigDecimal userId;
 
     @Column(name = "ACCOUNT_ID", nullable = false)
-    private Long account_id;
+    private BigDecimal account_id;
 }

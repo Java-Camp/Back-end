@@ -37,24 +37,24 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account saveAccount(String userEmail, AccountDto accountDto) {
 
-        final User user = userRepository.findByEmail(userEmail);
+//        final User user = userRepository.findByEmail(userEmail);
+//
+//        final Account account = accountRepository.saveOrUpdate(Account.builder()
+//                .accountTypeId(accountDto.getAccountTypeId())
+//                .alias(accountDto.getAlias())
+//                .moneyBalance(1)
+//                .balanceType("")
+//                .language("")
+//                .currencyId(accountDto.getCurrencyId())
+//                .build());
+//
+//        userAccountRepository.saveOrUpdate(UserAccount
+//                .builder()
+//                .userId(user.getId())
+//                .account_id(account.getId())
+//                .build());
 
-        final Account account = accountRepository.saveOrUpdate(Account.builder()
-                .accountTypeId(accountDto.getAccountTypeId())
-                .alias(accountDto.getAlias())
-                .moneyBalance(1)
-                .balanceType("")
-                .language("")
-                .currencyId(accountDto.getCurrencyId())
-                .build());
-
-        userAccountRepository.saveOrUpdate(UserAccount
-                .builder()
-                .userId(user.getId())
-                .account_id(account.getId())
-                .build());
-
-        return account;
+        return null;
     }
 
     @Override
