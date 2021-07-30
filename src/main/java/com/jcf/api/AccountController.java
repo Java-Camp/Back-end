@@ -1,5 +1,6 @@
 package com.jcf.api;
 
+import com.jcf.persistence.dao.AccountDao;
 import com.jcf.persistence.dto.AccountDto;
 import com.jcf.persistence.model.Account;
 import com.jcf.service.AccountService;
@@ -24,10 +25,12 @@ import java.util.List;
 public class AccountController {
     private final AccountService accountService;
     private final UserService userService;
+    private final AccountDao accountDao;
 
     @GetMapping("/accounts")
     public ResponseEntity<List<Account>> getAccounts() {
-        return ResponseEntity.ok().body(accountService.getAllAccounts());
+        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok().body(accountDao.getAllAccounts(userEmail));
     }
 
     @GetMapping("/accounts/{id}")
@@ -36,10 +39,10 @@ public class AccountController {
     }
 
     @PostMapping("/accounts/save")
-    public ResponseEntity<Account> saveAccount(@RequestBody AccountDto accountDto) {
+    public ResponseEntity<Integer> saveAccount(@RequestBody AccountDto accountDto) {
         final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/accounts/save").toUriString());
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.created(uri).body(accountService.saveAccount(userEmail,accountDto));
+        return ResponseEntity.created(uri).body(accountDao.save(userEmail, accountDto));
     }
 
 }
