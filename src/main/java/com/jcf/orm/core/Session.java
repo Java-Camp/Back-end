@@ -12,4 +12,6 @@ public interface Session<E, ID> {
 
     void delete(ID id, EntityMapper<E> entityMapper);
 
+    Optional<E> findAllCurrency(EntityMapper<E> entityMapper);
+
 }

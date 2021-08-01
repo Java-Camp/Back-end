@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
-        //todo Adviser
+
     @Override
     public User saveUser(UserVO vo) {
         log.info("Saving new user to database");
