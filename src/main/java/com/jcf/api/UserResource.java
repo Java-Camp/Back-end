@@ -6,6 +6,9 @@ import com.jcf.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -27,13 +30,15 @@ public class UserResource {
     }
 
     @PostMapping("/users/save")
-    public ResponseEntity saveUser(@RequestBody UserVO vo) {
-        return userService.saveUser(vo);
+    public ResponseEntity<User> saveUser(@RequestBody UserVO vo) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
+        return ResponseEntity.created(uri).body(userService.saveUser(vo));
     }
 
     @PostMapping("/users/delete/{id}")
     public ResponseEntity deleteTest(@PathVariable Long id){
-        return userService.delete(id);
+        userService.delete(id);
+        return ResponseEntity.ok("Entity was deleted");
     }
 
 }

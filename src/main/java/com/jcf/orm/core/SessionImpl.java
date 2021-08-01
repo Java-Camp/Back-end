@@ -94,12 +94,13 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
                 Object o;
                 for(int i = 0; i < fields.size()*2; i++) {
                     o = fields.get(i % fields.size());
-                    if(o instanceof Date)
+                    if(o instanceof Date) {
                         o = sdfNew.format(o);
+                    }
                     log.info((i+1) + ") Added new Object: " + o);
-                    preparedStatement.setObject(i + 1, o.toString());
+                    preparedStatement.setObject(i + 1, o);
                 }
-
+                log.info("User was added to table");
                 return preparedStatement;
             }
         });
