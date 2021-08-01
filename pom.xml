@@ -81,6 +81,13 @@
             <artifactId>java-jwt</artifactId>
             <version>3.18.1</version>
         </dependency>
+
+        <!-- AOP -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>1.9.7</version>
+        </dependency>
     </dependencies>
 
     <build>
