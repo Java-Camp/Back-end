@@ -36,7 +36,7 @@ public class UserResource {
     }
 
     @PostMapping("/users/delete/{id}")
-    public ResponseEntity deleteTest(@PathVariable Long id){
+    public ResponseEntity<String> deleteTest(@PathVariable Long id){
         userService.delete(id);
         return ResponseEntity.ok("Entity was deleted");
     }
