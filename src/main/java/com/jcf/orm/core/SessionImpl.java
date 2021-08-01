@@ -88,8 +88,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
     }
 
     @Override
-    public Optional<E> findAllCurrency(EntityMapper<E> entityMapper) {
-        return jdbcTemplate.query("SELECT name FROM" + getTableName(entityMapper),entityMapper)
-                .stream().findAny();
+    public List<E> findAll(EntityMapper<E> entityMapper) {
+        return jdbcTemplate.query("SELECT name FROM" + getTableName(entityMapper),entityMapper);
     }
 }

@@ -19,6 +19,6 @@ public class InfoForAccountServiceImpl implements InfoForAccountService{
 
     @Override
     public List<Currency> getAllCurrency() {
-        return (List<Currency>) repository.findAllCurrency();
+        return repository.findAllCurrency();
     }
 }

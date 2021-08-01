@@ -5,6 +5,7 @@ import com.jcf.orm.core.Session;
 import com.jcf.persistence.model.Currency;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,10 +14,7 @@ public class InfoForAccountRepository extends GenericRepository<Currency, Long> 
         super(session, Currency.class);
     }
 
-    public Currency findAllCurrency() {
-        Optional<Currency> findAll = session.findAllCurrency(new EntityMapper(Currency.class));
-        if (!findAll.isPresent())
-            throw new IllegalArgumentException("currencies not found");
-        return findAll.get();
+    public List<Currency> findAllCurrency() {
+        return (List<Currency>) session.findAll(new EntityMapper(Currency.class));
     }
 }
