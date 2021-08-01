@@ -86,4 +86,9 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
                 .stream()
                 .findAny();
     }
+
+    @Override
+    public List<E> findAll(EntityMapper<E> entityMapper) {
+        return jdbcTemplate.query("SELECT NAME FROM" + getTableName(entityMapper),entityMapper);
+    }
 }

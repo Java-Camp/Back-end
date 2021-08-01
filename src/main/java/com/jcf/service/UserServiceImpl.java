@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User saveUser(User user) {
         log.info("Saving new user to database");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole("USER"); //default setting role of new user
         return userRepo.saveOrUpdate(user);
     }
 

@@ -6,34 +6,40 @@ import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
 @Table(name = "ACCOUNT")
-@NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
     @Id
     private Long id;
 
-    @Column(name = "alias")
+    @Column(name = "ALIAS")
     private String alias;
 
-    @Column(name = "language")
+    @Column(name = "LANGUAGE")
     private String language;
 
-    @Column(name = "money")
-    private double moneyBalance;
+    @Column(name = "MONEY")
+    private BigDecimal moneyBalance;
 
-    @Column(name = "balance_type")
+    @Column(name = "BALANCE_TYPE")
     private String balanceType;
 
+    @Column(name = "ACCOUNT_TYPE_ID")
+    private BigDecimal accountTypeId;
+
+    @Column(name = "CURRENCY_ID")
+    private BigDecimal currencyId;
     //@Reference(ID, ...)
     private List<User> users;
-
-    //
 }
