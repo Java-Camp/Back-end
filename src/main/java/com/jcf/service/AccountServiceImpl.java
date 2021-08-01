@@ -3,7 +3,6 @@ package com.jcf.service;
 import com.jcf.persistence.dto.AccountDto;
 import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.User;
-import com.jcf.persistence.model.UserAccount;
 import com.jcf.persistence.repository.AccountRepository;
 import com.jcf.persistence.repository.UserAccountRepository;
 import com.jcf.persistence.repository.UserRepository;
