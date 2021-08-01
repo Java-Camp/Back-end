@@ -4,7 +4,9 @@ import com.jcf.persistence.model.AccountType;
 import com.jcf.persistence.model.Category;
 import com.jcf.persistence.model.Currency;
 
+import com.jcf.persistence.repository.CategoryRepository;
 import com.jcf.persistence.repository.InfoForAccountRepository;
+import com.jcf.persistence.repository.TypeOfAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class InfoForAccountServiceImpl implements InfoForAccountService{
+public class InfoForAccountServiceImpl implements InfoForAccountService,TypeOfAccountService,CategoryService{
     private final InfoForAccountRepository repository;
+    private final TypeOfAccountRepository typeOfAccountRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public List<Currency> getAllCurrency() {
@@ -26,11 +30,12 @@ public class InfoForAccountServiceImpl implements InfoForAccountService{
 
     @Override
     public List<AccountType> getAllAccountType() {
-        return repository.findAllTypeOfAccount();
+        return typeOfAccountRepository.findAllTypeOfAccount();
     }
+
 
     @Override
     public List<Category> getAllCategory() {
-        return repository.findAllCategory();
+        return categoryRepository.findAllCategory();
     }
 }

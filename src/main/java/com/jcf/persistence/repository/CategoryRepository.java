@@ -4,19 +4,15 @@ import com.jcf.orm.core.EntityMapper;
 import com.jcf.orm.core.Session;
 import com.jcf.persistence.model.AccountType;
 import com.jcf.persistence.model.Category;
-import com.jcf.persistence.model.Currency;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class InfoForAccountRepository extends GenericRepository<Currency, Long> {
-    public InfoForAccountRepository(Session<Currency, Long> session) {
-        super(session, Currency.class);
-    }
+public class CategoryRepository extends GenericRepository<Category,Long>{
 
-    public List<Currency> findAllCurrency() {
-        return (List<Currency>) session.findAll(new EntityMapper(Currency.class));
+    public CategoryRepository(Session<Category, Long> session) {
+        super(session, Category.class);
     }
 
     public List<Category> findAllCategory() {
