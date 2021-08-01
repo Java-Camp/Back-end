@@ -1,5 +1,7 @@
 package com.jcf.service;
 
+import com.jcf.persistence.model.AccountType;
+import com.jcf.persistence.model.Category;
 import com.jcf.persistence.model.Currency;
 
 import com.jcf.persistence.repository.InfoForAccountRepository;
@@ -20,5 +22,15 @@ public class InfoForAccountServiceImpl implements InfoForAccountService{
     @Override
     public List<Currency> getAllCurrency() {
         return repository.findAllCurrency();
+    }
+
+    @Override
+    public List<AccountType> getAllAccountType() {
+        return repository.findAllTypeOfAccount();
+    }
+
+    @Override
+    public List<Category> getAllCategory() {
+        return repository.findAllCategory();
     }
 }
