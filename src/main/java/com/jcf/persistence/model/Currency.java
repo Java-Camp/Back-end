@@ -5,28 +5,29 @@ import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
+import lombok.ToString;
 
 @Entity
-@Table(name = "USER_ACCOUNT")
+@Table(name = "CURRENCY")
+@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
+@ToString()
 @AllArgsConstructor
-public class UserAccount {
+public class Currency {
 
     @Id
     private Long id;
 
-    @Column(name = "USER_ID", nullable = false)
-    private BigDecimal userId;
+    @Column(name = "NAME")
+    private String name;
 
-    @Column(name = "ACCOUNT_ID", nullable = false)
-    private BigDecimal account_id;
+    @Column(name = "COUNTRY")
+    private String country;
+
 }
