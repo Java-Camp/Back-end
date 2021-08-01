@@ -63,7 +63,8 @@ public class AccountDao {
         String id_column = "ID";
 
         jdbcTemplate.update(con -> {
-                    PreparedStatement ps = con.prepareStatement("INSERT INTO ACCOUNT (ALIAS, LANGUAGE, MONEY, BALANCE_TYPE, CURRENCY_ID, ACCOUNT_TYPE_ID) VALUES(?, 'deprecated', 0.0, 'deprecated', ?, ?)", new String[]{id_column});
+                    PreparedStatement ps = con.prepareStatement("INSERT INTO ACCOUNT (ALIAS, LANGUAGE, MONEY, BALANCE_TYPE, CURRENCY_ID," +
+                            " ACCOUNT_TYPE_ID) VALUES(?, 'deprecated', 0.0, 'deprecated', ?, ?)", new String[]{id_column});
                     ps.setString(1, accountDto.getAlias());
                     ps.setLong(2, accountDto.getCurrencyId());
                     ps.setLong(3, accountDto.getAccountTypeId());

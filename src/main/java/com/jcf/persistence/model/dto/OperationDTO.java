@@ -5,6 +5,7 @@ import com.jcf.persistence.model.Account;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -19,8 +20,14 @@ public class OperationDTO {
     private Long id;
     @NotEmpty
     private LocalDateTime dateTime;
-
-    private double sum;
+    @NotEmpty
+    private BigDecimal sum;
     @NotEmpty
     private AccountDTO account;
+
+    private OperationDTO operation;
+    @NotEmpty
+    private OperationTypeDTO operationType;
+    @NotEmpty
+    private CategoryDTO category;
 }
