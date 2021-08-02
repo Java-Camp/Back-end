@@ -65,28 +65,6 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
                 + "WHEN MATCHED THEN "
                 + "UPDATE SET ");
 
-/*        StringBuilder Query = new StringBuilder("MERGE INTO \"" + getTableName(entityMapper) + "\" I USING (SELECT ");
-        for (int i = 0; i < uniquesFields.size(); i++)
-            Query.append("'").append(uniquesFields.get(i)).append("' as ").append(uniques.get(i)).append(", ");
-
-        Query.setLength(Query.length() - 2);
-        Query.append(" FROM DUAL) S ON (");
-        for (String name: uniques)
-            Query.append("S.").append(name).append(" = ").append("I.").append(name).append(" OR ");
-
-        Query.setLength(Query.length()-4);
-        Query.append(") WHEN MATCHED THEN UPDATE SET ");*/
-
-
-/*        // write every element's name and it's value
-        for(int i = 0; i < fields.size(); i++) {
-            if(fields.get(i) instanceof Date){
-                Query.append(columnNames.get(i)).append(" = TO_DATE(to_char(?), 'YYYY-MM-DD HH24:MI:SS'), ");
-            } else{
-                Query.append(columnNames.get(i)).append(" = ?, ");
-            }
-        }*/
-
         for (String columnName : columnNames) Query.append(columnName).append(" = ?, ");
 
         Query.setLength(Query.length()-2); // cut the ", "
@@ -98,13 +76,6 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
         Query.setLength(Query.length()-2);
         Query.append(") VALUES (");
 
-        /*for (Object field : fields) {
-            if (field instanceof Date) {
-                Query.append("TO_DATE(to_char(?), 'YYYY-MM-DD HH24:MI:SS'), ");
-            } else {
-                Query.append("?, ");
-            }
-        }*/
         for (Object field : fields) Query.append("?, ");
 
         Query.setLength(Query.length()-2);
@@ -113,7 +84,6 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
         log.info("Finished creating a Query:\n" + Query);
 
         jdbcTemplate.update(new PreparedStatementCreator() {
-            @SneakyThrows
             @Override
             public PreparedStatement createPreparedStatement(final Connection conn) throws SQLException {
                 final SimpleDateFormat format =
@@ -124,12 +94,8 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
                 for(int i = 0; i < fields.size()*2; i++) {
                     o = fields.get(i % fields.size());
                     if(o instanceof Date)
-                        preparedStatement.setDate(i + 1, Date.valueOf(format.format(o)));
-//                        o = format.format(o);
-                    else preparedStatement.setObject(i + 1, o);
-
+                        o = Date.valueOf(format.format(o));
                     preparedStatement.setObject(i + 1, o);
-
                     log.info((i+1) + ") Added new Object: " + o);
                 }
                 return preparedStatement;

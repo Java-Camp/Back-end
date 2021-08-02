@@ -19,6 +19,6 @@ public class DateTest {
     @Id
     private Long id;
 
-    @Column(name = "date_time")
+    @Column(name = "THE_DATE")
     private Date dateTime;
 }
