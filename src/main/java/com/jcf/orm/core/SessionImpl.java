@@ -2,6 +2,7 @@ package com.jcf.orm.core;
 
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Table;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,16 +11,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+
 @Component
 @Slf4j
-public class SessionImpl<E, ID> implements Session<E, ID> {
+public class SessionImpl<E, ID> implements Session<E,ID> {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -40,7 +42,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
             throw new IllegalArgumentException(entityMapper.getEntityClass().getSimpleName() + " is not specified as @Entity");
 
         Long id = entityMapper.getId(entity);
-        List <Object> fields = entityMapper.getFields(entity);
+        List<Object> fields = entityMapper.getFields(entity);
         List <String> columnNames = entityMapper.getAllColumnNames();
         List<String> uniques = entityMapper.getAllUniques(entity);
         List<Object> uniquesFields = entityMapper.getAllUniquesFields(entity);
@@ -50,6 +52,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
             uniquesFields.add(null);
         }
         log.info("uniques SIZE = " + uniques.size() + "\nuniques name SIZE = " + uniquesFields.size());
+
 
         if(fields.size() != columnNames.size() || uniques.size() != uniquesFields.size()) // fields and columnNames have to have the same size
             throw new RuntimeException( "Number of fields (" + fields.size()
@@ -75,32 +78,34 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Query.append(") WHEN MATCHED THEN UPDATE SET ");*/
 
 
-        // write every element's name and it's value
+/*        // write every element's name and it's value
         for(int i = 0; i < fields.size(); i++) {
             if(fields.get(i) instanceof Date){
-                Query.append(columnNames.get(i)).append(" = timestamp ?, ");
+                Query.append(columnNames.get(i)).append(" = TO_DATE(to_char(?), 'YYYY-MM-DD HH24:MI:SS'), ");
             } else{
                 Query.append(columnNames.get(i)).append(" = ?, ");
             }
-        }
+        }*/
+
+        for (String columnName : columnNames) Query.append(columnName).append(" = ?, ");
 
         Query.setLength(Query.length()-2); // cut the ", "
         Query.append(" WHEN NOT MATCHED THEN INSERT (");
 
         // write every element's name and it's value
-        for(String name: columnNames)
-            Query.append(name).append(", ");
+        for(String name: columnNames) Query.append(name).append(", ");
 
         Query.setLength(Query.length()-2);
         Query.append(") VALUES (");
 
-        for (Object field : fields) {
+        /*for (Object field : fields) {
             if (field instanceof Date) {
-                Query.append("timestamp ?, ");
+                Query.append("TO_DATE(to_char(?), 'YYYY-MM-DD HH24:MI:SS'), ");
             } else {
                 Query.append("?, ");
             }
-        }
+        }*/
+        for (Object field : fields) Query.append("?, ");
 
         Query.setLength(Query.length()-2);
         Query.append(")");
@@ -108,26 +113,30 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         log.info("Finished creating a Query:\n" + Query);
 
         jdbcTemplate.update(new PreparedStatementCreator() {
+            @SneakyThrows
             @Override
             public PreparedStatement createPreparedStatement(final Connection conn) throws SQLException {
-                final SimpleDateFormat sdfNew =
-                        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                final SimpleDateFormat format =
+                        new SimpleDateFormat("yyyy-MM-dd");
                 final PreparedStatement preparedStatement =
                         conn.prepareStatement(Query.toString());
                 Object o;
                 for(int i = 0; i < fields.size()*2; i++) {
                     o = fields.get(i % fields.size());
-                    if(o instanceof Date) {
-                        o = sdfNew.format(o);
-                    }
-                    log.info((i+1) + ") Added new Object: " + o);
+                    if(o instanceof Date)
+                        preparedStatement.setDate(i + 1, Date.valueOf(format.format(o)));
+//                        o = format.format(o);
+                    else preparedStatement.setObject(i + 1, o);
+
                     preparedStatement.setObject(i + 1, o);
+
+                    log.info((i+1) + ") Added new Object: " + o);
                 }
                 return preparedStatement;
             }
         });
         log.info("User was added to table");
-        entity = findByUnique(uniques.get(0) ,uniquesFields.get(0), entityMapper);
+        //entity = findByUnique(uniques.get(0) ,uniquesFields.get(0), entityMapper);
         return entity;
     }
 
@@ -157,7 +166,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
     }
 
     @Override
-    public E findByUnique(String name, Object value ,EntityMapper<E> entityMapper) {
+    public E findByUnique(String name, Object value , EntityMapper<E> entityMapper) {
         String Query = "SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e." + name + " = ?";
         log.info(Query);
         Optional<E> answer = jdbcTemplate.query(Query, entityMapper, value)
