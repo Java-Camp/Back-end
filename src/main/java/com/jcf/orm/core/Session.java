@@ -15,4 +15,5 @@ public interface Session<E, ID> {
 
     List<E> findAll(EntityMapper<E> entityMapper);
 
+    E findByUnique(String name, Object value ,EntityMapper<E> entityMapper);
 }

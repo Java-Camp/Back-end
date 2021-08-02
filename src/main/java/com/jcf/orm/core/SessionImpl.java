@@ -42,15 +42,38 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Long id = entityMapper.getId(entity);
         List <Object> fields = entityMapper.getFields(entity);
         List <String> columnNames = entityMapper.getAllColumnNames();
+        List<String> uniques = entityMapper.getAllUniques(entity);
+        List<Object> uniquesFields = entityMapper.getAllUniquesFields(entity);
 
-        if(fields.size() != columnNames.size()) // fields and columnNames have to have the same size
-            throw new RuntimeException( "Number of fields (" + fields.size() + ") and number of all column Names (" + columnNames.size() +") is no equal");
+        if(uniques.isEmpty()){
+            uniques.add("id");
+            uniquesFields.add(null);
+        }
+        log.info("uniques SIZE = " + uniques.size() + "\nuniques name SIZE = " + uniquesFields.size());
 
-        StringBuilder Query = new StringBuilder("MERGE INTO \"" + getTableName(entityMapper) + "\" I "
-                + "USING (SELECT " + id + " as id FROM DUAL) S "
+        if(fields.size() != columnNames.size() || uniques.size() != uniquesFields.size()) // fields and columnNames have to have the same size
+            throw new RuntimeException( "Number of fields (" + fields.size()
+                    + ") and number of all column Names (" + columnNames.size()
+                    + ") is not equal or all column unique Names (" + uniques.size()
+                    + ") and number of all fields (" + uniquesFields.size() + ") is not equal");
+
+        StringBuilder Query = new StringBuilder("MERGE INTO \"" + getTableName(entityMapper) + "\" I USING (SELECT " + id + " as id FROM DUAL) S "
                 + "ON (S.id = I.id) "
                 + "WHEN MATCHED THEN "
                 + "UPDATE SET ");
+
+/*        StringBuilder Query = new StringBuilder("MERGE INTO \"" + getTableName(entityMapper) + "\" I USING (SELECT ");
+        for (int i = 0; i < uniquesFields.size(); i++)
+            Query.append("'").append(uniquesFields.get(i)).append("' as ").append(uniques.get(i)).append(", ");
+
+        Query.setLength(Query.length() - 2);
+        Query.append(" FROM DUAL) S ON (");
+        for (String name: uniques)
+            Query.append("S.").append(name).append(" = ").append("I.").append(name).append(" OR ");
+
+        Query.setLength(Query.length()-4);
+        Query.append(") WHEN MATCHED THEN UPDATE SET ");*/
+
 
         // write every element's name and it's value
         for(int i = 0; i < fields.size(); i++) {
@@ -82,7 +105,7 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
         Query.setLength(Query.length()-2);
         Query.append(")");
 
-        log.info("Finished creating a Query:\n" + Query.toString());
+        log.info("Finished creating a Query:\n" + Query);
 
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -100,11 +123,11 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
                     log.info((i+1) + ") Added new Object: " + o);
                     preparedStatement.setObject(i + 1, o);
                 }
-                log.info("User was added to table");
                 return preparedStatement;
             }
         });
-
+        log.info("User was added to table");
+        entity = findByUnique(uniques.get(0) ,uniquesFields.get(0), entityMapper);
         return entity;
     }
 
@@ -131,5 +154,17 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
     @Override
     public List<E> findAll(EntityMapper<E> entityMapper) {
         return jdbcTemplate.query("SELECT NAME FROM" + getTableName(entityMapper),entityMapper);
+    }
+
+    @Override
+    public E findByUnique(String name, Object value ,EntityMapper<E> entityMapper) {
+        String Query = "SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e." + name + " = ?";
+        log.info(Query);
+        Optional<E> answer = jdbcTemplate.query(Query, entityMapper, value)
+                .stream()
+                .findAny();
+        if (answer.isEmpty())
+            throw new IllegalArgumentException("entity not found not found");
+        return answer.get();
     }
 }

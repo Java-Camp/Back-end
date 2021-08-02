@@ -28,7 +28,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepo.findByEmail(username);
         if (user == null)
             throw new UsernameNotFoundException("User not found");
-         else log.error("User found: {}", username);
+        else
+            log.error("User found: {}", username);
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
@@ -54,10 +55,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setEmail(vo.getEmail());
         user.setPassword(vo.getPassword());
         user.setRole("USER");
-        User user1 = userRepo.saveOrUpdate(user);
-        user1.setId(getUserByEmail(user.getEmail()).getId());
-
-        return user1;
+        return userRepo.saveOrUpdate(user);
     }
 
     @Override
@@ -82,15 +80,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void delete(Long id) {
-
         if (userRepo.findById(id).isEmpty())
             throw new IllegalArgumentException("No entity with such id");
-
         userRepo.delete(id);
-
         if (userRepo.findById(id).isPresent())
             throw new RuntimeException("Delete is not working");
-
     }
-
 }
