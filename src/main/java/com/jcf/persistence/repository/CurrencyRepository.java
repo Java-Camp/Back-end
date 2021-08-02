@@ -10,16 +10,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class InfoForAccountRepository extends GenericRepository<Currency, Long> {
-    public InfoForAccountRepository(Session<Currency, Long> session) {
+public class CurrencyRepository extends GenericRepository<Currency, Long> {
+    public CurrencyRepository(Session<Currency, Long> session) {
         super(session, Currency.class);
     }
 
     public List<Currency> findAllCurrency() {
-        return (List<Currency>) session.findAll(new EntityMapper(Currency.class));
-    }
-
-    public List<Category> findAllCategory() {
-        return (List<Category>) session.findAll(new EntityMapper(Category.class));
+        return session.findAllCurrency(new EntityMapper(Currency.class));
     }
 }
