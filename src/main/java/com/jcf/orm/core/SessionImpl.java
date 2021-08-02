@@ -128,7 +128,7 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
 //                        o = format.format(o);
                     else preparedStatement.setObject(i + 1, o);
 
-                    preparedStatement.setObject(i + 1, o);
+                    //preparedStatement.setObject(i + 1, o);
 
                     log.info((i+1) + ") Added new Object: " + o);
                 }
