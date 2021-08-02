@@ -11,6 +11,7 @@ import com.jcf.persistence.model.dto.CategoryDTO;
 import com.jcf.persistence.model.dto.OperationDTO;
 import com.jcf.persistence.model.dto.OperationTypeDTO;
 
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +23,6 @@ public class OperationMapper {
     public OperationMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
 
-        modelMapper.createTypeMap(Account.class, AccountDTO.class);
-        modelMapper.createTypeMap(Operation.class, OperationDTO.class);
-        modelMapper.createTypeMap(OperationType.class, OperationTypeDTO.class);
-        modelMapper.createTypeMap(Category.class, CategoryDTO.class);
 
     }
     public OperationDTO convertToDto(Operation entity){
@@ -34,6 +31,7 @@ public class OperationMapper {
     }
 
     public Operation convertToEntity(OperationDTO dto){
+
         return modelMapper.map(dto, Operation.class);
     }
 

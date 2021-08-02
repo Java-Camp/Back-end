@@ -30,9 +30,9 @@ public class OperationController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<OperationDTO> createOperation(@RequestBody OperationDTO operationDTO) {
+    public ResponseEntity<Boolean> createOperation(@RequestBody OperationDTO operationDTO) {
         final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/operations/save").toUriString());
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.created(uri).body(operationService.save(userEmail, operationDTO));
+        return ResponseEntity.created(uri).body(operationService.saveOperation(userEmail, operationDTO));
     }
 }

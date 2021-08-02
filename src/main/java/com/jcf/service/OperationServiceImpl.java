@@ -1,5 +1,6 @@
 package com.jcf.service;
 
+import com.jcf.mapper.OperationMapper;
 import com.jcf.persistence.dao.OperationDao;
 import com.jcf.persistence.model.dto.OperationDTO;
 import lombok.RequiredArgsConstructor;
@@ -16,24 +17,21 @@ import java.util.List;
 @Slf4j
 public class OperationServiceImpl implements OperationService{
 
-    private final OperationDao operationDao;
+private final OperationDao operationDao;
+private final OperationMapper mapper;
 
-    public OperationServiceImpl(OperationDao operationDao) {
+@Autowired
+    public OperationServiceImpl(OperationDao operationDao, OperationMapper mapper) {
         this.operationDao = operationDao;
+        this.mapper = mapper;
     }
 
-    @Override
-    public OperationDTO findById(Long id) {
-        return null;
-    }
 
     @Override
-    public Boolean saveOperation(String userEmail, OperationDTO operationDTOD) {
-        return null;
+    public Boolean saveOperation(String userEmail, OperationDTO operationDTO) {
+        return operationDao.saveOperation(userEmail, mapper.convertToEntity(operationDTO) );
     }
 
-    @Override
-    public List<OperationDTO> getAllOperations() {
-        return null;
-    }
+
+
 }

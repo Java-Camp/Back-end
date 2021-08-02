@@ -1,6 +1,6 @@
 package com.jcf.persistence.dao;
 
-import com.jcf.exceptions.IncorrectOperationTypeException;
+
 import com.jcf.persistence.model.Operation;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.repository.UserRepository;
@@ -27,7 +27,7 @@ public class OperationDao {
     }
 
     public boolean saveOperation(String userEmail, Operation operation) {
-        log.info("Saving new user operation to database");
+
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         User user = userRepository.findByEmail(userEmail);
         if (user == null) {
@@ -39,26 +39,21 @@ public class OperationDao {
     int counter = 0;
 
        counter = jdbcTemplate.update(con -> {
-                    PreparedStatement ps = con.prepareStatement("INSERT INTO OPERATION" +
-                            " (DATE_TIME, SUM , ACOUNT_ID, OPERATION_TYPE_ID, OPERATION_ID, CATEGORY_ID) " +
-                            "VALUES(?, ?, ?, ?, ?, ?)", new String[]{id_column});
-                    ps.setTimestamp(1, Timestamp.valueOf(operation.getDateTime()));
+                    PreparedStatement ps = con.prepareStatement("insert into OPERATION (DATE_TIME, \"SUM\", " +
+                            "ACCOUNT_ID, OPERATION_TYPE_ID, CATEGORY_ID) " +
+                            "VALUES(?, ?, ?, ?, ?)", new String[]{id_column});
+                    ps.setTimestamp(1, Timestamp.valueOf("1980-05-20 02:00:00.000000"));
                     ps.setBigDecimal(2, operation.getSum());
-                    ps.setLong(3, operation.getAccount().getId());
-                    ps.setLong(4, operation.getOperationType().getId());
-                    ps.setLong(5, operation.getOperation().getId());
-                    ps.setLong(6, operation.getCategory().getId());
+                    ps.setLong(3, operation.getAccountId());
+                    ps.setLong(4, operation.getOperationTypeId());
+                    ps.setLong(5, operation.getCategoryId());
                     return ps;
                 }
                 , keyHolder);
 
-        if (counter == 0){
-            throw new IncorrectOperationTypeException("Operation data did not save becose its incorrected");
-        }
+        log.info("Saving new user operation to database");
 
-
-         return jdbcTemplate.update("INSERT INTO OPERATION_TYPE (ID, NAME)" +
-                 " VALUES(?, ?)", operation.getOperationType().getId(), operation.getOperationType().getName()) > 0 ;
+         return counter > 0 ;
 
 
     }

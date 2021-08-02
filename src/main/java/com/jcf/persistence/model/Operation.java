@@ -7,7 +7,8 @@ import com.jcf.orm.annotation.Table;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Date;
+
 
 @Entity
 @Table(name = "OPERATION")
@@ -21,15 +22,17 @@ public class Operation {
     @Id
     private Long id;
     @Column(name = "DATE_TIME")
-    private LocalDateTime dateTime;
+    private Date dateTime;
     @Column(name = "SUM")
     private BigDecimal sum;
-
-    private Account account;
-
-    private Operation operation;
-    private OperationType operationType;
-    private Category category;
+    @Column(name = "ACCOUNT_ID")
+    private Long accountId;
+    @Column(name = "OPERATION_TYPE_ID")
+    private Long operationTypeId;
+    @Column(name = "OPERATION_ID")
+    private Long operationId;
+    @Column(name = "CATEGORY_ID")
+    private Long categoryId;
 
 
 }

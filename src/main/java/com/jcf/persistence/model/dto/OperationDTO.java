@@ -1,33 +1,31 @@
 package com.jcf.persistence.model.dto;
 
-import com.jcf.orm.annotation.Column;
-import com.jcf.persistence.model.Account;
+
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
+
 @ToString
 public class OperationDTO {
 
+
     @NotEmpty
-    private Long id;
-    @NotEmpty
-    private LocalDateTime dateTime;
+    private Date dateTime;
     @NotEmpty
     private BigDecimal sum;
     @NotEmpty
-    private AccountDTO account;
+    private Long accountId;
+    @NotEmpty
+    private Long operationTypeId;
 
-    private OperationDTO operation;
+    private Long operationId;
     @NotEmpty
-    private OperationTypeDTO operationType;
-    @NotEmpty
-    private CategoryDTO category;
+    private Long categoryId;
 }
