@@ -45,9 +45,4 @@ public class AccountController {
         return ResponseEntity.created(uri).body(accountDao.save(userEmail, accountDto));
     }
 
-    @GetMapping("/currencies")
-    public ResponseEntity<List<Currency>> getCurrencies() {
-        return ResponseEntity.ok().body(accountDao.getCurrencyList());
-    }
-
 }
