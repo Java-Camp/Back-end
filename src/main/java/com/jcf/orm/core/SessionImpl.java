@@ -97,6 +97,6 @@ public class SessionImpl<E, ID> implements Session<E, ID> {
 
     @Override
     public List<E> findAllCurrency(EntityMapper<E> entityMapper) {
-        return (List<E>) jdbcTemplate.queryForList("SELECT NAME,COUNTRY FROM " + getTableName(entityMapper),entityMapper);
+        return (List<E>) jdbcTemplate.queryForList("SELECT * FROM " + getTableName(entityMapper),entityMapper);
     }
 }
