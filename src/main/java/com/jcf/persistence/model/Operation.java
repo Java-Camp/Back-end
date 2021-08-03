@@ -22,8 +22,6 @@ public class Operation {
     @Id
     private Long id;
 
-    @Column(name = "date_time")
-    private Date dateTime;
     @Column(name = "DATE_TIME")
     private Date dateTime;
     @Column(name = "SUM")
