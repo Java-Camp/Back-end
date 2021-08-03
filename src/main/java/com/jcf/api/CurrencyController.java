@@ -6,6 +6,7 @@ import com.jcf.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,4 +22,10 @@ public class CurrencyController {
     public ResponseEntity<List<Currency>> getCurrencies() {
         return ResponseEntity.ok().body(currencyService.getAllCurrency());
     }
+
+    @GetMapping("/currencies/{id}")
+    public Currency getCurrencyById(@PathVariable Long id) {
+        return currencyService.getById(id);
+    }
+
 }
