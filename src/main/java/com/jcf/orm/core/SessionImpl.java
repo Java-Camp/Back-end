@@ -15,7 +15,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -129,6 +132,11 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
     @Override
     public List<E> findAll(EntityMapper<E> entityMapper) {
         return jdbcTemplate.query("SELECT NAME FROM" + getTableName(entityMapper),entityMapper);
+    }
+
+    @Override
+    public List<E> findAllCurrency(EntityMapper<E> entityMapper) {
+        return (List<E>) jdbcTemplate.queryForList("SELECT NAME,COUNTRY FROM " + getTableName(entityMapper),entityMapper);
     }
 
     @Override

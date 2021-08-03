@@ -98,6 +98,20 @@ public class ApiExceptionsHandler {
         );
         return new ResponseEntity<>(exception, httpStatus);
     }
+    @ExceptionHandler(value = {CurrencyTypeNotFoundException.class})
+    public ResponseEntity<Object> handleCurrencyTypeNotFoundException(CurrencyTypeNotFoundException e){
+
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+        CustomApiException exception = new CustomApiException(
+                httpStatus.getReasonPhrase(),
+                httpStatus.value(),
+                e.getMessage(),
+                httpStatus,
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(exception, httpStatus);
+    }
 
 
 
