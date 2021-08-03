@@ -1,9 +1,13 @@
 package com.jcf.service;
+import com.jcf.exceptions.EntityNotFoundException;
+import com.jcf.exceptions.FieldIsNullException;
+import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.repository.UserRepository;
 import com.jcf.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
+@Async
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
@@ -27,7 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByEmail(username);
         if (user == null)
-            throw new UsernameNotFoundException("User not found");
+            throw new EntityNotFoundException(username);
         else
             log.error("User found: {}", username);
 
@@ -42,13 +47,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         vo.setPassword(passwordEncoder.encode(vo.getPassword()));
         User user = new User();
         if (Objects.isNull(vo.getFirstName()))
-            throw new IllegalArgumentException("First name is null");
+            throw new FieldIsNullException("firstName");
         if (Objects.isNull(vo.getLastName()))
-            throw new IllegalArgumentException("Last name is null");
+            throw new FieldIsNullException("lastName");
         if (Objects.isNull(vo.getEmail()))
-            throw new IllegalArgumentException("Email is null");
+            throw new FieldIsNullException("email");
         if (Objects.isNull(vo.getPassword()))
-            throw new IllegalArgumentException("Password is null");
+            throw new FieldIsNullException("password");
 
         user.setFirstName(vo.getFirstName());
         user.setLastName(vo.getLastName());
@@ -68,7 +73,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User getUserById(Long id) {
         final Optional<User> byId = userRepo.findById(id);
         if (byId.isEmpty())
-            throw new IllegalArgumentException("No such user!");
+            throw new EntityNotFoundException(id);
         return byId.get();
     }
 
@@ -81,9 +86,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void delete(Long id) {
         if (userRepo.findById(id).isEmpty())
-            throw new IllegalArgumentException("No entity with such id");
+            throw new EntityNotFoundException(id);
         userRepo.delete(id);
         if (userRepo.findById(id).isPresent())
-            throw new RuntimeException("Delete is not working");
+            throw new ServiceNotWorkingException("Delete");
     }
 }
