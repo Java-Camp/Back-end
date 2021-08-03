@@ -13,8 +13,6 @@ public interface Session<E, ID> {
 
     void delete(ID id, EntityMapper<E> entityMapper);
 
-
-
     List<E>findAll(EntityMapper<E> eEntityMapper);
 
     E findByUnique(String name, Object value ,EntityMapper<E> entityMapper);

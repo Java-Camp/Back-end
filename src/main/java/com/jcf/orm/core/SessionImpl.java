@@ -129,8 +129,6 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
                 .findAny();
     }
 
-
-
     @Override
     public List<E> findAll(EntityMapper<E> entityMapper) {
         return (List<E>) jdbcTemplate.queryForList("SELECT * FROM " + getTableName(entityMapper),entityMapper);
