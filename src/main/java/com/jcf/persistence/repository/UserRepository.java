@@ -3,7 +3,6 @@ package com.jcf.persistence.repository;
 import com.jcf.orm.core.EntityMapper;
 import com.jcf.orm.core.Session;
 import com.jcf.persistence.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

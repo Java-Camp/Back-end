@@ -102,4 +102,27 @@ public class EntityMapper<E> implements RowMapper<E> {
         return List;
    }
 
+   public List<String> getAllUniques(E entity){ // return all uniques column names
+        List<String> columnNames = new ArrayList<>();;
+        for (Field field : entity.getClass().getDeclaredFields()) {
+            Column column = field.getAnnotation(Column.class);
+            if (column != null && column.unique())
+                columnNames.add(column.name());
+        }
+        return columnNames;
+    }
+
+    @SneakyThrows
+    public List<Object> getAllUniquesFields(E entity){ // return all uniques objects
+        List<Object> objects = new ArrayList<>();
+        List<String> uniques = getAllUniques(entity);
+        Field privateField;
+        for (String s : uniques) {
+            privateField = entityClass.getDeclaredField(s);
+            privateField.setAccessible(true);
+            objects.add(privateField.get(entity));
+            privateField.setAccessible(false);
+        }
+        return objects;
+    }
 }

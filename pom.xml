@@ -94,6 +94,19 @@
             <artifactId>java-jwt</artifactId>
             <version>3.18.1</version>
         </dependency>
+
+        <!-- AOP -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>1.9.7</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.palantir.conjure.java.api/errors -->
+        <dependency>
+            <groupId>com.palantir.conjure.java.api</groupId>
+            <artifactId>errors</artifactId>
+            <version>2.7.0</version>
+        </dependency>
         <!-- Validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

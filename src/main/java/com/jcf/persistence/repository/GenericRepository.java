@@ -32,4 +32,9 @@ public abstract class GenericRepository<E, ID> implements CrudRepository<E, ID> 
     public void delete(ID id){
          session.delete(id, new EntityMapper<>(entityClass));
     }
+
+    @Override
+    public E findByUnique(String name, Object value) {
+        return session.findByUnique(name, value, new EntityMapper<>(entityClass));
+    }
 }

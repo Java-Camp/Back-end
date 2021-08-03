@@ -1,7 +1,6 @@
 package com.jcf.orm.core;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface Session<E, ID> {
@@ -18,4 +17,5 @@ public interface Session<E, ID> {
 
     List<E>findAllCurrency(EntityMapper<E> eEntityMapper);
 
+    E findByUnique(String name, Object value ,EntityMapper<E> entityMapper);
 }
