@@ -16,6 +16,6 @@ public class CurrencyRepository extends GenericRepository<Currency, Long> {
     }
 
     public List<Currency> findAllCurrency() {
-        return session.findAllCurrency(new EntityMapper(Currency.class));
+        return session.findAll(new EntityMapper(Currency.class));
     }
 }

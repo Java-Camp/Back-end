@@ -135,11 +135,6 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
     }
 
     @Override
-    public List<E> findAllCurrency(EntityMapper<E> entityMapper) {
-        return jdbcTemplate.query("SELECT * FROM " + getTableName(entityMapper),entityMapper);
-    }
-
-    @Override
     public E findByUnique(String name, Object value , EntityMapper<E> entityMapper) {
         String Query = "SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e." + name + " = ?";
         log.info(Query);
