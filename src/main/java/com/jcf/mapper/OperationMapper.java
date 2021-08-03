@@ -1,15 +1,9 @@
 package com.jcf.mapper;
 
 
-import com.jcf.persistence.model.Account;
-import com.jcf.persistence.model.Category;
 import com.jcf.persistence.model.Operation;
-import com.jcf.persistence.model.OperationType;
 
-import com.jcf.persistence.model.dto.AccountDTO;
-import com.jcf.persistence.model.dto.CategoryDTO;
-import com.jcf.persistence.model.dto.OperationDTO;
-import com.jcf.persistence.model.dto.OperationTypeDTO;
+import com.jcf.persistence.dto.OperationDTO;
 
 
 import org.modelmapper.ModelMapper;

@@ -1,10 +1,7 @@
 package com.jcf.api;
 
-import com.jcf.persistence.dto.AccountDto;
-import com.jcf.persistence.model.dto.OperationDTO;
-import com.jcf.service.OperationService;
+import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.service.OperationServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +30,8 @@ public class OperationController {
     public ResponseEntity<Boolean> createOperation(@RequestBody OperationDTO operationDTO) {
         final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/operations/save").toUriString());
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.created(uri).body(operationService.saveOperation(userEmail, operationDTO));
+
+
+       return ResponseEntity.created(uri).body(operationService.saveOperation(userEmail, operationDTO));
     }
 }

@@ -1,8 +1,7 @@
 package com.jcf.mapper;
 
 import com.jcf.persistence.model.User;
-import com.jcf.persistence.model.dto.AccountDTO;
-import com.jcf.persistence.model.dto.UserDTO;
+import com.jcf.persistence.dto.UserDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

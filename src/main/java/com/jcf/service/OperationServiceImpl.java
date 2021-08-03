@@ -2,14 +2,11 @@ package com.jcf.service;
 
 import com.jcf.mapper.OperationMapper;
 import com.jcf.persistence.dao.OperationDao;
-import com.jcf.persistence.model.dto.OperationDTO;
-import lombok.RequiredArgsConstructor;
+import com.jcf.persistence.dto.OperationDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 @Service

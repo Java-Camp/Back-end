@@ -1,9 +1,7 @@
 package com.jcf.mapper;
 
 import com.jcf.persistence.model.Role;
-import com.jcf.persistence.model.User;
-import com.jcf.persistence.model.dto.RoleDTO;
-import com.jcf.persistence.model.dto.UserDTO;
+import com.jcf.persistence.dto.RoleDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

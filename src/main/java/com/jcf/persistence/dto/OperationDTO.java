@@ -1,4 +1,4 @@
-package com.jcf.persistence.model.dto;
+package com.jcf.persistence.dto;
 
 
 import lombok.*;

@@ -1,10 +1,6 @@
 package com.jcf.service;
 
-import com.jcf.persistence.dto.AccountDto;
-import com.jcf.persistence.model.Account;
-import com.jcf.persistence.model.dto.OperationDTO;
-
-import java.util.List;
+import com.jcf.persistence.dto.OperationDTO;
 
 public interface OperationService {
 
