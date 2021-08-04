@@ -2,7 +2,6 @@ package com.jcf.orm.core;
 
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Table;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,15 +9,11 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 
-import java.util.HashMap;
+import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -89,15 +84,13 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(final Connection conn) throws SQLException {
-                final SimpleDateFormat format =
-                        new SimpleDateFormat("yyyy-MM-dd");
                 final PreparedStatement preparedStatement =
                         conn.prepareStatement(Query.toString());
                 Object o;
                 for(int i = 0; i < fields.size()*2; i++) {
                     o = fields.get(i % fields.size());
-                    if(o instanceof Date)
-                        o = Date.valueOf(format.format(o));
+                    if(o instanceof Instant)
+                        o = Timestamp.from((Instant) o);
                     preparedStatement.setObject(i + 1, o);
                     log.info((i+1) + ") Added new Object: " + o);
                 }

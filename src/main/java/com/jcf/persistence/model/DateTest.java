@@ -6,7 +6,7 @@ import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
 import lombok.*;
 
-import java.sql.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "Date_Test")
@@ -20,5 +20,5 @@ public class DateTest {
     private Long id;
 
     @Column(name = "THE_DATE")
-    private Date dateTime;
+    private Instant dateTime;
 }
