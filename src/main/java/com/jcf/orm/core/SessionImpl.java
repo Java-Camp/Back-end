@@ -2,6 +2,7 @@ package com.jcf.orm.core;
 
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Table;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,12 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-
 
 @Component
 @Slf4j
@@ -31,6 +30,7 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
     private String getTableName(EntityMapper<E> entityMapper){
         return entityMapper.getEntityClass().getAnnotation(Table.class).name();
     }
+    Connection connection;
 
     @Override
     public E saveOrUpdate(E entity, EntityMapper<E> entityMapper) {
@@ -87,6 +87,7 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
                 final PreparedStatement preparedStatement =
                         conn.prepareStatement(Query.toString());
                 Object o;
+                connection = conn;
                 for(int i = 0; i < fields.size()*2; i++) {
                     o = fields.get(i % fields.size());
                     if(o instanceof Instant)
@@ -98,8 +99,19 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
             }
         });
         log.info("User was added to table");
-        //entity = findByUnique(uniques.get(0) ,uniquesFields.get(0), entityMapper);
-        return entity;
+
+        return getEntityWithID(connection, entityMapper);
+    }
+
+    @SneakyThrows
+    private E getEntityWithID(Connection connection, EntityMapper<E> entityMapper){
+        String sql = "select ISEQ$$_104124.currval from DUAL";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        Long id = null;
+        if(rs.next())
+            id = rs.getLong(1);
+        return findById((ID) id, entityMapper).get();
     }
 
     @Override
