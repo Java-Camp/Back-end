@@ -12,21 +12,6 @@ import java.time.ZonedDateTime;
 @ControllerAdvice
 public class ApiExceptionsHandler {
 
-    @ExceptionHandler(value = {SQLException.class})
-    public ResponseEntity<Object> handleSqlException (SQLException e){
-
-        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-
-        CustomApiException exception = new CustomApiException(
-                httpStatus.getReasonPhrase(),
-                httpStatus.value(),
-                e.getMessage(),
-                httpStatus,
-                ZonedDateTime.now()
-        );
-        return new ResponseEntity<>(exception, httpStatus);
-    }
-
     @ExceptionHandler(value = {RequestTimeOutException.class})
     public ResponseEntity<Object> handleRequestTimeOutException (RequestTimeOutException e){
 
