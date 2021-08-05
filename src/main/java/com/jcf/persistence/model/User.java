@@ -1,10 +1,9 @@
 package com.jcf.persistence.model;
 
-import com.jcf.orm.annotation.Column;
-import com.jcf.orm.annotation.Entity;
-import com.jcf.orm.annotation.Id;
-import com.jcf.orm.annotation.Table;
+import com.jcf.orm.annotation.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -33,6 +32,9 @@ public class User {
 
     @Column
     private String role;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Account> accounts;
 
 //    //@Reference(ID, ...)
 //    private List<Role> roles;

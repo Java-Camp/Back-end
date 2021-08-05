@@ -1,9 +1,6 @@
 package com.jcf.persistence.model;
 
-import com.jcf.orm.annotation.Column;
-import com.jcf.orm.annotation.Entity;
-import com.jcf.orm.annotation.Id;
-import com.jcf.orm.annotation.Table;
+import com.jcf.orm.annotation.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -40,6 +37,11 @@ public class Account {
 
     @Column(name = "CURRENCY_ID")
     private BigDecimal currencyId;
-    //@Reference(ID, ...)
+
+    @ManyToMany
+    @JoinTable(
+            name = "USER_ACCOUNT",
+            joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID"))
     private List<User> users;
 }
