@@ -1,6 +1,5 @@
 package com.jcf.service;
 
-import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.Currency;
 import com.jcf.persistence.repository.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public Currency getById(Long id) {
         final Optional<Currency> byId = repository.findById(id);
-        if (!byId.isPresent()) {
+        if (byId.isEmpty()) {
             throw new IllegalArgumentException("No such currency!");
         }
         return byId.get();
