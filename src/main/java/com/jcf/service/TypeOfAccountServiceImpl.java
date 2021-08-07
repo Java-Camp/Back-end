@@ -22,6 +22,12 @@ private final TypeOfAccountRepository typeOfAccountRepository;
     public List<AccountType> getAllAccountType() {
         return typeOfAccountRepository.findAllTypeOfAccount();
     }
+
+    @Override
+    public void delete(Long id) {
+        typeOfAccountRepository.delete(id);
+    }
+
     @Override
     public AccountType findById(Long id) {
         final Optional<AccountType> byId = typeOfAccountRepository.findById(id);

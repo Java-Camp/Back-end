@@ -1,9 +1,7 @@
 package com.jcf.api;
 
 import com.jcf.persistence.model.Category;
-import com.jcf.persistence.model.Currency;
 import com.jcf.service.CategoryService;
-import com.jcf.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -8,4 +8,5 @@ import java.util.List;
 public interface TypeOfAccountService {
     AccountType findById(Long id);
     List<AccountType> getAllAccountType();
+    void delete(Long id);
 }

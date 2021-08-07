@@ -32,4 +32,9 @@ public class CurrencyServiceImpl implements CurrencyService {
         return byId.get();
     }
 
+    @Override
+    public void delete(Long id) {
+        repository.delete(id);
+    }
+
 }
