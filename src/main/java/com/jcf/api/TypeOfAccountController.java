@@ -19,12 +19,12 @@ public class TypeOfAccountController {
     private final TypeOfAccountService typeOfAccountService;
 
     @GetMapping("/typeOfAccount")
-    public ResponseEntity<List<AccountType>> getCurrencies() {
+    public ResponseEntity<List<AccountType>> getTypeOfAccount() {
         return ResponseEntity.ok().body(typeOfAccountService.getAllAccountType());
     }
 
     @GetMapping("/typeOfAccount/{id}")
-    public AccountType getCurrencyById(@PathVariable Long id) {
+    public AccountType getTypeOfAccountById(@PathVariable Long id) {
         return typeOfAccountService.findById(id);
     }
 
