@@ -18,11 +18,11 @@ public class OperationDTO {
     @NotEmpty
     private BigDecimal sum;
     @NotEmpty
-    private Long accountId;
+    private BigDecimal accountId;
     @NotEmpty
-    private Long operationTypeId;
+    private BigDecimal operationTypeId;
 
-    private Long operationId;
+    private BigDecimal operationId;
     @NotEmpty
-    private Long categoryId;
+    private BigDecimal categoryId;
 }
