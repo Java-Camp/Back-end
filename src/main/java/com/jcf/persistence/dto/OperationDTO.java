@@ -11,12 +11,9 @@ import java.sql.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-
 @ToString
 public class OperationDTO {
 
-
-    @NotEmpty
     private Date dateTime;
     @NotEmpty
     private BigDecimal sum;

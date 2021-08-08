@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.Instant;
 
 
 @Entity
@@ -23,7 +24,7 @@ public class Operation {
     private Long id;
 
     @Column(name = "DATE_TIME")
-    private Date dateTime;
+    private Instant dateTime;
     @Column(name = "SUM")
     private BigDecimal sum;
     @Column(name = "ACCOUNT_ID")
@@ -34,6 +35,4 @@ public class Operation {
     private Long operationId;
     @Column(name = "CATEGORY_ID")
     private Long categoryId;
-
-
 }

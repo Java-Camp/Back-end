@@ -91,4 +91,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userRepo.findById(id).isPresent())
             throw new ServiceNotWorkingException("Delete");
     }
+
+    public void finndAll(){
+        userRepo.findAll();
+    }
 }

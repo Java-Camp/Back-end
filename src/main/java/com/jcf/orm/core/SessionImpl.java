@@ -100,7 +100,7 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
         });
         log.info("User was added to table");
 
-        return getEntityWithID(connection, entityMapper);
+        return entity;
     }
 
     @SneakyThrows
