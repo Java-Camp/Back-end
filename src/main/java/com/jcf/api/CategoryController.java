@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping("/api/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/categories")
+    @GetMapping
     public ResponseEntity<List<Category>> getCategories() {
         return ResponseEntity.ok().body(categoryService.getAllCategory());
     }
 
-    @GetMapping("/categories/{id}")
+    @GetMapping("/{id}")
     public Category getCategoryById(@PathVariable Long id) {
         return categoryService.getById(id);
     }

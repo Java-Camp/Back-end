@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping("/api/typeOfAccount")
 @RequiredArgsConstructor
 public class TypeOfAccountController {
     private final TypeOfAccountService typeOfAccountService;
 
-    @GetMapping("/typeOfAccount")
+    @GetMapping
     public ResponseEntity<List<AccountType>> getTypeOfAccount() {
         return ResponseEntity.ok().body(typeOfAccountService.getAllAccountType());
     }
 
-    @GetMapping("/typeOfAccount/{id}")
+    @GetMapping("/{id}")
     public AccountType getTypeOfAccountById(@PathVariable Long id) {
         return typeOfAccountService.findById(id);
     }

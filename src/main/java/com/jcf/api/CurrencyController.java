@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping("/api/currencies")
 @RequiredArgsConstructor
 public class CurrencyController {
     private final CurrencyService currencyService;
 
-    @GetMapping("/currencies")
+    @GetMapping
     public ResponseEntity<List<Currency>> getCurrencies() {
         return ResponseEntity.ok().body(currencyService.getAllCurrency());
     }
 
-    @GetMapping("/currencies/{id}")
+    @GetMapping("/{id}")
     public Currency getCurrencyById(@PathVariable Long id) {
         return currencyService.getById(id);
     }
