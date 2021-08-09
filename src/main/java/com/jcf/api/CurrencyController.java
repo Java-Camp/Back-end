@@ -3,12 +3,10 @@ package com.jcf.api;
 import com.jcf.persistence.model.Currency;
 import com.jcf.persistence.repository.CurrencyRepository;
 import com.jcf.service.CurrencyService;
+import com.jcf.vo.CurrencyVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,4 +26,13 @@ public class CurrencyController {
         return currencyService.getById(id);
     }
 
+    @DeleteMapping("/edit/{id}")
+    public void deleteCurrencyById(@PathVariable Long id) {
+        currencyService.delete(id);
+    }
+
+    @PutMapping
+    public void addCurrency(@PathVariable CurrencyVO currency) {
+        currencyService.saveCurrency(currency);
+    }
 }
