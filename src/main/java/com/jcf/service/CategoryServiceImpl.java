@@ -4,6 +4,7 @@ import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.Category;
 import com.jcf.persistence.model.Currency;
 import com.jcf.persistence.repository.CategoryRepository;
+import com.jcf.vo.CategoryVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,13 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public void delete(Long id) {
         categoryRepository.delete(id);
+    }
+
+    @Override
+    public Category createCategory(CategoryVO categoryVO) {
+        log.info("Saving new category to database");
+        Category category = new Category();
+        category.setName(categoryVO.getName());
+        return categoryRepository.saveOrUpdate(category);
     }
 }

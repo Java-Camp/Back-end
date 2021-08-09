@@ -3,8 +3,6 @@ package com.jcf.api;
 import com.jcf.persistence.model.User;
 import com.jcf.service.UserService;
 import com.jcf.vo.UserVO;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -34,7 +32,6 @@ public class UserResource {
     }
 
 
-
     @PostMapping("/users/save")
     public ResponseEntity<User> saveUser(@RequestBody UserVO vo) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
@@ -42,9 +39,11 @@ public class UserResource {
     }
 
     @PostMapping("/users/delete/{id}")
-    public ResponseEntity<String> deleteTest(@PathVariable Long id){
+    public ResponseEntity<String> deleteTest(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.ok("Entity was deleted");
     }
+
+
 
 }

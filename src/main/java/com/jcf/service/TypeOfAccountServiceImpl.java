@@ -2,7 +2,9 @@ package com.jcf.service;
 
 import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.AccountType;
+import com.jcf.persistence.model.Currency;
 import com.jcf.persistence.repository.TypeOfAccountRepository;
+import com.jcf.vo.AccountTypeVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,14 @@ private final TypeOfAccountRepository typeOfAccountRepository;
     @Override
     public void delete(Long id) {
         typeOfAccountRepository.delete(id);
+    }
+
+    @Override
+    public AccountType createAccountType(AccountTypeVO accountTypeVO) {
+        log.info("Saving new account type to database");
+        AccountType accountType = new AccountType();
+        accountType.setName(accountTypeVO.getName());
+        return typeOfAccountRepository.saveOrUpdate(accountType);
     }
 
     @Override
