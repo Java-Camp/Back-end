@@ -5,6 +5,9 @@ import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Id;
 import com.jcf.orm.annotation.Table;
 import lombok.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 @Table(name = "user")
@@ -17,6 +20,8 @@ import lombok.*;
 public class User {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="users_seq")
+    @SequenceGenerator(name="users_seq", sequenceName="MY_SEQ")
     private Long id;
 
     @Column(name = "first_name", nullable = false, length = 100)

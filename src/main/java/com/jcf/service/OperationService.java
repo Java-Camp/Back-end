@@ -9,5 +9,6 @@ public interface OperationService {
 
     Operation saveOperation(OperationDTO operationDTOD);
     List findAll();
+    void delete(Long id);
 
 }
