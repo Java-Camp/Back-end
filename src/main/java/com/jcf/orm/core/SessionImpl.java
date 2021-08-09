@@ -2,11 +2,10 @@ package com.jcf.orm.core;
 
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Table;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -30,7 +29,6 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
     private String getTableName(EntityMapper<E> entityMapper){
         return entityMapper.getEntityClass().getAnnotation(Table.class).name();
     }
-    Connection connection;
 
     @Override
     public E saveOrUpdate(E entity, EntityMapper<E> entityMapper) {
@@ -81,13 +79,12 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
 
         log.info("Finished creating a Query:\n" + Query);
 
-        jdbcTemplate.update(new PreparedStatementCreator() {
+/*        jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(final Connection conn) throws SQLException {
                 final PreparedStatement preparedStatement =
                         conn.prepareStatement(Query.toString());
                 Object o;
-                connection = conn;
                 for(int i = 0; i < fields.size()*2; i++) {
                     o = fields.get(i % fields.size());
                     if(o instanceof Instant)
@@ -97,13 +94,27 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
                 }
                 return preparedStatement;
             }
-        });
+        });*/
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        String id_column = "ID";
+        jdbcTemplate.update(con -> {
+                    final PreparedStatement preparedStatement =
+                            con.prepareStatement(Query.toString(), new String[]{id_column});
+                    Object o;
+                    for(int i = 0; i < fields.size()*2; i++) {
+                        o = fields.get(i % fields.size());
+                        if(o instanceof Instant)
+                            o = Timestamp.from((Instant) o);
+                        preparedStatement.setObject(i + 1, o);
+                        log.info((i+1) + ") Added new Object: " + o);
+                    }
+                    return preparedStatement;
+                }, keyHolder);
         log.info("User was added to table");
-
         return entity;
     }
 
-    @SneakyThrows
+/*    @SneakyThrows
     private E getEntityWithID(Connection connection, EntityMapper<E> entityMapper){
         String sql = "select ISEQ$$_104124.currval from DUAL";
         PreparedStatement ps = connection.prepareStatement(sql);
@@ -112,7 +123,7 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
         if(rs.next())
             id = rs.getLong(1);
         return findById((ID) id, entityMapper).get();
-    }
+    }*/
 
     @Override
     public Optional<E> findById(ID id, EntityMapper<E> entityMapper) {

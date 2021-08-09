@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new ServiceNotWorkingException("Delete");
     }
 
-    public void finndAll(){
+    public void findAll(){
         userRepo.findAll();
     }
 }

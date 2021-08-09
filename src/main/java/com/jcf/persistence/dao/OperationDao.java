@@ -12,9 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
-
 @Repository
 @Slf4j
 public class OperationDao {
@@ -38,18 +35,18 @@ public class OperationDao {
 
     int counter = 0;
 
-///*       counter = jdbcTemplate.update(con -> {
-//                    PreparedStatement ps = con.prepareStatement("insert into OPERATION (DATE_TIME, \"SUM\", " +
-//                            "ACCOUNT_ID, OPERATION_TYPE_ID, CATEGORY_ID) " +
-//                            "VALUES(?, ?, ?, ?, ?)", new String[]{id_column});
-//                    ps.setTimestamp(1, Timestamp.valueOf("1980-05-20 02:00:00.000000"));
-//                    ps.setBigDecimal(2, operation.getSum());
-//                    ps.setLong(3, operation.getAccountId());
-//                    ps.setLong(4, operation.getOperationTypeId());
-//                    ps.setLong(5, operation.getCategoryId());
-//                    return ps;
-//                }
-//                , keyHolder);*/
+/*       counter = jdbcTemplate.update(con -> {
+                    PreparedStatement ps = con.prepareStatement("insert into OPERATION (DATE_TIME, \"SUM\", " +
+                            "ACCOUNT_ID, OPERATION_TYPE_ID, CATEGORY_ID) " +
+                            "VALUES(?, ?, ?, ?, ?)", new String[]{id_column});
+                    ps.setTimestamp(1, Timestamp.valueOf("1980-05-20 02:00:00.000000"));
+                    ps.setBigDecimal(2, operation.getSum());
+                    ps.setLong(3, operation.getAccountId());
+                    ps.setLong(4, operation.getOperationTypeId());
+                    ps.setLong(5, operation.getCategoryId());
+                    return ps;
+                }
+                , keyHolder);*/
 
         log.info("Saving new user operation to database");
 
