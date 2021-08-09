@@ -7,7 +7,7 @@ import com.jcf.orm.annotation.Table;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.Instant;
 
 
 @Entity
@@ -17,23 +17,21 @@ import java.sql.Date;
 @Setter
 @EqualsAndHashCode(of = "id")
 @ToString
-public class Operation {
+public class Operation { // TODO CHANGE BIGDECIMAL TO LONG
 
     @Id
     private Long id;
 
     @Column(name = "DATE_TIME")
-    private Date dateTime;
+    private Instant dateTime;
     @Column(name = "SUM")
     private BigDecimal sum;
     @Column(name = "ACCOUNT_ID")
-    private Long accountId;
+    private BigDecimal accountId;
     @Column(name = "OPERATION_TYPE_ID")
-    private Long operationTypeId;
+    private BigDecimal operationTypeId;
     @Column(name = "OPERATION_ID")
-    private Long operationId;
+    private BigDecimal operationId;
     @Column(name = "CATEGORY_ID")
-    private Long categoryId;
-
-
+    private BigDecimal categoryId;
 }

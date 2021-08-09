@@ -4,14 +4,19 @@ import com.jcf.orm.annotation.Column;
 import com.jcf.orm.annotation.Id;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Slf4j
 public class EntityMapper<E> implements RowMapper<E> {
 
     @Getter
@@ -36,9 +41,18 @@ public class EntityMapper<E> implements RowMapper<E> {
                 .forEach(field -> {
                     try {
                         field.setAccessible(true);
-                        field.set(entity, resultSet.getObject(getColumnName(field)));
+                        if(resultSet.getObject(getColumnName(field)) instanceof oracle.sql.TIMESTAMP){
+                            String dateTime = resultSet.getObject(getColumnName(field)).toString(); //'1980-05-20 02:00:00.0'
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+                            Date parsedDate = dateFormat.parse(dateTime);
+                            Instant instant = new Timestamp(parsedDate.getTime()).toInstant();
+                            field.set(entity, instant);
+                        }
+                        else{
+                            field.set(entity, resultSet.getObject(getColumnName(field)));
+                        }
                         field.setAccessible(false);
-                    } catch (IllegalAccessException | SQLException exception) {
+                    } catch (IllegalAccessException | SQLException |ParseException exception) {
                         exception.printStackTrace();
                     }
                 });
