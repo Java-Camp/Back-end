@@ -31,7 +31,7 @@ public class CurrencyController {
         currencyService.delete(id);
     }
 
-    @PutMapping
+    @PostMapping
     public void addCurrency(@PathVariable CurrencyVO currency) {
         currencyService.saveCurrency(currency);
     }

@@ -26,7 +26,7 @@ public class CategoryController {
         return categoryService.getById(id);
     }
 
-    @PutMapping
+    @PostMapping
     public void addCategory(@PathVariable CategoryVO categoryVO) {
         categoryService.createCategory(categoryVO);
     }
