@@ -17,7 +17,6 @@ import java.util.List;
 
 public class OperationController {
 
-
     private final OperationServiceImpl operationService;
 
     @Autowired
@@ -33,7 +32,8 @@ public class OperationController {
        return ResponseEntity.created(uri).body(operationService.saveOperation(operationDTO));
     }
     */
-   @PostMapping("/save")
+
+   @PostMapping("")
    public ResponseEntity<Operation> createOperation(@RequestBody OperationDTO operationDTO) {
        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/operations/save").toUriString());
        return ResponseEntity.created(uri).body(operationService.saveOperation(operationDTO));
@@ -42,5 +42,11 @@ public class OperationController {
     @GetMapping("/findAll")
     public ResponseEntity<List<Operation>> findAll() {
         return ResponseEntity.ok(operationService.findAll());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        operationService.delete(id);
+        return ResponseEntity.ok("Entity was deleted");
     }
 }

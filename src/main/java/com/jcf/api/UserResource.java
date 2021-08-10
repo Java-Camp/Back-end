@@ -33,6 +33,10 @@ public class UserResource {
         return userService.getUserById(id);
     }
 
+//    @PutMapping("/users/update")
+//    public ResponseEntity<User> updateUser(@RequestBody UserVO vo){
+//        return ResponseEntity.ok(userService.updateUser(vo));
+//    }
 
     @PostMapping("/users/save")
     public ResponseEntity<User> saveUser(@RequestBody UserVO vo) {
@@ -40,8 +44,8 @@ public class UserResource {
         return ResponseEntity.created(uri).body(userService.saveUser(vo));
     }
 
-    @PostMapping("/users/delete/{id}")
-    public ResponseEntity<String> deleteTest(@PathVariable Long id){
+    @DeleteMapping("/users/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
         userService.delete(id);
         return ResponseEntity.ok("Entity was deleted");
     }
