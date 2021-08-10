@@ -30,7 +30,7 @@ public class TypeOfAccountController {
         typeOfAccountService.delete(id);
     }
 
-    @PutMapping
+    @PostMapping
     public void createTypeOfAccount(@PathVariable AccountTypeVO accountTypeVO) {
         typeOfAccountService.createAccountType(accountTypeVO);
     }
