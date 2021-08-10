@@ -1,31 +1,37 @@
 package com.jcf.api;
 
 import com.jcf.persistence.model.AccountType;
-import com.jcf.persistence.model.Currency;
 import com.jcf.service.TypeOfAccountService;
+import com.jcf.vo.AccountTypeVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping("/api/typeOfAccount")
 @RequiredArgsConstructor
 public class TypeOfAccountController {
     private final TypeOfAccountService typeOfAccountService;
 
-    @GetMapping("/typeOfAccount")
+    @GetMapping
     public ResponseEntity<List<AccountType>> getTypeOfAccount() {
         return ResponseEntity.ok().body(typeOfAccountService.getAllAccountType());
     }
 
-    @GetMapping("/typeOfAccount/{id}")
+    @GetMapping("/{id}")
     public AccountType getTypeOfAccountById(@PathVariable Long id) {
         return typeOfAccountService.findById(id);
     }
 
+    @DeleteMapping("/edit/{id}")
+    public void deleteTypeOfAccountById(@PathVariable Long id) {
+        typeOfAccountService.delete(id);
+    }
+
+    @PutMapping
+    public void createTypeOfAccount(@PathVariable AccountTypeVO accountTypeVO) {
+        typeOfAccountService.createAccountType(accountTypeVO);
+    }
 }

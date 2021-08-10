@@ -1,9 +1,6 @@
 package com.jcf.service;
 
-import com.jcf.exceptions.FieldIsNullException;
-import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.Currency;
-import com.jcf.persistence.model.User;
 import com.jcf.persistence.repository.CurrencyRepository;
 import com.jcf.vo.CurrencyVO;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
