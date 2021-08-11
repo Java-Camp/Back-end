@@ -5,7 +5,6 @@ import com.jcf.persistence.model.Operation;
 import com.jcf.service.OperationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,14 +23,14 @@ public class OperationController {
         this.operationService = operationService;
     }
 
-   /*
-   @PostMapping("/save")
+/*
+   @PostMapping("/update")
     public ResponseEntity<Operation> createOperation(@RequestBody OperationDTO operationDTO) {
         final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/operations/save").toUriString());
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
        return ResponseEntity.created(uri).body(operationService.saveOperation(operationDTO));
     }
-    */
+*/
 
    @PostMapping("")
    public ResponseEntity<Operation> createOperation(@RequestBody OperationDTO operationDTO) {

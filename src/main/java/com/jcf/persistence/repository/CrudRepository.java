@@ -13,4 +13,6 @@ public interface CrudRepository<E, ID> {
     E findByUnique(String name, Object value);
 
     List<E> findAll();
+
+    Long getEntityID(String name);
 }

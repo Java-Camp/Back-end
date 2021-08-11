@@ -58,8 +58,12 @@ public class OperationServiceImpl implements OperationService{
         operation.setOperationTypeId(operationDTO.getOperationTypeId());
         operation.setOperationId(operationDTO.getOperationId());
         operation.setCategoryId(operationDTO.getCategoryId());
-
-        return operationRepository.saveOrUpdate(operation);
+        operationRepository.saveOrUpdate(operation);
+        Long id = operationRepository.getEntityID("ISEQ$$_105469");
+        if(operationRepository.findById(id).isEmpty())
+            throw new ServiceNotWorkingException("Save");
+        operation.setId(id);
+        return operation;
     }
 
     @Override
