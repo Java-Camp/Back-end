@@ -2,6 +2,7 @@ package com.jcf.service;
 
 import com.jcf.exceptions.EntityNotFoundException;
 import com.jcf.exceptions.FieldIsNullException;
+import com.jcf.exceptions.LockedAccessException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.persistence.model.Operation;
@@ -34,6 +35,7 @@ public class OperationServiceImpl implements OperationService{
     public Operation saveOperation(OperationDTO operationDTO) {
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Operation operation = new Operation();
+        User user = userRepository.findByEmail(userEmail);
 
         if (Objects.isNull(operationDTO.getDateTime())) {
             operation.setDateTime(Instant.now());
@@ -41,11 +43,13 @@ public class OperationServiceImpl implements OperationService{
             operation.setDateTime(operationDTO.getDateTime());
         }
         if (Objects.isNull(operationDTO.getAccountId())) {
-            User user = userRepository.findByEmail(userEmail);
             operation.setAccountId(new BigDecimal(user.getId()));
         } else {
             operation.setAccountId(operationDTO.getAccountId());
         }
+
+        if(!user.getId().equals(operationDTO.getAccountId()))
+            throw new LockedAccessException("You can't do anything with user " + userRepository.findById(operationDTO.getAccountId().longValue()).get().getEmail());
 
         if (Objects.isNull(operationDTO.getSum()))
             throw new FieldIsNullException("Sum");

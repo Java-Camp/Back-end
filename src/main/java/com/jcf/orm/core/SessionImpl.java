@@ -2,7 +2,6 @@ package com.jcf.orm.core;
 
 import com.jcf.orm.annotation.Entity;
 import com.jcf.orm.annotation.Table;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,21 +41,10 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
         Long id = entityMapper.getId(entity);
         List<Object> fields = entityMapper.getFields(entity);
         List <String> columnNames = entityMapper.getAllColumnNames();
-        List<String> uniques = entityMapper.getAllUniques(entity);
-        List<Object> uniquesFields = entityMapper.getAllUniquesFields(entity);
 
-        if(uniques.isEmpty()){
-            uniques.add("id");
-            uniquesFields.add(null);
-        }
-        log.info("uniques SIZE = " + uniques.size() + "\nuniques name SIZE = " + uniquesFields.size());
-
-
-        if(fields.size() != columnNames.size() || uniques.size() != uniquesFields.size()) // fields and columnNames have to have the same size
+        if(fields.size() != columnNames.size()) // fields and columnNames have to have the same size
             throw new RuntimeException( "Number of fields (" + fields.size()
-                    + ") and number of all column Names (" + columnNames.size()
-                    + ") is not equal or all column unique Names (" + uniques.size()
-                    + ") and number of all fields (" + uniquesFields.size() + ") is not equal");
+                    + ") and number of all column Names (" + columnNames.size());
 
         StringBuilder Query = new StringBuilder("MERGE INTO \"" + getTableName(entityMapper) + "\" I USING (SELECT " + id + " as id FROM DUAL) S "
                 + "ON (S.id = I.id) "

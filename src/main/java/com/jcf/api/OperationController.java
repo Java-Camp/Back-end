@@ -24,8 +24,8 @@ public class OperationController {
     }
 
 /*
-   @PostMapping("/update")
-    public ResponseEntity<Operation> createOperation(@RequestBody OperationDTO operationDTO) {
+   @PutMapping("/update")
+    public ResponseEntity<Operation> updateOperation(@RequestBody OperationDTO operationDTO) {
         final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/operations/save").toUriString());
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
        return ResponseEntity.created(uri).body(operationService.saveOperation(operationDTO));
@@ -34,7 +34,7 @@ public class OperationController {
 
    @PostMapping("")
    public ResponseEntity<Operation> createOperation(@RequestBody OperationDTO operationDTO) {
-       final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/operations/save").toUriString());
+       final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/operations").toUriString());
        return ResponseEntity.created(uri).body(operationService.saveOperation(operationDTO));
    }
 
