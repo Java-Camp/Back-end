@@ -67,7 +67,7 @@ public class OperationServiceImpl implements OperationService{
         log.info("user id " + user.getId());
         log.info("user id " + user.getId());
 
-        if(!(user.getId() == operation.getAccountId().longValue()))
+        if(!(user.getId().equals(operation.getAccountId().longValue())))
             throw new LockedAccessException("You can't do anything with user " + userRepository.findById(operationDTO.getAccountId().longValue()).get().getEmail());
         if (Objects.isNull(operationDTO.getSum()))
             throw new FieldIsNullException("Sum");
