@@ -6,6 +6,7 @@ import com.jcf.service.CurrencyService;
 import com.jcf.vo.CurrencyVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +27,13 @@ public class CurrencyController {
         return currencyService.getById(id);
     }
 
+    @PreAuthorize(value = "hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/edit/{id}")
     public void deleteCurrencyById(@PathVariable Long id) {
         currencyService.delete(id);
     }
 
+    @PreAuthorize(value = "hasAuthority('ROLE_ADMIN')")
     @PostMapping
     public void addCurrency(@PathVariable CurrencyVO currency) {
         currencyService.saveCurrency(currency);
