@@ -6,7 +6,6 @@ import com.jcf.service.OperationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -21,7 +20,7 @@ public class OperationController {
         this.operationService = operationService;
     }
 
-   @PutMapping("/update")
+   @PutMapping("")
     public ResponseEntity<Operation> updateOperation(@RequestBody OperationDTO operationDTO) {
        return ResponseEntity.ok(operationService.saveOperation(operationDTO));
     }

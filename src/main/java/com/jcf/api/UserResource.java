@@ -31,7 +31,7 @@ public class UserResource {
         return userService.getUserById(id);
     }
 
-    @PutMapping("/update")
+    @PutMapping("")
     public ResponseEntity<User> updateUser(@RequestBody UserVO vo){
         return ResponseEntity.ok(userService.updateUser(vo));
     }
