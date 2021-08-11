@@ -6,9 +6,7 @@ import com.jcf.service.OperationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -23,19 +21,14 @@ public class OperationController {
         this.operationService = operationService;
     }
 
-/*
    @PutMapping("/update")
     public ResponseEntity<Operation> updateOperation(@RequestBody OperationDTO operationDTO) {
-        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/operations/save").toUriString());
-        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-       return ResponseEntity.created(uri).body(operationService.saveOperation(operationDTO));
+       return ResponseEntity.ok(operationService.saveOperation(operationDTO));
     }
-*/
 
    @PostMapping("")
    public ResponseEntity<Operation> createOperation(@RequestBody OperationDTO operationDTO) {
-       final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/operations").toUriString());
-       return ResponseEntity.created(uri).body(operationService.saveOperation(operationDTO));
+       return ResponseEntity.ok(operationService.saveOperation(operationDTO));
    }
 
     @GetMapping("/findAll")

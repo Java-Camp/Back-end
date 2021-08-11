@@ -31,6 +31,23 @@ public class OperationServiceImpl implements OperationService{
     private final OperationRepository operationRepository;
     private final UserRepository userRepository;
 
+
+    @Override
+    public Operation updateOperation(OperationDTO operationDTO){
+        if(operationRepository.findById(operationDTO.getOperationId().longValue()).isEmpty())
+            throw new EntityNotFoundException(operationDTO.getOperationId().longValue());
+
+        Operation operation = new Operation();
+
+        operation.setOperationId(operationDTO.getOperationId());
+        operation.setSum(operationDTO.getSum());
+        operation.setOperationTypeId(operationDTO.getOperationTypeId());
+        operation.setDateTime(operationDTO.getDateTime());
+        operation.setCategoryId(operationDTO.getCategoryId());
+
+        return operationRepository.saveOrUpdate(operation);
+    }
+
     @Override
     public Operation saveOperation(OperationDTO operationDTO) {
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -50,7 +67,6 @@ public class OperationServiceImpl implements OperationService{
 
         if(!user.getId().equals(operationDTO.getAccountId()))
             throw new LockedAccessException("You can't do anything with user " + userRepository.findById(operationDTO.getAccountId().longValue()).get().getEmail());
-
         if (Objects.isNull(operationDTO.getSum()))
             throw new FieldIsNullException("Sum");
         if (Objects.isNull(operationDTO.getOperationTypeId()))
