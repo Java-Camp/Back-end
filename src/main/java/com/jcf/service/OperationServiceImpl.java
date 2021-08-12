@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +43,7 @@ public class OperationServiceImpl implements OperationService{
         operation.setOperationId(operationDTO.getOperationId());
         operation.setSum(operationDTO.getSum());
         operation.setOperationTypeId(operationDTO.getOperationTypeId());
-        operation.setDateTime(operationDTO.getDateTime());
+        operation.setDateTime(operationDTO.getDateTime().atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
         operation.setCategoryId(operationDTO.getCategoryId());
 
         return operationRepository.saveOrUpdate(operation);
@@ -55,9 +56,9 @@ public class OperationServiceImpl implements OperationService{
         User user = userRepository.findByEmail(userEmail);
 
         if (Objects.isNull(operationDTO.getDateTime())) {
-            operation.setDateTime(Instant.now());
+            operation.setDateTime(Instant.now().atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
         } else {
-            operation.setDateTime(operationDTO.getDateTime());
+            operation.setDateTime(operationDTO.getDateTime().atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
         }
         if (Objects.isNull(operationDTO.getAccountId())) {
             operation.setAccountId(new BigDecimal(user.getId()));
