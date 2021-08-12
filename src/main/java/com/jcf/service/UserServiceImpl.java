@@ -46,11 +46,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User updateUser(UserVO vo){
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepo.findByEmail(userEmail);
-        user.setFirstName(vo.getFirstName());
-        user.setLastName(vo.getLastName());
-        user.setPassword(vo.getPassword());
-        user.setRole(vo.getRole());
-
+        if(!Objects.isNull(vo.getFirstName()))
+            user.setFirstName(vo.getFirstName());
+        if(!Objects.isNull(vo.getLastName()))
+            user.setLastName(vo.getLastName());
+        if(!Objects.isNull(vo.getEmail()))
+            user.setEmail(vo.getEmail());
+        if(!Objects.isNull(vo.getPassword()))
+            user.setPassword(passwordEncoder.encode(vo.getPassword()));
         return userRepo.saveOrUpdate(user);
     }
 
