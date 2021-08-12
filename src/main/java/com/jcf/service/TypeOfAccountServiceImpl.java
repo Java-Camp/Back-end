@@ -1,8 +1,6 @@
 package com.jcf.service;
 
-import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.AccountType;
-import com.jcf.persistence.model.Currency;
 import com.jcf.persistence.repository.TypeOfAccountRepository;
 import com.jcf.vo.AccountTypeVO;
 import lombok.RequiredArgsConstructor;

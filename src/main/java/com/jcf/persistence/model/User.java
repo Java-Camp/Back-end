@@ -7,7 +7,7 @@ import com.jcf.orm.annotation.Table;
 import lombok.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "USER")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -43,9 +43,5 @@ public class User {
 
 //    @Column(name ="role")
 //    private Role role;
-
-
-
-
 
 }

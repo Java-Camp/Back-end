@@ -1,7 +1,6 @@
 package com.jcf.api;
 
 import com.jcf.persistence.model.Currency;
-import com.jcf.persistence.repository.CurrencyRepository;
 import com.jcf.service.CurrencyService;
 import com.jcf.vo.CurrencyVO;
 import lombok.RequiredArgsConstructor;

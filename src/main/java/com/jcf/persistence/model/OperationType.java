@@ -7,8 +7,6 @@ import com.jcf.orm.annotation.Table;
 import lombok.*;
 
 
-
-
 @Entity
 @Table(name = "OPERATION_TYPE")
 @Getter

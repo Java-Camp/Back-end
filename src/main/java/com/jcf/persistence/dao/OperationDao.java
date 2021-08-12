@@ -1,6 +1,5 @@
 package com.jcf.persistence.dao;
 
-
 import com.jcf.persistence.model.Operation;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.repository.UserRepository;
@@ -10,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
-
 
 @Repository
 @Slf4j
