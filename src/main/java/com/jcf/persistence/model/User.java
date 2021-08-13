@@ -1,10 +1,11 @@
 package com.jcf.persistence.model;
 
-import com.jcf.orm.annotation.Column;
-import com.jcf.orm.annotation.Entity;
-import com.jcf.orm.annotation.Id;
-import com.jcf.orm.annotation.Table;
+import com.jcf.orm.annotation.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER")
@@ -14,29 +15,47 @@ import lombok.*;
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "password")
 @AllArgsConstructor
+@Model(tableName = "USER", primaryKey = "ID")
 public class User {
 
     @Id
     private Long id;
 
-    @Column(name = "first_name", nullable = false, length = 100)
+    @Column(name = "FIRST_NAME", nullable = false, length = 100)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 150)
+    @Column(name = "LAST_NAME", nullable = false, length = 150)
     private String lastName;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column(name ="password")
+    @Column(name ="PASSWORD")
     private String password;
 
-    @Column
+    @Column(name = "ROLE")
     private String role;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserAccount> userAccounts;
+
+    // TODO: 13.08.2021
+    //  3. solve problem with parse Integer ids in orm or security
+    //  4. get Set<> of account from userAccounts
+
+
+//    @OneToMany(mappedBy = "user")
+//    private Set<Account> accounts;
+
+//    @ManyToOne(joinColumn = "ACCOUNT_ID")
+//    private Set<Account> accounts;
+
+//    @ManyToOne(joinColumn = "ID")
+//    private UserAccount userAccount;
 
 //    //@Reference(ID, ...)
 //    private List<Role> roles;
-//
+
 //    //@Reference(ID, ...)
 //    private List<Account> accounts;
 

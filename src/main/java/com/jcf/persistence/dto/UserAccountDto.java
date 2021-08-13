@@ -19,9 +19,9 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(of = "id")
 public class UserAccountDto {
 
-    private BigDecimal id;
-    private String alias;
-    private BigDecimal money;
-    private String currency;
-    private String accountType;
+    private BigDecimal ID;
+    private String ALIAS;
+    private BigDecimal MONEY;
+    private String CURRENCY;
+    private String ACCOUNT_TYPE;
 }
