@@ -1,10 +1,7 @@
 package com.jcf.persistence.model;
 
 
-import com.jcf.orm.annotation.Column;
-import com.jcf.orm.annotation.Entity;
-import com.jcf.orm.annotation.Id;
-import com.jcf.orm.annotation.Table;
+import com.jcf.orm.annotation.*;
 import lombok.*;
 
 @Entity
@@ -16,6 +13,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Model(tableName = "ACCOUNT_TYPE", primaryKey = "ID")
 public class AccountType {
     @Id
     private Long id;

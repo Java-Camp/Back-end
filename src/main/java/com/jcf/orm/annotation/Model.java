@@ -5,16 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Column {
-    String name() default "";
+public @interface Model {
 
-    boolean unique() default false;
+    String tableName();
+    String primaryKey();
 
-    boolean nullable() default true;
-
-    int length() default 255;
-
-    boolean isAutoIncrement() default false;
 }

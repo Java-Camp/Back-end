@@ -1,11 +1,18 @@
 package com.jcf.persistence.dao;
 
 import com.jcf.orm.core.EntityMapper;
+import com.jcf.orm.sql.EntityDAO;
+import com.jcf.orm.sql.QueryBuilder;
+import com.jcf.orm.storages.Entity;
+import com.jcf.orm.storages.Table;
 import com.jcf.persistence.dto.AccountDto;
 import com.jcf.persistence.dto.UserAccountDto;
+import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.Currency;
 import com.jcf.persistence.model.User;
+import com.jcf.persistence.model.UserAccount;
 import com.jcf.persistence.repository.UserRepository;
+import liquibase.pro.packaged.E;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,11 +21,13 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @AllArgsConstructor
@@ -34,22 +43,24 @@ public class AccountDao {
             log.error("User not found");
             throw new UsernameNotFoundException("User not found");
         } else log.error("User found: {}", userEmail);
-        return jdbcTemplate.query("SELECT ACCOUNT.ID, ALIAS, MONEY, CURRENCY.NAME, ACCOUNT_TYPE.NAME  FROM ACCOUNT " +
+        return jdbcTemplate.query("SELECT * FROM ACCOUNT " +
                 "INNER JOIN ACCOUNT_TYPE on ACCOUNT_TYPE.ID = ACCOUNT.ACCOUNT_TYPE_ID " +
                 "INNER JOIN CURRENCY on CURRENCY.ID = ACCOUNT.CURRENCY_ID " +
                 "INNER JOIN USER_ACCOUNT on ACCOUNT.ID = USER_ACCOUNT.ACCOUNT_ID " +
-                "WHERE USER_ID = ?", new RowMapper<UserAccountDto>() {
+                "WHERE USER_ID = ?",
+                new RowMapper<UserAccountDto>() {
             @Override
             public UserAccountDto mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return UserAccountDto.builder()
-                        .id(rs.getBigDecimal(1))
-                        .alias(rs.getString(2))
-                        .money(rs.getBigDecimal(3))
-                        .currency(rs.getString(4))
-                        .accountType(rs.getString(5))
+                        .ID(rs.getBigDecimal(1))
+                        .ALIAS(rs.getString(2))
+                        .MONEY(rs.getBigDecimal(3))
+                        .CURRENCY(rs.getString(4))
+                        .ACCOUNT_TYPE(rs.getString(5))
                         .build();
             }
-        }, new Object[]{user.getId()});
+        }
+        , new Object[]{user.getId()});
     }
 
     public int save(String userEmail, AccountDto accountDto) {
@@ -79,5 +90,40 @@ public class AccountDao {
     public List<Currency> getCurrencyList() {
         log.info("Getting all currencies from database");
         return jdbcTemplate.query("SELECT * FROM CURRENCY", new EntityMapper<>(Currency.class));
+    }
+
+    public void getAllUsers() throws IllegalAccessException, NoSuchFieldException {
+        Entity entity = new Entity(User.class);
+        Object entityObject = EntityDAO.getInstance().selectEntityById(entity, 121).getEntityObject();
+        for (Field field : entityObject.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            System.out.printf("%18s", field.get(entityObject));
+        }
+
+//        ====Getting all entities ordered by id
+//        Entity entity = new Entity(Account.class);
+//        List<Entity> entities = EntityDAO.getInstance().readAllRecordsOrderedByPK(entity);
+//        printReceivedObjects(entities);
+
+        // ====Getting entity with one to many references by id=====
+//        Entity entity = new Entity(Account.class);
+//        Object entityObject = EntityDAO.getInstance().selectEntityById(entity, 121).getEntityObject();
+//        for (Field field : entityObject.getClass().getDeclaredFields()) {
+//            field.setAccessible(true);
+//            System.out.printf("%18s", field.get(entityObject));
+//        }
+
+    }
+
+    private static void printReceivedObjects(List<Entity> entities)
+            throws IllegalArgumentException, IllegalAccessException {
+        for (Entity entity : entities) {
+            Object entityObject = entity.getEntityObject();
+            for (Field field : entityObject.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                System.out.printf("%18s", field.get(entityObject));
+            }
+            System.out.println();
+        }
     }
 }
