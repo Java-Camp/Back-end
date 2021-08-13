@@ -4,7 +4,9 @@ import com.jcf.orm.annotation.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "ACCOUNT")
@@ -15,10 +17,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Model(tableName = "ACCOUNT", primaryKey = "ID")
 public class Account {
 
     @Id
-    private Long id;
+    private Integer id;
 
     @Column(name = "ALIAS")
     private String alias;
@@ -38,10 +41,11 @@ public class Account {
     @Column(name = "CURRENCY_ID")
     private BigDecimal currencyId;
 
-    @ManyToMany
-    @JoinTable(
-            name = "USER_ACCOUNT",
-            joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "USER_ID"))
-    private List<User> users;
+    @ManyToOne(joinColumn = "CURRENCY_ID")
+    private Currency currency;
+
+    @OneToMany(mappedBy = "account")
+    public Set<UserAccount> userAccounts;
+
+
 }

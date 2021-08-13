@@ -7,14 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(value = ElementType.FIELD)
-@Retention(value = RetentionPolicy.RUNTIME)
-public @interface ForeignKey {
-    String entity();
-
-    String column();
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface OneToOne {
 
     Actions onUpdate() default Actions.NOACTION;
-
     Actions onDelete() default Actions.NOACTION;
 }
