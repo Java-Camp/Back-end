@@ -2,8 +2,6 @@ package com.jcf.persistence.repository;
 
 import com.jcf.orm.core.EntityMapper;
 import com.jcf.orm.core.Session;
-import com.jcf.persistence.model.AccountType;
-import com.jcf.persistence.model.Category;
 import com.jcf.persistence.model.Currency;
 import org.springframework.stereotype.Repository;
 

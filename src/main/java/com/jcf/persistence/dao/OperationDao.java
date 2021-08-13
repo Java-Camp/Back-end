@@ -1,6 +1,5 @@
 package com.jcf.persistence.dao;
 
-
 import com.jcf.persistence.model.Operation;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.repository.UserRepository;
@@ -10,10 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
-
-
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 
 @Repository
 @Slf4j
@@ -38,7 +33,7 @@ public class OperationDao {
 
     int counter = 0;
 
-       counter = jdbcTemplate.update(con -> {
+/*       counter = jdbcTemplate.update(con -> {
                     PreparedStatement ps = con.prepareStatement("insert into OPERATION (DATE_TIME, \"SUM\", " +
                             "ACCOUNT_ID, OPERATION_TYPE_ID, CATEGORY_ID) " +
                             "VALUES(?, ?, ?, ?, ?)", new String[]{id_column});
@@ -49,7 +44,7 @@ public class OperationDao {
                     ps.setLong(5, operation.getCategoryId());
                     return ps;
                 }
-                , keyHolder);
+                , keyHolder);*/
 
         log.info("Saving new user operation to database");
 

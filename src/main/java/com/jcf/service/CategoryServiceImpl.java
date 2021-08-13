@@ -1,12 +1,11 @@
 package com.jcf.service;
 
-import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.Category;
-import com.jcf.persistence.model.Currency;
 import com.jcf.persistence.repository.CategoryRepository;
 import com.jcf.vo.CategoryVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
+@Async
 public class CategoryServiceImpl implements CategoryService{
     private final CategoryRepository categoryRepository;
     @Override

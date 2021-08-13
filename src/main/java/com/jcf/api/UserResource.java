@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @CrossOrigin
 public class UserResource {
     private final UserService userService;
@@ -21,29 +21,31 @@ public class UserResource {
     }
 
 
-    @GetMapping("/users")
+    @GetMapping("")
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
+    @PutMapping("")
+    public ResponseEntity<User> updateUser(@RequestBody UserVO vo){
+        return ResponseEntity.ok(userService.updateUser(vo));
+    }
 
-    @PostMapping("/users/save")
+    @PostMapping("/save")
     public ResponseEntity<User> saveUser(@RequestBody UserVO vo) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(vo));
     }
 
-    @PostMapping("/users/delete/{id}")
-    public ResponseEntity<String> deleteTest(@PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
         userService.delete(id);
         return ResponseEntity.ok("Entity was deleted");
     }
-
-
 
 }

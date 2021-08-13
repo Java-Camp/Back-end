@@ -10,12 +10,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-
 
 @Component
 @Slf4j
@@ -31,6 +30,7 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
     private String getTableName(EntityMapper<E> entityMapper){
         return entityMapper.getEntityClass().getAnnotation(Table.class).name();
     }
+    Connection connection;
 
     @Override
     public E saveOrUpdate(E entity, EntityMapper<E> entityMapper) {
@@ -42,21 +42,6 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
         Long id = entityMapper.getId(entity);
         List<Object> fields = entityMapper.getFields(entity);
         List <String> columnNames = entityMapper.getAllColumnNames();
-        List<String> uniques = entityMapper.getAllUniques(entity);
-        List<Object> uniquesFields = entityMapper.getAllUniquesFields(entity);
-
-        if(uniques.isEmpty()){
-            uniques.add("id");
-            uniquesFields.add(null);
-        }
-        log.info("uniques SIZE = " + uniques.size() + "\nuniques name SIZE = " + uniquesFields.size());
-
-
-        if(fields.size() != columnNames.size() || uniques.size() != uniquesFields.size()) // fields and columnNames have to have the same size
-            throw new RuntimeException( "Number of fields (" + fields.size()
-                    + ") and number of all column Names (" + columnNames.size()
-                    + ") is not equal or all column unique Names (" + uniques.size()
-                    + ") and number of all fields (" + uniquesFields.size() + ") is not equal");
 
         StringBuilder Query = new StringBuilder("MERGE INTO \"" + getTableName(entityMapper) + "\" I USING (SELECT " + id + " as id FROM DUAL) S "
                 + "ON (S.id = I.id) "
@@ -68,16 +53,24 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
         Query.setLength(Query.length()-2); // cut the ", "
         Query.append(" WHEN NOT MATCHED THEN INSERT (");
 
+        columnNames.add("ID"); // ADD THE ID
+
         // write every element's name and it's value
         for(String name: columnNames) Query.append(name).append(", ");
 
         Query.setLength(Query.length()-2);
         Query.append(") VALUES (");
 
-        for (Object field : fields) Query.append("?, ");
+        for (Object ignored : columnNames) Query.append("?, ");
 
         Query.setLength(Query.length()-2);
         Query.append(")");
+
+        columnNames.remove(columnNames.size() - 1); // return the size back
+
+        if(fields.size() != columnNames.size()) // fields and columnNames have to have the same size
+            throw new RuntimeException( "Number of fields (" + fields.size()
+                    + ") and number of all column Names (" + columnNames.size());
 
         log.info("Finished creating a Query:\n" + Query);
 
@@ -87,6 +80,13 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
                 final PreparedStatement preparedStatement =
                         conn.prepareStatement(Query.toString());
                 Object o;
+                connection = conn;
+                Long entityID = id;
+                if (Objects.isNull(id)) {
+                    entityID = getIdBySequence();
+                    entityMapper.setId(entity, entityID);
+                }
+
                 for(int i = 0; i < fields.size()*2; i++) {
                     o = fields.get(i % fields.size());
                     if(o instanceof Instant)
@@ -94,12 +94,30 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
                     preparedStatement.setObject(i + 1, o);
                     log.info((i+1) + ") Added new Object: " + o);
                 }
+                log.info((fields.size()*2+1) + ") Added new Object: " + entityID);
+                preparedStatement.setLong(fields.size()*2+1, entityID);
                 return preparedStatement;
             }
         });
-        log.info("User was added to table");
-        //entity = findByUnique(uniques.get(0) ,uniquesFields.get(0), entityMapper);
+
+        log.info("Entity was added to table");
         return entity;
+    }
+
+    private Long getIdBySequence(){
+        Long id = null;
+        try{
+            String sql = "select MY_SEQ.nextval from DUAL";
+            log.info(sql);
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                id = rs.getLong(1);
+        }
+        catch (Exception exception){
+            exception.getStackTrace();
+        }
+        return id;
     }
 
     @Override

@@ -1,11 +1,8 @@
 package com.jcf.mapper;
 
-
 import com.jcf.persistence.model.Operation;
 
 import com.jcf.persistence.dto.OperationDTO;
-
-
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

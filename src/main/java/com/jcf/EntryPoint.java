@@ -1,6 +1,5 @@
 package com.jcf;
 
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;
 import org.modelmapper.convention.MatchingStrategies;
@@ -10,10 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
-
 @SpringBootApplication(scanBasePackages = "com.jcf")
-public class EntryPoint {
+public class EntryPoint{
 
     public static void main(String[] args) {
         SpringApplication.run(EntryPoint.class, args);
@@ -35,3 +32,4 @@ public class EntryPoint {
         return mapper;
     }
 }
+

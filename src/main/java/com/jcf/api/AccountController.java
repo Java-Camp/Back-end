@@ -4,7 +4,6 @@ import com.jcf.persistence.dao.AccountDao;
 import com.jcf.persistence.dto.AccountDto;
 import com.jcf.persistence.dto.UserAccountDto;
 import com.jcf.persistence.model.Account;
-import com.jcf.persistence.model.Currency;
 import com.jcf.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

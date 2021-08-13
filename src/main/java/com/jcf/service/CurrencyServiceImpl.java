@@ -5,6 +5,7 @@ import com.jcf.persistence.repository.CurrencyRepository;
 import com.jcf.vo.CurrencyVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
+@Async
 public class CurrencyServiceImpl implements CurrencyService {
     private final CurrencyRepository repository;
 
@@ -26,7 +28,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public Currency getById(Long id) {
         final Optional<Currency> byId = repository.findById(id);
-        if (!byId.isPresent()) {
+        if (byId.isEmpty()) {
             throw new IllegalArgumentException("No such currency!");
         }
         return byId.get();
