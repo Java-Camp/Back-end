@@ -16,6 +16,4 @@ public interface Session<E, ID> {
     List<E>findAll(EntityMapper<E> eEntityMapper);
 
     E findByUnique(String name, Object value ,EntityMapper<E> entityMapper);
-
-    Long getEntityID(String name, EntityMapper<E> entityMapper);
 }

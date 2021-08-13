@@ -77,8 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setEmail(vo.getEmail());
         user.setPassword(vo.getPassword());
         user.setRole("USER");
-        userRepo.saveOrUpdate(user);
-        return user;
+        return userRepo.saveOrUpdate(user);
     }
 
     @Override

@@ -43,9 +43,4 @@ public abstract class GenericRepository<E, ID> implements CrudRepository<E, ID> 
     public List<E> findAll(){
         return session.findAll(new EntityMapper<>(entityClass));
     }
-
-    @Override
-    public Long getEntityID(String name){
-        return session.getEntityID(name, new EntityMapper<>(entityClass));
-    }
 }

@@ -96,6 +96,14 @@ public class EntityMapper<E> implements RowMapper<E> {
     }
 
     @SneakyThrows
+    public void setId(E entity, Long id){ // Output id
+        Field privateField = entityClass.getDeclaredField("id");
+        privateField.setAccessible(true);
+        privateField.set(entity, id);
+        privateField.setAccessible(false);
+    }
+
+    @SneakyThrows
    public List<Object> getFields(E entity){ // Output array with fields
         List<Object> answer = new ArrayList<>();
         List<Field> fields = getColumnFields();

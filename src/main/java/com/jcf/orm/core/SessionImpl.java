@@ -82,8 +82,10 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
                 Object o;
                 connection = conn;
                 Long entityID = id;
-                if (Objects.isNull(id))
+                if (Objects.isNull(id)) {
                     entityID = getIdBySequence();
+                    entityMapper.setId(entity, entityID);
+                }
 
                 for(int i = 0; i < fields.size()*2; i++) {
                     o = fields.get(i % fields.size());
@@ -100,23 +102,6 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
 
         log.info("Entity was added to table");
         return entity;
-    }
-
-    @Override
-    public Long getEntityID(String name, EntityMapper<E> entityMapper){ // name - sequences name
-        Long id = null;
-        try{
-            String sql = "select "+ name + ".currval from DUAL";
-            log.info(sql);
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next())
-                id = rs.getLong(1);
-        }
-        catch (Exception exception){
-            exception.getStackTrace();
-        }
-        return id;
     }
 
     private Long getIdBySequence(){
