@@ -78,10 +78,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassword(vo.getPassword());
         user.setRole("USER");
         userRepo.saveOrUpdate(user);
-        Long id = userRepo.getEntityID("ISEQ$$_104124");
-        if(userRepo.findById(id).isEmpty())
-            throw new ServiceNotWorkingException("Save");
-        user.setId(id);
         return user;
     }
 
