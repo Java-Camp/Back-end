@@ -2,7 +2,6 @@ package com.jcf.service;
 
 import com.jcf.exceptions.EntityNotFoundException;
 import com.jcf.exceptions.FieldIsNullException;
-import com.jcf.exceptions.LockedAccessException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.persistence.model.Operation;
@@ -38,7 +37,7 @@ public class OperationServiceImpl implements OperationService{
 
     @Override
     public Operation updateOperation(OperationDTO operationDTO){
-        if(operationRepository.findById(operationDTO.getId()).isEmpty())
+        if(operationRepository.findById(operationDTO.getId()).isEmpty() || Objects.isNull(operationDTO.getId()))
             throw new EntityNotFoundException(operationDTO.getId());
 
 
