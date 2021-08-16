@@ -22,7 +22,7 @@ public class OperationController {
 
    @PutMapping("")
     public ResponseEntity<Operation> updateOperation(@RequestBody OperationDTO operationDTO) {
-       return ResponseEntity.ok(operationService.saveOperation(operationDTO));
+       return ResponseEntity.ok(operationService.updateOperation(operationDTO));
     }
 
    @PostMapping("")

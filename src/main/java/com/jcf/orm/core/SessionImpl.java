@@ -146,14 +146,10 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
     }
 
     @Override
-    public E findByUnique(String name, Object value , EntityMapper<E> entityMapper) {
-        String Query = "SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e." + name + " = ?";
-        log.info(Query);
-        Optional<E> answer = jdbcTemplate.query(Query, entityMapper, value)
-                .stream()
-                .findAny();
-        if (answer.isEmpty())
-            throw new IllegalArgumentException("entity not found not found");
-        return answer.get();
+    public List<E> findByUnique(String name, Object value , EntityMapper<E> entityMapper) {
+        // String Query = "SELECT ACCOUNT_ID FROM " + getTableName(entityMapper) + " e WHERE e." + name + " = " + value;
+        String Query = "SELECT ACCOUNT_ID FROM \"" + getTableName(entityMapper) + "\" e WHERE e." + name + " = ?";
+//        String Query = "SELECT ACCOUNT_ID FROM USER_ACCOUNT e WHERE e.USER_ID = 121";
+        return jdbcTemplate.query(Query, entityMapper, value);
     }
 }
