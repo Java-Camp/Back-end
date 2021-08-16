@@ -21,7 +21,7 @@ import java.util.Set;
 public class Account {
 
     @Id
-    private Integer id;
+    private Long id;
 
     @Column(name = "ALIAS")
     private String alias;

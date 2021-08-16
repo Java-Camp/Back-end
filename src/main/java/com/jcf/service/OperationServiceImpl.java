@@ -2,6 +2,7 @@ package com.jcf.service;
 
 import com.jcf.exceptions.EntityNotFoundException;
 import com.jcf.exceptions.FieldIsNullException;
+import com.jcf.exceptions.LockedAccessException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.persistence.model.Operation;
@@ -63,8 +64,8 @@ public class OperationServiceImpl implements OperationService{
         User user = userRepository.findByEmail(userEmail);
 
         log.info("user id " + user.getId());
-/*        if (!userAccountRepository.findByUnique("userId", user.getId()).contains(operationDTO.getAccountId().longValue()))
-            throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getId());*/
+        if (!userAccountRepository.findByUnique("userId", user.getId()).contains(operationDTO.getAccountId().longValue()))
+            throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getId());
 
 
         log.info("CHECK");

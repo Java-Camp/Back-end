@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/operations")
-
 public class OperationController {
 
     private final OperationServiceImpl operationService;

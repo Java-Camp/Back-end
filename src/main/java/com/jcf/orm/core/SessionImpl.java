@@ -148,8 +148,10 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
     @Override
     public List<E> findByUnique(String name, Object value , EntityMapper<E> entityMapper) {
         // String Query = "SELECT ACCOUNT_ID FROM " + getTableName(entityMapper) + " e WHERE e." + name + " = " + value;
-        String Query = "SELECT ACCOUNT_ID FROM \"" + getTableName(entityMapper) + "\" e WHERE e." + name + " = ?";
-//        String Query = "SELECT ACCOUNT_ID FROM USER_ACCOUNT e WHERE e.USER_ID = 121";
-        return jdbcTemplate.query(Query, entityMapper, value);
+//        String Query = "SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e." + name + " = ?";
+        String Query = "SELECT * FROM USER_ACCOUNT e WHERE e.USER_ID = ?";
+        List <E> answer = jdbcTemplate.query(Query, entityMapper, value);
+        System.out.println(answer);
+        return answer;
     }
 }

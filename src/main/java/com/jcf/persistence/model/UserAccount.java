@@ -22,7 +22,7 @@ import java.util.Set;
 public class UserAccount {
 
     @Id
-    private Integer id;
+    private Long id;
 
     @Column(name = "USER_ID", nullable = false)
     private BigDecimal userId;
