@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -13,8 +15,11 @@ import lombok.ToString;
 @ToString
 public class AccountDto {
 
-    private Long accountTypeId;
     private String alias;
-    private Long currencyId;
+    private String language;
+    private BigDecimal moneyBalance;
+    private String balanceType;
+    private BigDecimal accountTypeId;
+    private BigDecimal currencyId;
 
 }

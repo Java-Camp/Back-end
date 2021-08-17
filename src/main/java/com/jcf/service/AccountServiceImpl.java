@@ -1,6 +1,7 @@
 package com.jcf.service;
 
 import com.jcf.exceptions.EntityNotFoundException;
+import com.jcf.exceptions.FieldIsNullException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.AccountDto;
 import com.jcf.persistence.model.Account;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -40,7 +42,34 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account saveAccount(String userEmail, AccountDto accountDto) {
+    public Account saveAccount(AccountDto accountDto) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(username);
+        Account account = new Account();
+
+        if(Objects.isNull(accountDto.getAlias()))
+            throw new FieldIsNullException("Alias");
+
+        if(Objects.isNull(accountDto.getLanguage()))
+            throw new FieldIsNullException("Language");
+        if(Objects.isNull(accountDto.getMoneyBalance()))
+            throw new FieldIsNullException("Money Balance");
+        if(Objects.isNull(accountDto.getBalanceType()))
+            throw new FieldIsNullException("Balance Type");
+        if(Objects.isNull(accountDto.getAccountTypeId()))
+            throw new FieldIsNullException("Account Type");
+        if(Objects.isNull(accountDto.getCurrencyId()))
+            throw new FieldIsNullException("Currency");
+
+        account.setAlias(accountDto.getAlias());
+        account.setLanguage(accountDto.getLanguage());
+        account.setMoneyBalance(accountDto.getMoneyBalance());
+        account.setBalanceType(accountDto.getBalanceType());
+        account.setAccountTypeId(accountDto.getAccountTypeId());
+        account.setCurrencyId(accountDto.getCurrencyId());
+
+        return accountRepository.saveOrUpdate(account);
+        // todo add changes yo User_Account table
 
 //        final User user = userRepository.findByEmail(userEmail);
 //
@@ -58,8 +87,6 @@ public class AccountServiceImpl implements AccountService {
 //                .userId(user.getId())
 //                .account_id(account.getId())
 //                .build());
-
-        return null;
     }
 
     @Override

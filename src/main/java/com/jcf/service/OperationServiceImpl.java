@@ -85,8 +85,6 @@ public class OperationServiceImpl implements OperationService{
 /*        if (!userAccountRepository.findByUnique("userId", user.getId()).contains(operationDTO.getAccountId().longValue()))
             throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getId());*/
 
-
-        log.info("CHECK");
         if (Objects.isNull(operationDTO.getDateTime())) {
             operation.setDateTime(Instant.now().atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
         } else {
@@ -120,6 +118,7 @@ public class OperationServiceImpl implements OperationService{
         if (operationRepository.findById(id).isEmpty())
             throw new EntityNotFoundException(id);
         operationRepository.delete(id);
+        // todo make a change for accounts (update)
         if (operationRepository.findById(id).isPresent())
             throw new ServiceNotWorkingException("Delete");
     }
