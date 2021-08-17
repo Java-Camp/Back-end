@@ -36,12 +36,26 @@ public class OperationServiceImpl implements OperationService{
     private final UserAccountRepository userAccountRepository;
     private final AccountRepository accountRepository;
 
+    private boolean isControl(OperationDTO operationDTO, User user){
+        for (UserAccount userAccount: userAccountRepository.findByUnique("userId", user.getId())){
+            if (userAccount.getAccount_id().equals(operationDTO.getAccountId())){
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public Operation updateOperation(OperationDTO operationDTO){
         if(operationRepository.findById(operationDTO.getId()).isEmpty() || Objects.isNull(operationDTO.getId()))
             throw new EntityNotFoundException(operationDTO.getId());
+        // todo think how to not make change for accounts user not controlling
 
+        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(userEmail);
+
+        if(!isControl(operationDTO, user))
+            throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getAlias());
 
         Operation operation = operationRepository.findById(operationDTO.getId()).get();
         if(!Objects.isNull(operationDTO.getOperationId()))
@@ -65,14 +79,8 @@ public class OperationServiceImpl implements OperationService{
         User user = userRepository.findByEmail(userEmail);
 
         log.info("user id " + user.getId());
-        boolean control = false;
-        for (UserAccount userAccount: userAccountRepository.findByUnique("userId", user.getId())){
-            if (userAccount.getAccount_id().equals(operationDTO.getAccountId())){
-                control = true;
-                break;
-            }
-        }
-        if(!control)
+
+        if(!isControl(operationDTO, user))
             throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getAlias());
 
 /*        if (!userAccountRepository.findByUnique("userId", user.getId()).contains(operationDTO.getAccountId().longValue()))
