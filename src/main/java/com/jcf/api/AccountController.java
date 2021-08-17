@@ -8,12 +8,7 @@ import com.jcf.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -26,7 +21,7 @@ public class AccountController {
     private final AccountService accountService;
     private final AccountDao accountDao;
 
-    @GetMapping("")
+/*    @GetMapping("")
     public ResponseEntity<List<UserAccountDto>> getAccounts() {
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
@@ -44,9 +39,18 @@ public class AccountController {
 
     @PostMapping("")
     public ResponseEntity<Integer> saveAccount(@RequestBody AccountDto accountDto) {
-        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/accounts/save").toUriString());
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.created(uri).body(accountDao.save(userEmail, accountDto));
+        return ResponseEntity.ok(accountDao.save(userEmail, accountDto));
+    }*/
+
+    @GetMapping("")
+    public ResponseEntity<List<Account>> getAccounts() {
+        return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        accountService.delete(id);
+        return ResponseEntity.ok("Entity was deleted");
+    }
 }

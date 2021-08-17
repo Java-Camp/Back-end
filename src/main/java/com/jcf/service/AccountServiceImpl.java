@@ -1,8 +1,11 @@
 package com.jcf.service;
 
+import com.jcf.exceptions.EntityNotFoundException;
+import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.AccountDto;
 import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.User;
+import com.jcf.persistence.model.UserAccount;
 import com.jcf.persistence.repository.AccountRepository;
 import com.jcf.persistence.repository.UserAccountRepository;
 import com.jcf.persistence.repository.UserRepository;
@@ -13,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,8 +66,22 @@ public class AccountServiceImpl implements AccountService {
     public List<Account> getAllAccounts() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(username);
+        List<Account> accountList = new ArrayList<>();
 
-        //List<Account>  accountList = accountRepository.findById(userAccountRepository.findById(user.getId()));
-        return null;
+        for (UserAccount userAccount: userAccountRepository.findByUnique("userId", user.getId())){
+            accountList.add(accountRepository.findById(userAccount.getAccount_id().longValue()).get());
+        }
+
+        return accountList;
+    }
+
+    @Override
+    public void delete(Long id) {
+        if (accountRepository.findById(id).isEmpty())
+            throw new EntityNotFoundException(id);
+        accountRepository.delete(id);
+        // todo add delete UserAccount with account id...
+        if (accountRepository.findById(id).isPresent())
+            throw new ServiceNotWorkingException("Delete");
     }
 }

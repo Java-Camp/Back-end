@@ -10,5 +10,5 @@ public interface AccountService {
     Account findById(Long id);
     Account saveAccount(String userEmail, AccountDto accountDto);
     List<Account> getAllAccounts();
-
+    void delete(Long id);
 }

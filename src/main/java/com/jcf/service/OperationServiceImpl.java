@@ -38,9 +38,8 @@ public class OperationServiceImpl implements OperationService{
 
     private boolean isControl(OperationDTO operationDTO, User user){
         for (UserAccount userAccount: userAccountRepository.findByUnique("userId", user.getId())){
-            if (userAccount.getAccount_id().equals(operationDTO.getAccountId())){
+            if (userAccount.getAccount_id().equals(operationDTO.getAccountId()))
                 return true;
-            }
         }
         return false;
     }
