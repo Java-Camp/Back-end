@@ -5,7 +5,6 @@ import com.jcf.persistence.model.Account;
 import com.jcf.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,32 +15,14 @@ import java.util.List;
 public class AccountController {
     private final AccountService accountService;
 
-/*    @GetMapping("")
-    public ResponseEntity<List<UserAccountDto>> getAccounts() {
-        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        try {
-            accountDao.getAllUsers();
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok().body(accountDao.getAllUserAccounts(userEmail));
-    }
-
-    @GetMapping("/{id}")
-    public Account getAccount(@PathVariable Long id) {
-        return accountService.findById(id);
-    }
-
-    @PostMapping("")
-    public ResponseEntity<Integer> saveAccount(@RequestBody AccountDto accountDto) {
-        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok(accountDao.save(userEmail, accountDto));
-    }*/
-
     @PostMapping("")
     public ResponseEntity<Account> saveAccount(@RequestBody AccountDto accountDto) {
-        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(accountService.saveAccount(accountDto));
+    }
+
+    @PutMapping("")
+    public ResponseEntity<Account> updateAccount(@RequestBody AccountDto accountDto) {
+        return ResponseEntity.ok(accountService.updateAccount(accountDto));
     }
 
     @GetMapping("/{id}")

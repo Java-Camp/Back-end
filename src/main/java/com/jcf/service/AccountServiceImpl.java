@@ -2,6 +2,7 @@ package com.jcf.service;
 
 import com.jcf.exceptions.EntityNotFoundException;
 import com.jcf.exceptions.FieldIsNullException;
+import com.jcf.exceptions.LockedAccessException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.AccountDto;
 import com.jcf.persistence.model.Account;
@@ -34,11 +35,43 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account findById(Long id) {
-        final Optional<Account> byId = accountRepository.findById(id);
-        if (!byId.isPresent()) {
-            throw new IllegalArgumentException("No such account!");
-        }
+        Optional<Account> byId = accountRepository.findById(id);
+        if (byId.isEmpty())
+            throw new EntityNotFoundException(id);
         return byId.get();
+    }
+
+    @Override
+    public Account updateAccount(AccountDto accountDto) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(username);
+        Account account = accountRepository.findById(accountDto.getId()).get();
+
+        boolean isControl = false;
+        for (UserAccount userAccount: userAccountRepository.findByUnique("userId", user.getId())){
+            if (accountDto.getId().equals(userAccount.getAccount_id().longValue())) {
+                isControl = true;
+                break;
+            }
+        }
+
+        if(!isControl)
+            throw new LockedAccessException("You can't do anything with account " + accountDto.getAlias());
+
+        if(!Objects.isNull(accountDto.getAlias()))
+            account.setAlias(accountDto.getAlias());
+        if(!Objects.isNull(accountDto.getLanguage()))
+            account.setLanguage(accountDto.getLanguage());
+        if(!Objects.isNull(accountDto.getMoneyBalance()))
+            account.setMoneyBalance(accountDto.getMoneyBalance());
+        if(!Objects.isNull(accountDto.getBalanceType()))
+            account.setBalanceType(accountDto.getBalanceType());
+        if(!Objects.isNull(accountDto.getAccountTypeId()))
+            account.setAccountTypeId(accountDto.getAccountTypeId());
+        if(!Objects.isNull(accountDto.getCurrencyId()))
+            account.setCurrencyId(accountDto.getCurrencyId());
+
+        return accountRepository.saveOrUpdate(account);
     }
 
     @Override
@@ -49,7 +82,6 @@ public class AccountServiceImpl implements AccountService {
 
         if(Objects.isNull(accountDto.getAlias()))
             throw new FieldIsNullException("Alias");
-
         if(Objects.isNull(accountDto.getLanguage()))
             throw new FieldIsNullException("Language");
         if(Objects.isNull(accountDto.getMoneyBalance()))

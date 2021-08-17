@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 @ToString
 public class AccountDto {
 
+    private Long id;
     private String alias;
     private String language;
     private BigDecimal moneyBalance;

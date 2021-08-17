@@ -11,4 +11,5 @@ public interface AccountService {
     Account saveAccount(AccountDto accountDto);
     List<Account> getAllAccounts();
     void delete(Long id);
+    Account updateAccount(AccountDto accountDto);
 }
