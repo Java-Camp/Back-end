@@ -7,6 +7,7 @@ import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.persistence.model.Operation;
 import com.jcf.persistence.model.User;
+import com.jcf.persistence.model.UserAccount;
 import com.jcf.persistence.repository.AccountRepository;
 import com.jcf.persistence.repository.OperationRepository;
 import com.jcf.persistence.repository.UserAccountRepository;
@@ -64,8 +65,18 @@ public class OperationServiceImpl implements OperationService{
         User user = userRepository.findByEmail(userEmail);
 
         log.info("user id " + user.getId());
-        if (!userAccountRepository.findByUnique("userId", user.getId()).contains(operationDTO.getAccountId().longValue()))
-            throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getId());
+        boolean control = false;
+        for (UserAccount userAccount: userAccountRepository.findByUnique("userId", user.getId())){
+            if (userAccount.getAccount_id().equals(operationDTO.getAccountId())){
+                control = true;
+                break;
+            }
+        }
+        if(!control)
+            throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getAlias());
+
+/*        if (!userAccountRepository.findByUnique("userId", user.getId()).contains(operationDTO.getAccountId().longValue()))
+            throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getId());*/
 
 
         log.info("CHECK");

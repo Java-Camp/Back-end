@@ -14,7 +14,7 @@ public class UserAccountRepository extends GenericRepository<UserAccount, Long> 
         super(session, UserAccount.class);
     }
 
-    public List<Long> findByUnique(String name, Object value) {
+    public List<UserAccount> findByUnique(String name, Object value) {
         return session.findByUnique(name, value, new EntityMapper(UserAccount.class));
     }
 }

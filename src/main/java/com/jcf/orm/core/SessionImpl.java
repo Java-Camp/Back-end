@@ -152,6 +152,8 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
         String Query = "SELECT * FROM USER_ACCOUNT e WHERE e.USER_ID = ?";
         List <E> answer = jdbcTemplate.query(Query, entityMapper, value);
         System.out.println(answer);
+        System.out.println(answer.get(0));
+        System.out.println(answer.stream().findAny().get());
         return answer;
     }
 }
