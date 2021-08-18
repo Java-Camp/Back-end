@@ -1,7 +1,5 @@
 package com.jcf.persistence.dto;
 
-
-
 import com.jcf.validation.annotations.ValidEmail;
 import lombok.*;
 
@@ -15,7 +13,6 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 
 public class UserDTO {
-
 
     @NotEmpty
     private String firstName;

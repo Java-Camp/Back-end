@@ -4,7 +4,6 @@ import com.jcf.persistence.dao.AccountDao;
 import com.jcf.persistence.dto.AccountDto;
 import com.jcf.persistence.dto.UserAccountDto;
 import com.jcf.persistence.model.Account;
-import com.jcf.persistence.model.Currency;
 import com.jcf.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +29,11 @@ public class AccountController {
     @GetMapping("")
     public ResponseEntity<List<UserAccountDto>> getAccounts() {
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        try {
+            accountDao.getAllUsers();
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
         return ResponseEntity.ok().body(accountDao.getAllUserAccounts(userEmail));
     }
 
@@ -38,7 +42,7 @@ public class AccountController {
         return accountService.findById(id);
     }
 
-    @PostMapping("/save")
+    @PostMapping("")
     public ResponseEntity<Integer> saveAccount(@RequestBody AccountDto accountDto) {
         final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/accounts/save").toUriString());
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();

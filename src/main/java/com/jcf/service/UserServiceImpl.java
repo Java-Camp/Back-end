@@ -1,4 +1,5 @@
 package com.jcf.service;
+
 import com.jcf.exceptions.EntityNotFoundException;
 import com.jcf.exceptions.FieldIsNullException;
 import com.jcf.exceptions.ServiceNotWorkingException;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -39,6 +41,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    }
+
+    @Override
+    public User updateUser(UserVO vo){
+        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepo.findByEmail(userEmail);
+        if(!Objects.isNull(vo.getFirstName()))
+            user.setFirstName(vo.getFirstName());
+        if(!Objects.isNull(vo.getLastName()))
+            user.setLastName(vo.getLastName());
+        if(!Objects.isNull(vo.getEmail()))
+            user.setEmail(vo.getEmail());
+        if(!Objects.isNull(vo.getPassword()))
+            user.setPassword(passwordEncoder.encode(vo.getPassword()));
+        return userRepo.saveOrUpdate(user);
     }
 
     @Override
@@ -92,7 +109,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new ServiceNotWorkingException("Delete");
     }
 
-    public void finndAll(){
+    public void findAll(){
         userRepo.findAll();
     }
 }

@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 @Slf4j
@@ -46,7 +47,7 @@ public class EntityMapper<E> implements RowMapper<E> {
                             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
                             Date parsedDate = dateFormat.parse(dateTime);
                             Instant instant = new Timestamp(parsedDate.getTime()).toInstant();
-                            field.set(entity, instant);
+                            field.set(entity, instant.atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
                         }
                         else{
                             field.set(entity, resultSet.getObject(getColumnName(field)));
@@ -92,6 +93,14 @@ public class EntityMapper<E> implements RowMapper<E> {
         Long fieldValue = (Long) privateField.get(entity);
         privateField.setAccessible(false);
         return fieldValue;
+    }
+
+    @SneakyThrows
+    public void setId(E entity, Long id){ // Output id
+        Field privateField = entityClass.getDeclaredField("id");
+        privateField.setAccessible(true);
+        privateField.set(entity, id);
+        privateField.setAccessible(false);
     }
 
     @SneakyThrows

@@ -7,7 +7,7 @@ import com.jcf.orm.annotation.Table;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -23,7 +23,7 @@ public class Operation { // TODO CHANGE BIGDECIMAL TO LONG
     private Long id;
 
     @Column(name = "DATE_TIME")
-    private Instant dateTime;
+    private LocalDateTime dateTime;
     @Column(name = "SUM")
     private BigDecimal sum;
     @Column(name = "ACCOUNT_ID")

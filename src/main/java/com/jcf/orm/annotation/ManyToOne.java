@@ -1,5 +1,7 @@
 package com.jcf.orm.annotation;
 
+import com.jcf.orm.storages.Actions;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,14 +9,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Column {
-    String name() default "";
-
-    boolean unique() default false;
-
-    boolean nullable() default true;
-
-    int length() default 255;
-
-    boolean isAutoIncrement() default false;
+public @interface ManyToOne {
+    String joinColumn();
+    Actions onUpdate() default Actions.NOACTION;
+    Actions onDelete() default Actions.NOACTION;
 }

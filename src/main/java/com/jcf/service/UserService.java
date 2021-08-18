@@ -1,6 +1,5 @@
 package com.jcf.service;
 
-
 import com.jcf.persistence.model.User;
 import com.jcf.vo.UserVO;
 
@@ -12,4 +11,5 @@ public interface UserService {
     User getUserById(Long  id);
     List<User> getUsers();
     void delete(Long id);
+    User updateUser(UserVO vo);
 }

@@ -5,7 +5,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.Instant;
 
 
 @NoArgsConstructor
@@ -14,7 +14,7 @@ import java.sql.Date;
 @ToString
 public class OperationDTO {
 
-    private Date dateTime;
+    private Instant dateTime;
     @NotEmpty
     private BigDecimal sum;
     @NotEmpty

@@ -1,6 +1,5 @@
 package com.jcf.service;
 
-import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.AccountType;
 import com.jcf.vo.AccountTypeVO;
 

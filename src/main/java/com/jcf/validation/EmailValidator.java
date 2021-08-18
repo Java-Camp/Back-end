@@ -1,7 +1,5 @@
 package com.jcf.validation;
 
-
-
 import com.jcf.validation.annotations.ValidEmail;
 
 import javax.validation.ConstraintValidator;
