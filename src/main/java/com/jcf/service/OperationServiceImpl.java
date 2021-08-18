@@ -37,7 +37,7 @@ public class OperationServiceImpl implements OperationService{
     private final AccountRepository accountRepository;
 
     private boolean isControl(OperationDTO operationDTO, User user){
-        for (UserAccount userAccount: userAccountRepository.findByUnique("userId", user.getId())){
+        for (UserAccount userAccount: userAccountRepository.findByUnique("USER_ID", user.getId())){
             if (userAccount.getAccount_id().equals(operationDTO.getAccountId()))
                 return true;
         }
@@ -48,7 +48,6 @@ public class OperationServiceImpl implements OperationService{
     public Operation updateOperation(OperationDTO operationDTO){
         if(operationRepository.findById(operationDTO.getId()).isEmpty() || Objects.isNull(operationDTO.getId()))
             throw new EntityNotFoundException(operationDTO.getId());
-        // todo think how to not make change for accounts user not controlling
 
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(userEmail);

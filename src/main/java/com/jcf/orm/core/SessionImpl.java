@@ -147,13 +147,7 @@ public class SessionImpl<E, ID> implements Session<E,ID> {
 
     @Override
     public List<E> findByUnique(String name, Object value , EntityMapper<E> entityMapper) {
-        // String Query = "SELECT ACCOUNT_ID FROM " + getTableName(entityMapper) + " e WHERE e." + name + " = " + value;
-//        String Query = "SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e." + name + " = ?";
-        String Query = "SELECT * FROM USER_ACCOUNT e WHERE e.USER_ID = ?";
-        List <E> answer = jdbcTemplate.query(Query, entityMapper, value);
-        System.out.println(answer);
-        System.out.println(answer.get(0));
-        System.out.println(answer.stream().findAny().get());
-        return answer;
+        String Query = "SELECT * FROM \"" + getTableName(entityMapper) + "\" e WHERE e." + name + " = ?";
+        return jdbcTemplate.query(Query, entityMapper, value);
     }
 }

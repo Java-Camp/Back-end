@@ -5,6 +5,7 @@ import com.jcf.exceptions.FieldIsNullException;
 import com.jcf.exceptions.LockedAccessException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.AccountDto;
+import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.model.UserAccount;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +35,22 @@ public class AccountServiceImpl implements AccountService {
     private final UserRepository userRepository;
     private final UserAccountRepository userAccountRepository;
 
+    private boolean isControl(AccountDto accountDto, User user){
+        for (UserAccount userAccount: userAccountRepository.findByUnique("USER_ID", user.getId())){
+            if (accountDto.getId().equals(userAccount.getAccount_id().longValue()))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isControl(Account account, User user){
+        for (UserAccount userAccount: userAccountRepository.findByUnique("USER_ID", user.getId())){
+            if (account.getId().equals(userAccount.getAccount_id().longValue()))
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public Account findById(Long id) {
         Optional<Account> byId = accountRepository.findById(id);
@@ -47,16 +65,8 @@ public class AccountServiceImpl implements AccountService {
         User user = userRepository.findByEmail(username);
         Account account = accountRepository.findById(accountDto.getId()).get();
 
-        boolean isControl = false;
-        for (UserAccount userAccount: userAccountRepository.findByUnique("userId", user.getId())){
-            if (accountDto.getId().equals(userAccount.getAccount_id().longValue())) {
-                isControl = true;
-                break;
-            }
-        }
-
-        if(!isControl)
-            throw new LockedAccessException("You can't do anything with account " + accountDto.getAlias());
+        if(!isControl(accountDto, user))
+            throw new LockedAccessException("You can't do anything with account " + account.getAlias());
 
         if(!Objects.isNull(accountDto.getAlias()))
             account.setAlias(accountDto.getAlias());
@@ -72,6 +82,11 @@ public class AccountServiceImpl implements AccountService {
             account.setCurrencyId(accountDto.getCurrencyId());
 
         return accountRepository.saveOrUpdate(account);
+    }
+
+    @Override
+    public Account count(AccountDto accountDto) {
+        return null;
     }
 
     @Override
@@ -100,25 +115,17 @@ public class AccountServiceImpl implements AccountService {
         account.setAccountTypeId(accountDto.getAccountTypeId());
         account.setCurrencyId(accountDto.getCurrencyId());
 
-        return accountRepository.saveOrUpdate(account);
-        // todo add changes yo User_Account table
+        account = accountRepository.saveOrUpdate(account);
+        // todo add changes to User_Account table
 
-//        final User user = userRepository.findByEmail(userEmail);
-//
-//        final Account account = accountRepository.saveOrUpdate(Account.builder()
-//                .accountTypeId(accountDto.getAccountTypeId())
-//                .alias(accountDto.getAlias())
-//                .moneyBalance(1)
-//                .balanceType("")
-//                .language("")
-//                .currencyId(accountDto.getCurrencyId())
-//                .build());
-//
+
 //        userAccountRepository.saveOrUpdate(UserAccount
 //                .builder()
-//                .userId(user.getId())
-//                .account_id(account.getId())
+//                .userId(BigDecimal.valueOf(user.getId()))
+//                .account_id(BigDecimal.valueOf(account.getId()))
 //                .build());
+
+        return account;
     }
 
     @Override
@@ -127,7 +134,7 @@ public class AccountServiceImpl implements AccountService {
         User user = userRepository.findByEmail(username);
         List<Account> accountList = new ArrayList<>();
 
-        for (UserAccount userAccount: userAccountRepository.findByUnique("userId", user.getId())){
+        for (UserAccount userAccount: userAccountRepository.findByUnique("USER_ID", user.getId())){
             accountList.add(accountRepository.findById(userAccount.getAccount_id().longValue()).get());
         }
 
@@ -136,6 +143,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void delete(Long id) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(username);
+
+        if(!isControl(accountRepository.findById(id).get(), user))
+            throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(id).get().getAlias());
+
         if (accountRepository.findById(id).isEmpty())
             throw new EntityNotFoundException(id);
         accountRepository.delete(id);

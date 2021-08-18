@@ -25,6 +25,11 @@ public class AccountController {
         return ResponseEntity.ok(accountService.updateAccount(accountDto));
     }
 
+    @PutMapping("/count")
+    public ResponseEntity<Account> count(@RequestBody AccountDto accountDto) {
+        return ResponseEntity.ok(accountService.count(accountDto));
+    }
+
     @GetMapping("/{id}")
     public Account getAccount(@PathVariable Long id) {
         return accountService.findById(id);
