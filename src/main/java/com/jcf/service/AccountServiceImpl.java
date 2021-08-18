@@ -149,10 +149,14 @@ public class AccountServiceImpl implements AccountService {
         if(!isControl(accountRepository.findById(id).get(), user))
             throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(id).get().getAlias());
 
+        for(UserAccount userAccount: userAccountRepository.findByUnique("ACCOUNT_ID", id))
+            userAccountRepository.delete(userAccount.getId());
+
         if (accountRepository.findById(id).isEmpty())
             throw new EntityNotFoundException(id);
+
         accountRepository.delete(id);
-        // todo add delete UserAccount with account id...
+
         if (accountRepository.findById(id).isPresent())
             throw new ServiceNotWorkingException("Delete");
     }
