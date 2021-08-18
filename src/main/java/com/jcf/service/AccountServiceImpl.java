@@ -119,11 +119,11 @@ public class AccountServiceImpl implements AccountService {
         // todo add changes to User_Account table
 
 
-//        userAccountRepository.saveOrUpdate(UserAccount
-//                .builder()
-//                .userId(BigDecimal.valueOf(user.getId()))
-//                .account_id(BigDecimal.valueOf(account.getId()))
-//                .build());
+        userAccountRepository.saveOrUpdate(UserAccount
+                .builder()
+                .userId(BigDecimal.valueOf(user.getId()))
+                .account_id(BigDecimal.valueOf(account.getId()))
+                .build());
 
         return account;
     }
