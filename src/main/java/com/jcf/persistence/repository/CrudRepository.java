@@ -10,7 +10,5 @@ public interface CrudRepository<E, ID> {
 
     void delete(ID id);
 
-    E findByUnique(String name, Object value);
-
     List<E> findAll();
 }

@@ -1,3 +1,4 @@
+/*
 package com.jcf.persistence.dao;
 
 import com.jcf.orm.core.EntityMapper;
@@ -127,3 +128,4 @@ public class AccountDao {
         }
     }
 }
+*/

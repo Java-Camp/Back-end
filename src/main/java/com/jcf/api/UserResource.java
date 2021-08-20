@@ -38,8 +38,7 @@ public class UserResource {
 
     @PostMapping("/save")
     public ResponseEntity<User> saveUser(@RequestBody UserVO vo) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(vo));
+        return ResponseEntity.ok(userService.saveUser(vo));
     }
 
     @DeleteMapping("/delete/{id}")

@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/operations")
-
 public class OperationController {
 
     private final OperationServiceImpl operationService;
@@ -20,15 +19,15 @@ public class OperationController {
         this.operationService = operationService;
     }
 
-   @PutMapping("")
+    @PutMapping("")
     public ResponseEntity<Operation> updateOperation(@RequestBody OperationDTO operationDTO) {
-       return ResponseEntity.ok(operationService.saveOperation(operationDTO));
+        return ResponseEntity.ok(operationService.updateOperation(operationDTO));
     }
 
-   @PostMapping("")
-   public ResponseEntity<Operation> createOperation(@RequestBody OperationDTO operationDTO) {
-       return ResponseEntity.ok(operationService.saveOperation(operationDTO));
-   }
+    @PostMapping("")
+    public ResponseEntity<Operation> createOperation(@RequestBody OperationDTO operationDTO) {
+        return ResponseEntity.ok(operationService.saveOperation(operationDTO));
+    }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Operation>> findAll() {

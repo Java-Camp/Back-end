@@ -35,11 +35,6 @@ public abstract class GenericRepository<E, ID> implements CrudRepository<E, ID> 
     }
 
     @Override
-    public E findByUnique(String name, Object value) {
-        return session.findByUnique(name, value, new EntityMapper<>(entityClass));
-    }
-
-    @Override
     public List<E> findAll(){
         return session.findAll(new EntityMapper<>(entityClass));
     }

@@ -14,6 +14,7 @@ import java.time.Instant;
 @ToString
 public class OperationDTO {
 
+    private Long id;
     private Instant dateTime;
     @NotEmpty
     private BigDecimal sum;

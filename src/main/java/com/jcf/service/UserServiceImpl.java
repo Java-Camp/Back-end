@@ -4,6 +4,8 @@ import com.jcf.exceptions.EntityNotFoundException;
 import com.jcf.exceptions.FieldIsNullException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.model.User;
+import com.jcf.persistence.model.UserAccount;
+import com.jcf.persistence.repository.UserAccountRepository;
 import com.jcf.persistence.repository.UserRepository;
 import com.jcf.vo.UserVO;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ import java.util.*;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepo;
+    private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -102,6 +105,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void delete(Long id) {
+
+        for(UserAccount userAccount: userAccountRepository.findByUnique("USER_ID", id))
+            userAccountRepository.delete(userAccount.getId());
+
         if (userRepo.findById(id).isEmpty())
             throw new EntityNotFoundException(id);
         userRepo.delete(id);
