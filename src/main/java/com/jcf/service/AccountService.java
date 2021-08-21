@@ -12,5 +12,4 @@ public interface AccountService {
     List<Account> getAllAccounts();
     void delete(Long id);
     Account updateAccount(AccountDto accountDto);
-    Account count(AccountDto accountDto);
 }

@@ -2,6 +2,7 @@ package com.jcf.persistence.repository;
 
 import com.jcf.orm.core.EntityMapper;
 import com.jcf.orm.core.Session;
+import com.jcf.persistence.model.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -37,5 +38,10 @@ public abstract class GenericRepository<E, ID> implements CrudRepository<E, ID> 
     @Override
     public List<E> findAll(){
         return session.findAll(new EntityMapper<>(entityClass));
+    }
+
+    @Override
+    public List<E> findByUnique(String name, Object value) {
+        return session.findByUnique(name, value, new EntityMapper<>(entityClass));
     }
 }

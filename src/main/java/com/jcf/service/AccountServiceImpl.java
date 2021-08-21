@@ -5,11 +5,11 @@ import com.jcf.exceptions.FieldIsNullException;
 import com.jcf.exceptions.LockedAccessException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.AccountDto;
-import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.model.UserAccount;
 import com.jcf.persistence.repository.AccountRepository;
+import com.jcf.persistence.repository.OperationRepository;
 import com.jcf.persistence.repository.UserAccountRepository;
 import com.jcf.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +34,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
     private final UserAccountRepository userAccountRepository;
+    private final OperationRepository operationRepository;
 
     private boolean isControl(AccountDto accountDto, User user){
         for (UserAccount userAccount: userAccountRepository.findByUnique("USER_ID", user.getId())){
@@ -85,11 +86,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account count(AccountDto accountDto) {
-        return null;
-    }
-
-    @Override
     public Account saveAccount(AccountDto accountDto) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(username);
@@ -116,8 +112,6 @@ public class AccountServiceImpl implements AccountService {
         account.setCurrencyId(accountDto.getCurrencyId());
 
         account = accountRepository.saveOrUpdate(account);
-        // todo add changes to User_Account table
-
 
         userAccountRepository.saveOrUpdate(UserAccount
                 .builder()

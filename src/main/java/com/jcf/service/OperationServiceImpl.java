@@ -5,6 +5,7 @@ import com.jcf.exceptions.FieldIsNullException;
 import com.jcf.exceptions.LockedAccessException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.OperationDTO;
+import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.Operation;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.model.UserAccount;
@@ -19,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -35,6 +37,26 @@ public class OperationServiceImpl implements OperationService{
     private final UserRepository userRepository;
     private final UserAccountRepository userAccountRepository;
     private final AccountRepository accountRepository;
+
+    private void update(Long id){
+        Account account = accountRepository.findById(id).get();
+        BigDecimal expenses = BigDecimal.ZERO;
+        for(Operation operation: operationRepository.findByUnique("OPERATION_TYPE_ID", 21)) {
+            if(id.equals(operation.getAccountId().longValue()))
+                expenses = expenses.add(operation.getSum());
+        }
+
+        BigDecimal income = BigDecimal.ZERO;
+
+        for(Operation operation: operationRepository.findByUnique("OPERATION_TYPE_ID", 81)) {
+            if(id.equals(operation.getAccountId().longValue()))
+                income = income.add(operation.getSum());
+        }
+
+        BigDecimal money = expenses.multiply(BigDecimal.valueOf(-1)).add(income);
+        account.setMoneyBalance(money);
+        accountRepository.saveOrUpdate(account);
+    }
 
     private boolean isControl(OperationDTO operationDTO, User user){
         for (UserAccount userAccount: userAccountRepository.findByUnique("USER_ID", user.getId())){
@@ -66,8 +88,12 @@ public class OperationServiceImpl implements OperationService{
             operation.setDateTime(operationDTO.getDateTime().atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
         if(!Objects.isNull(operationDTO.getCategoryId()))
             operation.setCategoryId(operationDTO.getCategoryId());
+        if(!Objects.isNull(operationDTO.getAccountId()))
+            operation.setAccountId(operationDTO.getAccountId());
 
-        return operationRepository.saveOrUpdate(operation);
+        operation = operationRepository.saveOrUpdate(operation);
+        update(operation.getAccountId().longValue());
+        return operation;
     }
 
     @Override
@@ -104,7 +130,10 @@ public class OperationServiceImpl implements OperationService{
         operation.setOperationTypeId(operationDTO.getOperationTypeId());
         operation.setOperationId(operationDTO.getOperationId());
         operation.setCategoryId(operationDTO.getCategoryId());
-        return operationRepository.saveOrUpdate(operation);
+
+        operation = operationRepository.saveOrUpdate(operation);
+        update(operation.getAccountId().longValue());
+        return operation;
     }
 
     @Override
@@ -117,7 +146,7 @@ public class OperationServiceImpl implements OperationService{
         if (operationRepository.findById(id).isEmpty())
             throw new EntityNotFoundException(id);
         operationRepository.delete(id);
-        // todo make a change for accounts (update)
+        update(operationRepository.findById(id).get().getAccountId().longValue());
         if (operationRepository.findById(id).isPresent())
             throw new ServiceNotWorkingException("Delete");
     }
