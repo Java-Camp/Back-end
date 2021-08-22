@@ -88,11 +88,16 @@ public class OperationServiceImpl implements OperationService{
             operation.setDateTime(operationDTO.getDateTime().atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
         if(!Objects.isNull(operationDTO.getCategoryId()))
             operation.setCategoryId(operationDTO.getCategoryId());
+
+        Long old_id = operation.getAccountId().longValue();
         if(!Objects.isNull(operationDTO.getAccountId()))
             operation.setAccountId(operationDTO.getAccountId());
 
+
         operation = operationRepository.saveOrUpdate(operation);
         update(operation.getAccountId().longValue());
+        if(!Objects.isNull(operationDTO.getAccountId()))
+            update(old_id);
         return operation;
     }
 
@@ -145,8 +150,12 @@ public class OperationServiceImpl implements OperationService{
     public void delete(Long id){
         if (operationRepository.findById(id).isEmpty())
             throw new EntityNotFoundException(id);
+        log.info("check");
+        Long oldId = operationRepository.findById(id).get().getAccountId().longValue();
+        log.info("OLD ID "+ oldId);
         operationRepository.delete(id);
-        update(operationRepository.findById(id).get().getAccountId().longValue());
+        log.info("Deleted");
+        update(oldId);
         if (operationRepository.findById(id).isPresent())
             throw new ServiceNotWorkingException("Delete");
     }
