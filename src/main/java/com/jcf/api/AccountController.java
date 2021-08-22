@@ -1,22 +1,12 @@
 package com.jcf.api;
 
-import com.jcf.persistence.dao.AccountDao;
 import com.jcf.persistence.dto.AccountDto;
-import com.jcf.persistence.dto.UserAccountDto;
 import com.jcf.persistence.model.Account;
 import com.jcf.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,17 +14,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
-    private final AccountDao accountDao;
 
-    @GetMapping("")
-    public ResponseEntity<List<UserAccountDto>> getAccounts() {
-        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        try {
-            accountDao.getAllUsers();
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok().body(accountDao.getAllUserAccounts(userEmail));
+    @PostMapping("")
+    public ResponseEntity<Account> saveAccount(@RequestBody AccountDto accountDto) {
+        return ResponseEntity.ok(accountService.saveAccount(accountDto));
+    }
+
+    @PutMapping("")
+    public ResponseEntity<Account> updateAccount(@RequestBody AccountDto accountDto) {
+        return ResponseEntity.ok(accountService.updateAccount(accountDto));
+    }
+
+    @PutMapping("/count")
+    public ResponseEntity<Account> count(@RequestBody AccountDto accountDto) {
+        return ResponseEntity.ok(accountService.count(accountDto));
     }
 
     @GetMapping("/{id}")
@@ -42,11 +35,14 @@ public class AccountController {
         return accountService.findById(id);
     }
 
-    @PostMapping("")
-    public ResponseEntity<Integer> saveAccount(@RequestBody AccountDto accountDto) {
-        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/accounts/save").toUriString());
-        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.created(uri).body(accountDao.save(userEmail, accountDto));
+    @GetMapping("")
+    public ResponseEntity<List<Account>> getAccounts() {
+        return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        accountService.delete(id);
+        return ResponseEntity.ok("Entity was deleted");
+    }
 }

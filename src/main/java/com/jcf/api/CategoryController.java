@@ -39,5 +39,4 @@ public class CategoryController {
         categoryService.delete(id);
     }
 
-
 }
