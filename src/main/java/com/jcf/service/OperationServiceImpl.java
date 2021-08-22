@@ -1,4 +1,8 @@
 package com.jcf.service;
+import com.jcf.exceptions.EntityNotFoundException;
+import com.jcf.exceptions.FieldIsNullException;
+import com.jcf.exceptions.LockedAccessException;
+import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dao.OperationDao;
 import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.persistence.model.Account;
@@ -9,6 +13,8 @@ import com.jcf.persistence.repository.AccountRepository;
 import com.jcf.persistence.repository.OperationRepository;
 import com.jcf.persistence.repository.UserAccountRepository;
 import com.jcf.persistence.repository.UserRepository;
+import com.jcf.vo.FilteredOperationDto;
+import com.jcf.vo.OperationVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;

@@ -3,6 +3,8 @@ package com.jcf.api;
 import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.persistence.model.Operation;
 import com.jcf.service.OperationServiceImpl;
+import com.jcf.vo.FilteredOperationDto;
+import com.jcf.vo.OperationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,7 @@ public class OperationController {
 
     @PostMapping("/{accountId}")
     public ResponseEntity<List<OperationVO>> getOperationsByFilter(@PathVariable("accountId") String accountId,
-                                                                 @RequestBody FilteredOperationDto filter){
+                                                                   @RequestBody FilteredOperationDto filter){
 
 //        DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS");
 //        FilteredOperationDto filter = new FilteredOperationDto();

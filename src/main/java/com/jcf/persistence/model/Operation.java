@@ -24,7 +24,7 @@ public class Operation { // TODO CHANGE BIGDECIMAL TO LONG
     private Long id;
 
     @Column(name = "DATE_TIME")
-    private Instant dateTime;
+    private LocalDateTime dateTime;
     @Column(name = "SUM")
     private BigDecimal sum;
     @Column(name = "ACCOUNT_ID")
