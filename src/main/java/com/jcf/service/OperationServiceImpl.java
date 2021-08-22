@@ -1,6 +1,7 @@
 package com.jcf.service;
 import com.jcf.persistence.dao.OperationDao;
 import com.jcf.persistence.dto.OperationDTO;
+import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.Operation;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.model.UserAccount;
@@ -10,15 +11,16 @@ import com.jcf.persistence.repository.UserAccountRepository;
 import com.jcf.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oracle.sql.TIMESTAMP;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
-
+import java.util.Objects;
 
 @Service
 @Async
@@ -33,6 +35,26 @@ public class OperationServiceImpl implements OperationService{
     private final UserAccountRepository userAccountRepository;
     private final AccountRepository accountRepository;
 
+    private void update(Long id){
+        Account account = accountRepository.findById(id).get();
+        BigDecimal expenses = BigDecimal.ZERO;
+        for(Operation operation: operationRepository.findByUnique("OPERATION_TYPE_ID", 21)) {
+            if(id.equals(operation.getAccountId().longValue()))
+                expenses = expenses.add(operation.getSum());
+        }
+
+        BigDecimal income = BigDecimal.ZERO;
+
+        for(Operation operation: operationRepository.findByUnique("OPERATION_TYPE_ID", 81)) {
+            if(id.equals(operation.getAccountId().longValue()))
+                income = income.add(operation.getSum());
+        }
+
+        BigDecimal money = expenses.multiply(BigDecimal.valueOf(-1)).add(income);
+        account.setMoneyBalance(money);
+        accountRepository.saveOrUpdate(account);
+    }
+
     private boolean isControl(OperationDTO operationDTO, User user){
         for (UserAccount userAccount: userAccountRepository.findByUnique("USER_ID", user.getId())){
             if (userAccount.getAccount_id().equals(operationDTO.getAccountId()))
@@ -41,7 +63,7 @@ public class OperationServiceImpl implements OperationService{
         return false;
     }
 
-   
+    @Override
     public Operation updateOperation(OperationDTO operationDTO){
         if(operationRepository.findById(operationDTO.getId()).isEmpty() || Objects.isNull(operationDTO.getId()))
             throw new EntityNotFoundException(operationDTO.getId());
@@ -64,7 +86,17 @@ public class OperationServiceImpl implements OperationService{
         if(!Objects.isNull(operationDTO.getCategoryId()))
             operation.setCategoryId(operationDTO.getCategoryId());
 
-        return operationRepository.saveOrUpdate(operation);
+        Long old_id = operation.getAccountId().longValue();
+        if(!Objects.isNull(operationDTO.getAccountId()))
+            operation.setAccountId(operationDTO.getAccountId());
+
+
+        operation = operationRepository.saveOrUpdate(operation);
+        update(operation.getAccountId().longValue());
+        if(!Objects.isNull(operationDTO.getAccountId()))
+            update(old_id);
+        return operation;
+    }
 
     @Override
     public Operation saveOperation(OperationDTO operationDTO) {
@@ -100,7 +132,10 @@ public class OperationServiceImpl implements OperationService{
         operation.setOperationTypeId(operationDTO.getOperationTypeId());
         operation.setOperationId(operationDTO.getOperationId());
         operation.setCategoryId(operationDTO.getCategoryId());
-        return operationRepository.saveOrUpdate(operation);
+
+        operation = operationRepository.saveOrUpdate(operation);
+        update(operation.getAccountId().longValue());
+        return operation;
     }
 
     @Override
@@ -112,8 +147,12 @@ public class OperationServiceImpl implements OperationService{
     public void delete(Long id){
         if (operationRepository.findById(id).isEmpty())
             throw new EntityNotFoundException(id);
+        log.info("check");
+        Long oldId = operationRepository.findById(id).get().getAccountId().longValue();
+        log.info("OLD ID "+ oldId);
         operationRepository.delete(id);
-        // todo make a change for accounts (update)
+        log.info("Deleted");
+        update(oldId);
         if (operationRepository.findById(id).isPresent())
             throw new ServiceNotWorkingException("Delete");
     }
