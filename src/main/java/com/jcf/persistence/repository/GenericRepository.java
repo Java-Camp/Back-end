@@ -4,6 +4,8 @@ import com.jcf.orm.core.EntityMapper;
 import com.jcf.orm.core.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +41,10 @@ public abstract class GenericRepository<E, ID> implements CrudRepository<E, ID> 
         return session.findByUnique(name, value, new EntityMapper<>(entityClass));
     }
 
+
     @Override
     public List<E> findAll(){
         return session.findAll(new EntityMapper<>(entityClass));
     }
+
 }

@@ -1,100 +1,67 @@
 package com.jcf.service;
-
-import com.jcf.exceptions.EntityNotFoundException;
-import com.jcf.exceptions.FieldIsNullException;
-import com.jcf.exceptions.LockedAccessException;
-import com.jcf.exceptions.ServiceNotWorkingException;
+import com.jcf.persistence.dao.OperationDao;
 import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.persistence.model.Operation;
-import com.jcf.persistence.model.User;
 import com.jcf.persistence.repository.OperationRepository;
-import com.jcf.persistence.repository.UserRepository;
+import com.jcf.vo.FilteredOperationDto;
+import com.jcf.vo.OperationVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oracle.sql.TIMESTAMP;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
+
 
 @Service
 @Async
-@RequiredArgsConstructor
 @Transactional
 @Slf4j
 public class OperationServiceImpl implements OperationService{
 
+    private final OperationDao operationDao;
     private final OperationRepository operationRepository;
-    private final UserRepository userRepository;
+
+
+
+    public OperationServiceImpl(OperationDao operationDao, OperationRepository operationRepository) {
+        this.operationDao = operationDao;
+        this.operationRepository = operationRepository;
+    }
 
 
     @Override
-    public Operation updateOperation(OperationDTO operationDTO){
-        if(operationRepository.findById(operationDTO.getOperationId().longValue()).isEmpty())
-            throw new EntityNotFoundException(operationDTO.getOperationId().longValue());
-
-        Operation operation = new Operation();
-
-        operation.setOperationId(operationDTO.getOperationId());
-        operation.setSum(operationDTO.getSum());
-        operation.setOperationTypeId(operationDTO.getOperationTypeId());
-        operation.setDateTime(operationDTO.getDateTime().atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
-        operation.setCategoryId(operationDTO.getCategoryId());
-
-        return operationRepository.saveOrUpdate(operation);
+    public Operation updateOperation(OperationDTO operationDTO) {
+        return null;
     }
 
     @Override
     public Operation saveOperation(OperationDTO operationDTO) {
-        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Operation operation = new Operation();
-        User user = userRepository.findByEmail(userEmail);
-
-        if (Objects.isNull(operationDTO.getDateTime())) {
-            operation.setDateTime(Instant.now().atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
-        } else {
-            operation.setDateTime(operationDTO.getDateTime().atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
-        }
-        if (Objects.isNull(operationDTO.getAccountId())) {
-            operation.setAccountId(new BigDecimal(user.getId()));
-        } else {
-            operation.setAccountId(operationDTO.getAccountId());
-        }
-        log.info("user id " + user.getId());
-        log.info("user id " + user.getId());
-
-        if(!(user.getId().equals(operation.getAccountId().longValue())))
-            throw new LockedAccessException("You can't do anything with user " + userRepository.findById(operationDTO.getAccountId().longValue()).get().getEmail());
-        if (Objects.isNull(operationDTO.getSum()))
-            throw new FieldIsNullException("Sum");
-        if (Objects.isNull(operationDTO.getOperationTypeId()))
-            throw new FieldIsNullException("Operation Type");
-        if (Objects.isNull(operationDTO.getCategoryId()))
-            throw new FieldIsNullException("Category");
-
+        operation.setDateTime(Instant.now());
         operation.setSum(operationDTO.getSum());
+        operation.setAccountId(operationDTO.getAccountId());
         operation.setOperationTypeId(operationDTO.getOperationTypeId());
         operation.setOperationId(operationDTO.getOperationId());
         operation.setCategoryId(operationDTO.getCategoryId());
+
         return operationRepository.saveOrUpdate(operation);
     }
 
     @Override
-    public List<Operation> findAll(){
-        return operationRepository.findAll();
+    public List<OperationVO> findOperationsByFilter(Long accountId, FilteredOperationDto filter) {
+        return operationDao.getFilteredOperation(accountId, filter);
     }
 
     @Override
-    public void delete(Long id){
-        if (operationRepository.findById(id).isEmpty())
-            throw new EntityNotFoundException(id);
-        operationRepository.delete(id);
-        if (operationRepository.findById(id).isPresent())
-            throw new ServiceNotWorkingException("Delete");
+    public void delete(Long id) {
+
     }
+
+
 }

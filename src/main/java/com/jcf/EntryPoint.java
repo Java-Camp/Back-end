@@ -21,6 +21,7 @@ public class EntryPoint{
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();

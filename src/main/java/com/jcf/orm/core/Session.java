@@ -1,5 +1,7 @@
 package com.jcf.orm.core;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +18,5 @@ public interface Session<E, ID> {
     List<E>findAll(EntityMapper<E> eEntityMapper);
 
     E findByUnique(String name, Object value ,EntityMapper<E> entityMapper);
+
 }
