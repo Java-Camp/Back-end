@@ -5,13 +5,10 @@ import com.jcf.exceptions.LockedAccessException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dao.OperationDao;
 import com.jcf.persistence.dto.OperationDTO;
-import com.jcf.persistence.model.Category;
 import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.Operation;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.model.UserAccount;
-import com.jcf.persistence.repository.*;
-import com.jcf.vo.CategoryVO;
 import com.jcf.vo.FilteredOperationDto;
 import com.jcf.vo.OperationVO;
 import com.jcf.vo.SpecialOperationVo;
@@ -19,8 +16,6 @@ import com.jcf.persistence.repository.AccountRepository;
 import com.jcf.persistence.repository.OperationRepository;
 import com.jcf.persistence.repository.UserAccountRepository;
 import com.jcf.persistence.repository.UserRepository;
-import com.jcf.vo.FilteredOperationDto;
-import com.jcf.vo.OperationVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -30,11 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.*;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 

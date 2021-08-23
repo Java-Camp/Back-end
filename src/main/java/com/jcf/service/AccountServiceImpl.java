@@ -6,6 +6,7 @@ import com.jcf.exceptions.LockedAccessException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dto.AccountDto;
 import com.jcf.persistence.model.Account;
+import com.jcf.persistence.model.Operation;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.model.UserAccount;
 import com.jcf.persistence.repository.AccountRepository;
@@ -153,5 +154,32 @@ public class AccountServiceImpl implements AccountService {
 
         if (accountRepository.findById(id).isPresent())
             throw new ServiceNotWorkingException("Delete");
+    }
+
+    private void update(Long id){
+        Account account = accountRepository.findById(id).get();
+        BigDecimal expenses = BigDecimal.ZERO;
+        for(Operation operation: operationRepository.findByUnique("OPERATION_TYPE_ID", 21)) {
+            if(id.equals(operation.getAccountId().longValue()))
+                expenses = expenses.add(operation.getSum());
+        }
+
+        BigDecimal income = BigDecimal.ZERO;
+
+        for(Operation operation: operationRepository.findByUnique("OPERATION_TYPE_ID", 81)) {
+            if(id.equals(operation.getAccountId().longValue()))
+                income = income.add(operation.getSum());
+        }
+
+        BigDecimal money = expenses.multiply(BigDecimal.valueOf(-1)).add(income);
+        account.setMoneyBalance(money);
+        accountRepository.saveOrUpdate(account);
+    }
+
+    @Override
+    public void updateAll() {
+        for(Account account: getAllAccounts()){
+            update(account.getId());
+        }
     }
 }
