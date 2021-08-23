@@ -232,7 +232,21 @@ public class OperationServiceImpl implements OperationService{
         operationRepository.delete(id);
         log.info("Deleted");
         Account account = accountRepository.findById(oldId).get();
-        account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
+        if(operation.getOperationTypeId().longValue() == 21){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() + operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+        }
+        else if(operation.getOperationTypeId().longValue() == 81){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+        }
+        else if(operation.getOperationTypeId().longValue() == 82){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() + operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+            account = accountRepository.findById(operation.getOperationId().longValue()).get();
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+        }
         accountRepository.saveOrUpdate(account);
         if (operationRepository.findById(id).isPresent())
             throw new ServiceNotWorkingException("Delete");
