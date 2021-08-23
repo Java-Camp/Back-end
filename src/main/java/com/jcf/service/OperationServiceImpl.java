@@ -5,10 +5,16 @@ import com.jcf.exceptions.LockedAccessException;
 import com.jcf.exceptions.ServiceNotWorkingException;
 import com.jcf.persistence.dao.OperationDao;
 import com.jcf.persistence.dto.OperationDTO;
+import com.jcf.persistence.model.Category;
 import com.jcf.persistence.model.Account;
 import com.jcf.persistence.model.Operation;
 import com.jcf.persistence.model.User;
 import com.jcf.persistence.model.UserAccount;
+import com.jcf.persistence.repository.*;
+import com.jcf.vo.CategoryVO;
+import com.jcf.vo.FilteredOperationDto;
+import com.jcf.vo.OperationVO;
+import com.jcf.vo.SpecialOperationVo;
 import com.jcf.persistence.repository.AccountRepository;
 import com.jcf.persistence.repository.OperationRepository;
 import com.jcf.persistence.repository.UserAccountRepository;
@@ -24,6 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.*;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -61,6 +71,7 @@ public class OperationServiceImpl implements OperationService{
         accountRepository.saveOrUpdate(account);
     }
 
+
     private boolean isControl(OperationDTO operationDTO, User user){
         for (UserAccount userAccount: userAccountRepository.findByUnique("USER_ID", user.getId())){
             if (userAccount.getAccount_id().equals(operationDTO.getAccountId()))
@@ -69,9 +80,35 @@ public class OperationServiceImpl implements OperationService{
         return false;
     }
 
+
     @Override
-    public Operation updateOperation(OperationDTO operationDTO){
-        if(operationRepository.findById(operationDTO.getId()).isEmpty() || Objects.isNull(operationDTO.getId()))
+    public List<SpecialOperationVo> getOperationsByCurrentDate(Long accountID) {
+        List<SpecialOperationVo> oldList = operationDao.getOperationsByCurrentDate(accountID);
+
+        List<SpecialOperationVo> newList = new ArrayList<>();
+
+        Map <String, BigDecimal> map = new HashMap<>();
+
+        for (int i = 0; i < oldList.size() ; i++) {
+            if (!map.containsKey(oldList.get(i).getCategory())){
+                map.put(oldList.get(i).getCategory(),oldList.get(i).getSum());
+            }
+            else {
+                map.put(oldList.get(i).getCategory(), map.get(oldList.get(i).getCategory()).add(oldList.get(i).getSum()));
+            }
+        }
+        for (Map.Entry <String, BigDecimal> pair : map.entrySet()){
+            newList.add(SpecialOperationVo
+                    .builder()
+                    .sum(pair.getValue())
+                    .category(pair.getKey())
+                    .build());
+        }
+        return newList;
+    }
+
+    public Operation updateOperation(OperationDTO operationDTO) {
+        if (operationRepository.findById(operationDTO.getId()).isEmpty() || Objects.isNull(operationDTO.getId()))
             throw new EntityNotFoundException(operationDTO.getId());
 
         final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
