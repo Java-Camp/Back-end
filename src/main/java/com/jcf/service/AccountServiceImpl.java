@@ -171,6 +171,11 @@ public class AccountServiceImpl implements AccountService {
                 income = income.add(operation.getSum());
         }
 
+        for(Operation operation: operationRepository.findByUnique("OPERATION_TYPE_ID", 82)) {
+            if(id.equals(operation.getAccountId().longValue()))
+                expenses = expenses.add(operation.getSum());
+        }
+
         BigDecimal money = expenses.multiply(BigDecimal.valueOf(-1)).add(income);
         account.setMoneyBalance(money);
         accountRepository.saveOrUpdate(account);

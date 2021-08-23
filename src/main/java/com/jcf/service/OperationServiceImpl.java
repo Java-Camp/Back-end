@@ -44,7 +44,7 @@ public class OperationServiceImpl implements OperationService{
     private final UserAccountRepository userAccountRepository;
     private final AccountRepository accountRepository;
 
-    private void update(Long id){
+/*    private void update(Long id){
         Account account = accountRepository.findById(id).get();
         BigDecimal expenses = BigDecimal.ZERO;
         for(Operation operation: operationRepository.findByUnique("OPERATION_TYPE_ID", 21)) {
@@ -62,8 +62,7 @@ public class OperationServiceImpl implements OperationService{
         BigDecimal money = expenses.multiply(BigDecimal.valueOf(-1)).add(income);
         account.setMoneyBalance(money);
         accountRepository.saveOrUpdate(account);
-    }
-
+    }*/
 
     private boolean isControl(OperationDTO operationDTO, User user){
         for (UserAccount userAccount: userAccountRepository.findByUnique("USER_ID", user.getId())){
@@ -111,6 +110,25 @@ public class OperationServiceImpl implements OperationService{
             throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getAlias());
 
         Operation operation = operationRepository.findById(operationDTO.getId()).get();
+
+        Account account = accountRepository.findById(operation.getAccountId().longValue()).get();
+        if(operation.getOperationTypeId().longValue() == 21){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() + operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+        }
+        else if(operation.getOperationTypeId().longValue() == 81){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+        }
+        else if(operation.getOperationTypeId().longValue() == 82){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() + operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+            account = accountRepository.findById(operation.getOperationId().longValue()).get();
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+        }
+        account = accountRepository.findById(operation.getAccountId().longValue()).get();
+
         if(!Objects.isNull(operationDTO.getOperationId()))
             operation.setOperationId(operationDTO.getOperationId());
         if(!Objects.isNull(operationDTO.getSum()))
@@ -122,16 +140,28 @@ public class OperationServiceImpl implements OperationService{
         if(!Objects.isNull(operationDTO.getCategoryId()))
             operation.setCategoryId(operationDTO.getCategoryId());
 
-        Long old_id = operation.getAccountId().longValue();
         if(!Objects.isNull(operationDTO.getAccountId()))
             operation.setAccountId(operationDTO.getAccountId());
 
+        if(operation.getOperationTypeId().longValue() == 21){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
+            operation.setOperationId(null);
+            accountRepository.saveOrUpdate(account);
+        }
+        else if(operation.getOperationTypeId().longValue() == 81){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() + operation.getSum().longValue()));
+            operation.setOperationId(null);
+            accountRepository.saveOrUpdate(account);
+        }
+        else if(operation.getOperationTypeId().longValue() == 82){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+            account = accountRepository.findById(operation.getOperationId().longValue()).get();
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() + operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+        }
 
-        operation = operationRepository.saveOrUpdate(operation);
-        update(operation.getAccountId().longValue());
-        if(!Objects.isNull(operationDTO.getAccountId()))
-            update(old_id);
-        return operation;
+        return operationRepository.saveOrUpdate(operation);
     }
 
     @Override
@@ -144,9 +174,6 @@ public class OperationServiceImpl implements OperationService{
 
         if(!isControl(operationDTO, user))
             throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getAlias());
-
-/*        if (!userAccountRepository.findByUnique("userId", user.getId()).contains(operationDTO.getAccountId().longValue()))
-            throw new LockedAccessException("You can't do anything with account " + accountRepository.findById(operationDTO.getAccountId().longValue()).get().getId());*/
 
         if (Objects.isNull(operationDTO.getDateTime())) {
             operation.setDateTime(Instant.now().atZone(OffsetDateTime.now().getOffset()).toLocalDateTime());
@@ -170,7 +197,23 @@ public class OperationServiceImpl implements OperationService{
         operation.setCategoryId(operationDTO.getCategoryId());
 
         operation = operationRepository.saveOrUpdate(operation);
-        update(operation.getAccountId().longValue());
+        Account account = accountRepository.findById(operation.getAccountId().longValue()).get();
+
+        if(operation.getOperationTypeId().longValue() == 21){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+        }
+        else if(operation.getOperationTypeId().longValue() == 81){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() + operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+        }
+        else if(operation.getOperationTypeId().longValue() == 82){
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+            account = accountRepository.findById(operation.getOperationId().longValue()).get();
+            account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() + operation.getSum().longValue()));
+            accountRepository.saveOrUpdate(account);
+        }
         return operation;
     }
 
@@ -183,12 +226,14 @@ public class OperationServiceImpl implements OperationService{
     public void delete(Long id){
         if (operationRepository.findById(id).isEmpty())
             throw new EntityNotFoundException(id);
-        log.info("check");
         Long oldId = operationRepository.findById(id).get().getAccountId().longValue();
         log.info("OLD ID "+ oldId);
+        Operation operation = operationRepository.findById(id).get();
         operationRepository.delete(id);
         log.info("Deleted");
-        update(oldId);
+        Account account = accountRepository.findById(oldId).get();
+        account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
+        accountRepository.saveOrUpdate(account);
         if (operationRepository.findById(id).isPresent())
             throw new ServiceNotWorkingException("Delete");
     }
