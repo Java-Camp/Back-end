@@ -5,9 +5,16 @@ import com.jcf.persistence.model.Operation;
 import com.jcf.service.OperationServiceImpl;
 import com.jcf.vo.FilteredOperationDto;
 import com.jcf.vo.OperationVO;
+import com.jcf.vo.SpecialOperationVo;
+import com.jcf.vo.FilteredOperationDto;
+import com.jcf.vo.OperationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @RestController
@@ -32,16 +39,16 @@ public class OperationController {
        return ResponseEntity.ok(operationService.saveOperation(operationDTO));
    }
 
+   @GetMapping("/{accountId}")
+   public ResponseEntity<List<SpecialOperationVo>> getOperationsByCurrentDate(@PathVariable("accountId") String accountId){
+        return ResponseEntity.ok(operationService.getOperationsByCurrentDate(Long.parseLong(accountId)));
+   }
+
     @PostMapping("/{accountId}")
     public ResponseEntity<List<OperationVO>> getOperationsByFilter(@PathVariable("accountId") String accountId,
                                                                    @RequestBody FilteredOperationDto filter){
 
-//        DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSS");
-//        FilteredOperationDto filter = new FilteredOperationDto();
-//        filter.setCategory(reqFilter.getCategory());
-//        filter.setType(reqFilter.getType());
-//        filter.setFirstDate(LocalDateTime.parse(reqFilter.getFirstDate(), dateTimeFormatter));
-//        filter.setSecondDate(LocalDateTime.parse(reqFilter.getSecondDate(), dateTimeFormatter));
+
 
         return ResponseEntity.ok(operationService.findOperationsByFilter(Long.parseLong(accountId), filter));
     }

@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 public class OperationVO {
 
     private String type;
-
     private LocalDateTime date;
     private BigDecimal sum;
     private String category;
