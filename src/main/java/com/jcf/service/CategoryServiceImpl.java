@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,5 +45,10 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = new Category();
         category.setName(categoryVO.getName());
         return categoryRepository.saveOrUpdate(category);
+    }
+
+    @Override
+    public List<Category> getCategoriesByTypeId(BigDecimal id) {
+        return categoryRepository.findByUnique("OPERATION_TYPE_ID", id.longValue());
     }
 }

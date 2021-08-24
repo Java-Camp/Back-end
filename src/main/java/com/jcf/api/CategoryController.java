@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -37,6 +38,11 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public void deleteCategoriesById(@PathVariable Long id) {
         categoryService.delete(id);
+    }
+
+    @GetMapping("/getAll/{id}")
+    public List<Category> getCategoriesByTypeId(@PathVariable BigDecimal id) {
+        return categoryService.getCategoriesByTypeId(id);
     }
 
 }
