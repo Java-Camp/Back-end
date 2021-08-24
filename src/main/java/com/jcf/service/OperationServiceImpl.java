@@ -154,6 +154,7 @@ public class OperationServiceImpl implements OperationService{
             accountRepository.saveOrUpdate(account);
         }
         else if(operation.getOperationTypeId().longValue() == 82){
+            operation.setCategoryId(BigDecimal.valueOf(61));
             account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
             accountRepository.saveOrUpdate(account);
             account = accountRepository.findById(operation.getOperationId().longValue()).get();
@@ -193,10 +194,8 @@ public class OperationServiceImpl implements OperationService{
         operation.setSum(operationDTO.getSum());
         operation.setAccountId(operationDTO.getAccountId());
         operation.setOperationTypeId(operationDTO.getOperationTypeId());
-        operation.setOperationId(operationDTO.getOperationId());
         operation.setCategoryId(operationDTO.getCategoryId());
 
-        operation = operationRepository.saveOrUpdate(operation);
         Account account = accountRepository.findById(operation.getAccountId().longValue()).get();
 
         if(operation.getOperationTypeId().longValue() == 21){
@@ -208,13 +207,15 @@ public class OperationServiceImpl implements OperationService{
             accountRepository.saveOrUpdate(account);
         }
         else if(operation.getOperationTypeId().longValue() == 82){
+            operation.setOperationId(operationDTO.getOperationId());
+            operation.setCategoryId(BigDecimal.valueOf(61));
             account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() - operation.getSum().longValue()));
             accountRepository.saveOrUpdate(account);
             account = accountRepository.findById(operation.getOperationId().longValue()).get();
             account.setMoneyBalance(BigDecimal.valueOf(account.getMoneyBalance().longValue() + operation.getSum().longValue()));
             accountRepository.saveOrUpdate(account);
         }
-        return operation;
+        return operationRepository.saveOrUpdate(operation);
     }
 
     @Override
