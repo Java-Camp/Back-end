@@ -3,9 +3,7 @@ package com.jcf.api;
 import com.jcf.persistence.dto.OperationDTO;
 import com.jcf.persistence.model.Operation;
 import com.jcf.service.OperationServiceImpl;
-import com.jcf.vo.FilteredOperationDto;
-import com.jcf.vo.OperationVO;
-import com.jcf.vo.SpecialOperationVo;
+import com.jcf.vo.*;
 import com.jcf.vo.FilteredOperationDto;
 import com.jcf.vo.OperationVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +49,15 @@ public class OperationController {
 
 
         return ResponseEntity.ok(operationService.findOperationsByFilter(Long.parseLong(accountId), filter));
+    }
+
+    @PostMapping("/{accountId}/getByRange")
+    public ResponseEntity<List<ChartOperationVO>> getOperationsTypeSumByDate(@PathVariable("accountId") String accountId,
+                                                                              @RequestBody DateFilteredOperationVO filter){
+
+
+
+        return ResponseEntity.ok(operationService.getOperationsTypeSumByDate(Long.parseLong(accountId), filter));
     }
 
     @DeleteMapping("/{id}")

@@ -1,24 +1,15 @@
 package com.jcf.persistence.dao;
 
-import com.jcf.persistence.dto.UserAccountDto;
-import com.jcf.persistence.model.User;
 import com.jcf.persistence.repository.UserRepository;
-import com.jcf.vo.FilteredOperationDto;
-import com.jcf.vo.OperationVO;
-import com.jcf.vo.SpecialOperationVo;
-import liquibase.pro.packaged.S;
+import com.jcf.vo.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oracle.sql.TIMESTAMP;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -51,6 +42,29 @@ public class OperationDao {
                 }, accountID);
     }
 
+    public List<OperationVO> getOperationsTypeSumByDate(Long accountID, DateFilteredOperationVO filter) {
+        return jdbcTemplate.query(
+                "SELECT  OPERATION.SUM, OPERATION_TYPE.NAME, OPERATION.DATE_TIME, CATEGORY.NAME FROM OPERATION" +
+                        " INNER JOIN OPERATION_TYPE on OPERATION_TYPE.ID = OPERATION.OPERATION_TYPE_ID" +
+                        " INNER JOIN CATEGORY on CATEGORY.ID = OPERATION.CATEGORY_ID" +
+                        " INNER JOIN ACCOUNT on ACCOUNT.ID = OPERATION.ACCOUNT_ID" +
+                        " WHERE  ACCOUNT_ID = ? "+
+                        " AND  OPERATION.DATE_TIME BETWEEN TRUNC(TO_TIMESTAMP(NVL(?,OPERATION.DATE_TIME)))" +
+                        " AND TRUNC(TO_TIMESTAMP(NVL(?,OPERATION.DATE_TIME)))",
+                new RowMapper<OperationVO>() {
+                    @Override
+                    public OperationVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        return OperationVO
+                                .builder()
+                                .sum(rs.getBigDecimal(1))
+                                .type(rs.getString(2))
+                                .date(rs.getTimestamp(3).toLocalDateTime())
+                                .category(rs.getString(4))
+                                .build();
+                    }
+                }, accountID, filter.getFirstDate(), filter.getSecondDate());
+    }
+
 
 
 
@@ -63,8 +77,8 @@ public class OperationDao {
                 " INNER JOIN ACCOUNT on ACCOUNT.ID = OPERATION.ACCOUNT_ID" +
                 " WHERE  ACCOUNT_ID = ? AND OPERATION_TYPE.NAME = NVL(?, OPERATION_TYPE.NAME)" +
                 " AND  CATEGORY.NAME = NVL(?, CATEGORY.NAME )" +
-                " AND  OPERATION.DATE_TIME BETWEEN TO_TIMESTAMP(NVL(?,OPERATION.DATE_TIME))" +
-                " AND TO_TIMESTAMP(NVL(?,OPERATION.DATE_TIME))",
+                " AND  OPERATION.DATE_TIME BETWEEN TRUNC(TO_TIMESTAMP(NVL(?,OPERATION.DATE_TIME)))" +
+                " AND TRUNC(TO_TIMESTAMP(NVL(?,OPERATION.DATE_TIME)))",
                 new RowMapper<OperationVO>() {
             @Override
             public OperationVO mapRow(ResultSet rs, int rowNum) throws SQLException {
