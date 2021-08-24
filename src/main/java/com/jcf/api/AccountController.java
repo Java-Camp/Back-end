@@ -40,4 +40,10 @@ public class AccountController {
         accountService.delete(id);
         return ResponseEntity.ok("Entity was deleted");
     }
+
+    @PutMapping("/UpdateAll")
+    public ResponseEntity<String> UpdateAll(){
+        accountService.updateAll();
+        return ResponseEntity.ok("All accounts were updated");
+    }
 }
