@@ -19,7 +19,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    private Long id;
+    private  Long id;
 
     @Column(name = "FIRST_NAME", nullable = false, length = 100)
     private String firstName;

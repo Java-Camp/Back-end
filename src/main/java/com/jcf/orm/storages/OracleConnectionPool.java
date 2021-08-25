@@ -19,9 +19,9 @@ public class OracleConnectionPool {
         pds.setURL(settings.getValue("spring.datasource.url"));
         pds.setUser(settings.getValue("spring.datasource.username"));
         pds.setPassword(settings.getValue("spring.datasource.password"));
-        pds.setInitialPoolSize(20);
-        pds.setMinPoolSize(5);
-        pds.setMaxPoolSize(30);
+        pds.setInitialPoolSize(50);
+        pds.setMinPoolSize(50);
+        pds.setMaxPoolSize(50);
     }
     private static OracleConnectionPool instance = null;
 

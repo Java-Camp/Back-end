@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -67,7 +68,7 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = FieldIsNullException.class)
-    protected ResponseEntity<Object> handleFieldIsNullException(FieldIsNullException e) {
+    protected ResponseEntity<Object> handleFieldIsNulelException(FieldIsNullException e) {
         return new ResponseEntity<>(getBody("Field Is Empty", e), HttpStatus.BAD_REQUEST);
     }
 
@@ -78,11 +79,16 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return new ResponseEntity<>(getBody("Http Message Not Readable", e), status);
+        return new ResponseEntity<>(getBody("Incorrect Data", e), status);
     }
 
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleAllExceptions(Exception e) {
-        return new ResponseEntity<>(getBody("Exception", e), HttpStatus.INTERNAL_SERVER_ERROR);
+//    @ExceptionHandler(Exception.class)
+//    protected ResponseEntity<Object> handleAllExceptions(Exception e) {
+//        return new ResponseEntity<>(getBody("Exception", e), HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
+
+    @ExceptionHandler(value = InternalAuthenticationServiceException.class)
+    protected ResponseEntity<Object> handleInternalAuthenticationServiceException(InternalAuthenticationServiceException e) {
+        return new ResponseEntity<>(getBody("User not found", e), HttpStatus.NOT_FOUND);
     }
 }

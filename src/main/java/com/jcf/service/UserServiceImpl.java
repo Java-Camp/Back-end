@@ -90,10 +90,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getUserById(Long id) {
-        final Optional<User> byId = userRepo.findById(id);
+    public User getUserById(String userEmail) {
+        User user = userRepo.findByEmail(userEmail);
+        final Optional<User> byId = userRepo.findById(user.getId());
         if (byId.isEmpty())
-            throw new EntityNotFoundException(id);
+            throw new EntityNotFoundException(user.getId());
         return byId.get();
     }
 

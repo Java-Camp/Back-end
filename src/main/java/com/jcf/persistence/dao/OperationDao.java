@@ -29,7 +29,8 @@ public class OperationDao {
                         " INNER JOIN CATEGORY on CATEGORY.ID = OPERATION.CATEGORY_ID" +
                         " INNER JOIN ACCOUNT on ACCOUNT.ID = OPERATION.ACCOUNT_ID" +
                         " WHERE  ACCOUNT_ID = ? "+
-                        " AND  TRUNC(OPERATION.DATE_TIME) = TRUNC(SYSDATE)",
+                        " AND  TRUNC(OPERATION.DATE_TIME) = TRUNC(SYSDATE)" +
+                        " AND OPERATION.OPERATION_TYPE_ID = 21",
                 new RowMapper<SpecialOperationVo>() {
                     @Override
                     public SpecialOperationVo mapRow(ResultSet rs, int rowNum) throws SQLException {

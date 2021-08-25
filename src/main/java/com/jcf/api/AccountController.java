@@ -1,12 +1,18 @@
 package com.jcf.api;
 
+import com.jcf.persistence.dao.AccountDao;
 import com.jcf.persistence.dto.AccountDto;
+import com.jcf.persistence.dto.UserAccountDto;
 import com.jcf.persistence.model.Account;
+import com.jcf.persistence.model.Currency;
 import com.jcf.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -14,10 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
+    private final AccountDao accountDao;
 
     @PostMapping("")
-    public ResponseEntity<Account> saveAccount(@RequestBody AccountDto accountDto) {
-        return ResponseEntity.ok(accountService.saveAccount(accountDto));
+    public ResponseEntity<Integer> saveAccount(@RequestBody AccountDto accountDto) {
+        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(accountDao.save(userEmail, accountDto));
     }
 
     @PutMapping("")
@@ -25,14 +33,15 @@ public class AccountController {
         return ResponseEntity.ok(accountService.updateAccount(accountDto));
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<UserAccountDto>> getAccounts() {
+        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok().body(accountDao.getAllUserAccounts(userEmail));
+    }
+
     @GetMapping("/{id}")
     public Account getAccount(@PathVariable Long id) {
         return accountService.findById(id);
-    }
-
-    @GetMapping("")
-    public ResponseEntity<List<Account>> getAccounts() {
-        return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
     @DeleteMapping("/delete/{id}")

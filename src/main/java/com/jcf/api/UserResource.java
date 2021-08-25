@@ -1,9 +1,11 @@
 package com.jcf.api;
 
 import com.jcf.persistence.model.User;
+import com.jcf.persistence.repository.UserRepository;
 import com.jcf.service.UserService;
 import com.jcf.vo.UserVO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,14 +23,15 @@ public class UserResource {
     }
 
 
-    @GetMapping("")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
-    }
+//    @GetMapping("")
+//    public ResponseEntity<List<User>> getUsers() {
+//        return ResponseEntity.ok().body(userService.getUsers());
+//    }
 
-    @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUserById(id);
+    @GetMapping("")
+    public User getUser() {
+        final String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userService.getUserById(userEmail);
     }
 
     @PutMapping("")

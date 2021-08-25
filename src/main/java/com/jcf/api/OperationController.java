@@ -45,9 +45,6 @@ public class OperationController {
     @PostMapping("/{accountId}")
     public ResponseEntity<List<OperationVO>> getOperationsByFilter(@PathVariable("accountId") String accountId,
                                                                    @RequestBody FilteredOperationDto filter){
-
-
-
         return ResponseEntity.ok(operationService.findOperationsByFilter(Long.parseLong(accountId), filter));
     }
 
