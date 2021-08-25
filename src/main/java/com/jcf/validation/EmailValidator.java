@@ -1,5 +1,6 @@
 package com.jcf.validation;
 
+import com.jcf.exceptions.IncorrectOperationTypeException;
 import com.jcf.validation.annotations.ValidEmail;
 
 import javax.validation.ConstraintValidator;
@@ -25,6 +26,10 @@ public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
     private boolean validateEmail(String email) {
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
+
         return matcher.matches();
+
+
+
     }
 }

@@ -1,6 +1,7 @@
 package com.jcf.persistence.model;
 
 import com.jcf.orm.annotation.*;
+import com.jcf.validation.annotations.ValidEmail;
 import lombok.*;
 
 import java.util.HashSet;
@@ -28,6 +29,7 @@ public class User {
     private String lastName;
 
     @Column(name = "EMAIL", nullable = false, unique = true)
+    @ValidEmail
     private String email;
 
     @Column(name ="PASSWORD")

@@ -235,10 +235,12 @@ public class OperationServiceImpl implements OperationService{
         List<OperationVO> listExpenses = list.stream().filter(vo -> vo.getType().equals("Expenses")).collect(Collectors.toList());
 
         List<OperationVO> listIncomes = list.stream().filter(vo -> vo.getType().equals("Incomes")).collect(Collectors.toList());
+        List<OperationVO> listTransfers = list.stream().filter(vo -> vo.getType().equals("Transfers")).collect(Collectors.toList());
 
 
         Map<LocalDate, BigDecimal> expensesMap =  new HashMap<>();
         Map<LocalDate, BigDecimal> incomesMap =  new HashMap<>();
+        Map<LocalDate, BigDecimal> transfersMap =  new HashMap<>();
         List<ChartOperationVO> result = new ArrayList<>();
 
         try {
@@ -258,6 +260,16 @@ public class OperationServiceImpl implements OperationService{
                     incomesMap.put(listIncomes.get(i).getDate().toLocalDate(), incomesMap.get(listIncomes.get(i).getDate().toLocalDate()).add(listIncomes.get(i).getSum()));
                 }
             }
+            for (int i = 0; i < listTransfers.size() ; i++) {
+                if(!transfersMap.containsKey(listTransfers.get(i).getDate().toLocalDate())){
+                    transfersMap.put(listTransfers.get(i).getDate().toLocalDate(), listTransfers.get(i).getSum());
+                }
+                else{
+                    transfersMap.put(listTransfers.get(i).getDate().toLocalDate(), incomesMap.get(listTransfers.get(i).getDate().toLocalDate()).add(listTransfers.get(i).getSum()));
+                }
+            }
+
+
 
             for (Map.Entry<LocalDate, BigDecimal> pair : expensesMap.entrySet()){
                 result.add(ChartOperationVO.builder().date(pair.getKey()).expense(pair.getValue()).build());
@@ -266,6 +278,14 @@ public class OperationServiceImpl implements OperationService{
                 for (int i = 0; i < result.size(); i++) {
                     if (pair.getKey().equals(result.get(i).getDate())){
                         result.get(i).setIncome(pair.getValue());
+                    }
+                }
+
+            }
+            for (Map.Entry<LocalDate, BigDecimal> pair : transfersMap.entrySet()){
+                for (int i = 0; i < result.size(); i++) {
+                    if (pair.getKey().equals(result.get(i).getDate())){
+                        result.get(i).setTransfer(pair.getValue());
                     }
                 }
 

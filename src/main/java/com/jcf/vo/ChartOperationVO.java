@@ -15,5 +15,6 @@ public class ChartOperationVO {
     private LocalDate date;
     private BigDecimal income;
     private BigDecimal expense;
+    private BigDecimal transfer;
 
 }
