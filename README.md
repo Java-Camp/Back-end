@@ -6,9 +6,6 @@
 - Maven
 - Spring boot
 - Oracle driver
-- Spring JPA
-- Lombok
-- Thymeleaf
 
 <h1>Setup & Build</h1>
 
